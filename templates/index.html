@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+ 
+{% block style %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styleMain.css') }}">
+{% endblock %}
+
+{% block head %}{% endblock %}
+
+
+
+
+	{% block content %}
+	<div class="main_grid">
+		
+		
+
+			
+
+		<section class="clothes">
+			<h1>Clothing categories</h1>
+		</section>
+
+		<div class="titles">
+			<div class="item">
+				<img class="item_img" src="{{ url_for('static', filename='images/T-shirts.jpg') }}">
+				<div class="overlay">
+					<p>T-shirts</p>
+				</div>
+			</div>
+			<div class="item">
+				<img class="item_img" src="{{ url_for('static', filename='images/Hats.jpg') }}">
+				<div class="overlay">
+					<p>Hats</p>
+				</div>
+			</div>
+			<div class="item">
+				<img class="item_img" src="{{ url_for('static', filename='images/Bags.jpg') }}">
+				<div class="overlay">
+					<p>Bags</p>
+				</div>
+			</div>
+			<div class="item">
+				<img class="item_img" src="{{ url_for('static', filename='images/Shirts.jpg') }}">
+				<div class="overlay">
+					<p>Shirts</p>
+				</div>
+			</div>
+			<div class="item">
+				<img class="item_img" src="{{ url_for('static', filename='images/Shoes.jpg') }}">
+				<div class="overlay">
+					<p>Shoes</p>
+				</div>
+			</div>
+			
+			<div class="item">
+				<img class="item_img" src="{{ url_for('static', filename='images/Pants.jpg') }}">
+				<div class="overlay">
+					<p>Pants</p>
+				</div>
+			</div>
+
+		</div>
+		{% endblock %}
+
+		
+	</div>
+{% block footer %}{% endblock %}

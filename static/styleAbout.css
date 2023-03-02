@@ -1,0 +1,138 @@
+body {
+	font-size: 1em;
+	font-family: sans-serif;
+}
+
+.main_grid {
+	display: grid;
+	grid-template-columns: 1fr repeat(2, minmax(auto, 25em)) 1fr;
+}
+
+header {
+	height: 60vh;
+
+	border: 1px solid black;
+	background-image: 
+		url(images/about_header_back.jpg);
+	box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.5);
+	background-size: cover;
+	background-repeat: no-repeat;
+	color: white;
+	grid-column: 1 / -1;
+}
+
+.grid_menu {
+	height: 100px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	padding: 20px 50px;
+}
+
+.grid_menu img {
+	height: 70%;
+}
+
+.menu {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+.menu a {
+	text-decoration: none;
+	color: white;
+	font-size: 1.5em;
+	margin-left: 30px;
+
+}
+
+.menu a:hover {
+	color: orange;
+	cursor: pointer;
+}
+
+
+.right {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+
+}
+
+.banner {
+	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.banner h1 {
+	font-size: 70px;
+}
+
+.banner p {
+	font-size: 23px;
+	padding: 40px 0px;
+	text-align: center;
+}
+
+.description {
+	grid-column: 1 / -1;
+	text-align: center;
+	align-items: center;
+	padding-top: 100px;
+	padding-bottom: 100px;
+}
+
+.contentInfo {
+	grid-column: 1 / -1;
+	text-align: center;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+    padding-bottom: 100px;
+}
+
+.tiles_team {
+	grid-column: 1 / -1;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+	grid-column-gap: 30px;
+	grid-row-gap: 100px;
+	margin-bottom: 100px;
+	padding: 0px minmax(0px, 100px);
+}
+
+.tiles_team img {
+	height: 100%;
+	width: 100%;
+
+}
+
+footer {
+	grid-column: 1 / -1;
+	height: 30vh;
+	background: black;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	color: white;
+}
+
+footer .social {
+	width: 130px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+}
+
+
+footer i {
+	color: white;
+}
+
