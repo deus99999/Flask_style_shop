@@ -1,52 +1,44 @@
 <!DOCTYPE html>
 <html>
-{% block link %}{% endblock %}
 
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}{% endblock %}</title>
   <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-  {% block style %}{% endblock %}
+    {% block style %}{% endblock %}
 </head>
 
 
 <body>
-  <header>
+	<div class="main_grid">
+            <header>
+                <nav class="grid_menu">
+                    <img src="{{ url_for('static', filename='logo.svg') }}" alt="logo">
+                    <div class="menu">
+                        <a href="{{ url_for('index') }}">Home</a>
+                        <a href="{{ url_for('shop') }}">Shop</a>
+                        <a href="{{ url_for('about') }}">About</a>
+                        <a href="{{ url_for('contacts') }}">Contacts</a>
+                    </div>
+                </nav>
+                <div class="banner">
+                    <h1>Real Style for Men</h1>
+                    <p>Real style - real quality</p>
+                </div>
+            </header>
 
-  {% block nav %}
-      <nav class="grid_menu">
-        <img src="{{ url_for('static', filename='logo.svg') }}" alt="logo">
-        <div class="menu">
-          
-            <a href="{{ url_for('index') }}">Home</a>
-            <a href="{{ url_for('shop') }}">Shop</a>
-            <a href="{{ url_for('about') }}">About</a>
-            <a href="{{ url_for('contacts') }}">Contacts</a>
-          
-        </div>
-      </nav>      
+        {% block content %}{% endblock %}
 
-      <div class="banner">
-        <h1>Real Style for Men</h1>
-        <p>Real style - real quality</p>
-      </div>
-      {% endblock %}
-
-</header>
-
-{% block content %}{% endblock %}
-
-
-<footer>
-      <p>800-6774-4744</p>
-      <p>realstyle@gmail.com</p>
-      <div class="social">
-        <a href="#"><i class="fa fa-telegram"></i></a>
-        <a href="#"><i class="fa fa-instagram"></i></a>
-        <a href="#"><i class="fa fa-facebook"></i></a>
-      </div>
-    </footer>
-
+        <footer>
+            <p>800-6774-4744</p>
+            <p>realstyle@gmail.com</p>
+            <div class="social">
+                <a href="#"><i class="fa fa-telegram"></i></a>
+                <a href="#"><i class="fa fa-instagram"></i></a>
+                <a href="#"><i class="fa fa-facebook"></i></a>
+            </div>
+        </footer>
+    </div>
 </body>
 </html>
