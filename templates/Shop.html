@@ -1,16 +1,11 @@
 {% extends 'base.html' %}
-{% block title %}Shop{% endblock %}
+{% block title %}Товары{% endblock %}
 
 {% block style %}
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styleShop.css') }}">
+	<link rel="stylesheet" type="text/css" href="../static/css/styleShop.css">
 {% endblock %}
 
-
-	{% block content %}
-
-	<div class="main_grid">
-		
-
+{% block content %}
 		<section class="clothes">
 			<h1>Clothes</h1>
 		</section>
@@ -79,19 +74,5 @@
 				<button>Add to card</button>
 				
 			</div>
-
-	</div>
+		</div>
 {% endblock %}
-
-		<footer>
-			<p>800-6774-4744</p>
-			<p>realstyle@gmail.com</p>
-			<div class="social">
-				<a href="#"><i class="fa fa-telegram"></i></a>
-				<a href="#"><i class="fa fa-instagram"></i></a>
-				<a href="#"><i class="fa fa-facebook"></i></a>
-			</div>
-		</footer>
-	</div>
-</body>
-</html>

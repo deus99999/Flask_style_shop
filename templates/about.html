@@ -1,41 +1,16 @@
-{% block style %}  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styleAbout.css') }}">
+{% extends 'base.html' %}
+{% block title %}about{% endblock %}
+
+{% block style %}
+	<link rel="stylesheet" type="text/css" href="../static/css/styleAbout.css">
 {% endblock %}
 
-
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Shop</title>
-	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styleAbout.css') }}">
-</head>
-<body>
-	<div class="main_grid">
-		<header>
-			<nav class="grid_menu">
-				<img src="images/logo.svg" alt="logo">
-				<div class="menu">
-					
-						<a href="{{ url_for('index') }}">Home</a>
-						<a href="{{ url_for('shop') }}">Shop</a>
-						<a href="{{ url_for('about') }}">About</a>
-						<a href="{{ url_for('contacts') }}">Contacts</a>
-					
-				</div>
-			</nav>
-			<div class="banner">
-				<h1>Real Style for Men</h1>
-				<p>Real style - real quality</p>
-			</div>
-		</header>
-
-		<section class="description">
+{% block content %}
+	<section class="description">
 			<h2>About Company</h2>
 			<hr>
 			<p>Real Style for Men - is the largest online-store in Europe, which specializes in the sale of clothes, shoes and accessories for men</p>
-		</section>
+	</section>
 
 		<section class="contentInfo">
 			<h1>Our team</h1>
@@ -91,16 +66,4 @@
 				</div>
 			</div>
 		</div>
-
-		<footer>
-			<p>800-6774-4744</p>
-			<p>realstyle@gmail.com</p>
-			<div class="social">
-				<a href="#"><i class="fa fa-telegram"></i></a>
-				<a href="#"><i class="fa fa-instagram"></i></a>
-				<a href="#"><i class="fa fa-facebook"></i></a>
-			</div>
-		</footer>
-	</div>
-</body>
-</html>
+{% endblock %}

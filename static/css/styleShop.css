@@ -12,8 +12,7 @@ header {
 	height: 60vh;
 
 	border: 1px solid black;
-	background-image: 
-		url(images/about_header_back.jpg);
+	background-image: url(../images/bg/shop_header_back.jpg);
 	box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.5);
 	background-size: cover;
 	background-repeat: no-repeat;
@@ -79,7 +78,7 @@ header {
 	text-align: center;
 }
 
-.description {
+.clothes {
 	grid-column: 1 / -1;
 	text-align: center;
 	align-items: center;
@@ -87,31 +86,70 @@ header {
 	padding-bottom: 100px;
 }
 
-.contentInfo {
-	grid-column: 1 / -1;
-	text-align: center;
+.titles {
+	grid-column: 2 / -2;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	grid-gap: 20px;
+	margin-bottom: 100px;
+}
+
+.titles .item {
 	display: flex;
 	justify-content: center;
-	flex-direction: column;
 	align-items: center;
-    padding-bottom: 100px;
+	overflow: hidden;
+	flex-direction: column;
+	font-size: 18px;
 }
 
-.tiles_team {
-	grid-column: 1 / -1;
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr 1fr;
-	grid-column-gap: 30px;
-	grid-row-gap: 100px;
-	margin-bottom: 100px;
-	padding: 0px minmax(0px, 100px);
-}
-
-.tiles_team img {
-	height: 100%;
+.titles .item img {
 	width: 100%;
-
+	height: 100%;
+	object-fit: cover;
 }
+
+
+
+.titles .item .overlay {
+	background: rgba(0, 0, 0, 0.5);
+	grid-column: 1 / -1;
+	grid-row: 1 / -1;
+	z-index: 2;
+	display: grid;
+	justify-content: center;
+	align-items: center;
+	color: white;
+}
+
+.titles .item:hover {
+	background: ghostwhite;
+  transform: scale(1.3);
+  transition: 0.3s;
+  cursor: pointer;
+  padding: 4%;
+  border: 2px solid solid;
+  border-radius: 10px;
+}
+
+.titles .item .overlay p {
+	color: white;
+	font-size: 1.6em;
+	font-family: sans-serif;
+}
+
+.tiles .item p {
+    text-align: center;
+    margin: 25px;
+}
+
+.titles .item button {
+    background: black;
+    border-radius: 7px;
+    text-align: 18px;
+    color: white;
+    padding: 15px 30px;
+ }
 
 footer {
 	grid-column: 1 / -1;
