@@ -9,7 +9,7 @@ body {
 }
 
 header {
-	height: 70vh;
+	height: 90vh;
 
 	border: 1px solid black;
 	background-image: url(../images/bg/header_back.jpg);

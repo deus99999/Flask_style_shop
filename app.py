@@ -1,14 +1,12 @@
 from flask import Flask, render_template, request, redirect, render_template_string, current_app
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import LargeBinary
-from flask_admin import Admin
-from flask_admin.contrib.sqla import ModelView
 from flask_basicauth import BasicAuth
 from flask_image_alchemy.storages import S3Storage
-from flask_image_alchemy.fields import StdImageField
-from sqlalchemy.orm import relationship
-# from sqlalchemy.ext.declarative import declarative_base
-# from sqlalchemy_imageattach.entity import Image, image_attachment
+from PIL import Image
+import io
+import base64
+import os
+
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
@@ -29,15 +27,15 @@ storage.init_app(app)
 s3_storage = S3Storage()
 MEDIA_PATH = "/images/"
 
+app.config['SECRET_KEY'] = 'qwerty12'
+app.config['UPLOADED_PHOTOS_DEST'] = 'uploads'
+
 
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
-    # category_image = db.Column(LargeBinary, nullable=False)
-    # category_image = db.Column(StdImageField(storage=storage))
-    category_image = db.Column(db.LargeBinary)
-
-    products = db.relationship('Product', backref='category', lazy=True)
+    image_path = db.Column(db.String(255), nullable=False)
+    # products = db.relationship('Product', backref='category', lazy=True)
 
 
 class Product(db.Model):
@@ -58,6 +56,29 @@ class Product(db.Model):
 # admin = Admin(app, name='microblog', template_mode='bootstrap3')
 # admin.add_view(ModelView(Category, db.session))
 # admin.add_view(ModelView(Item, db.session))
+
+@app.route("/add_category", methods=['GET', 'POST'])
+def create_category():
+    if request.method == 'POST':
+        title = request.form['title']
+        category_image = request.files['category_image']
+
+        image_path = 'static/images/' + category_image.filename
+        category_image.save(image_path)
+
+        category = Category(title=title, image_path=image_path)
+        print("1")
+        try:
+            db.session.add(category)
+            print("11")
+
+            db.session.commit()
+            print("111")
+
+            return redirect("/")
+        except:
+            return "Ошибка. Возможно не создана база данных"
+    return render_template("/add_category.html")
 
 
 @app.route('/admin')
@@ -94,34 +115,13 @@ def contacts():
             # db.session.add(user)
             # db.session.commit()
             return redirect("/home.html")
-
         except:
             return "Ошибка. Возможно не создана база данных"
     else:
         return render_template("/contacts.html")
 
 
-@app.route("/add_category", methods=['GET', 'POST'])
-def create_category():
-    if request.method == 'POST':
-        title = request.form['title']
-        category_image = request.files['category_image']
-        # category_image = image_attachment('Category_Image')
-        category_image = category_image.read()
-        category = Category(title=title, category_image=category_image)
-        try:
-            db.session.add(category)
-            db.session.commit()
-            return redirect("/")
-        except:
-            return "Ошибка. Возможно не создана база данных"
 
-    return render_template("/add_category.html")
-
-
-# class Category_Image(db.Base, Image):
-#     category_id = db.Column(db.Integer, db.ForeignKey('category.id'), primary_key=True)
-#     category = relationship('Category')
 
 
 @app.route("/add_clothes", methods=['POST', 'GET'])

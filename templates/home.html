@@ -12,12 +12,10 @@
 
 		<div class="titles">
 		{% for category in categories %}
-
 			<div class="item">
-				<img class="item_img" src="images/T-shirts.jpg">
-				<img src="/static/category_images/{{ category.image_file }}">
 				<div class="overlay">
 					<p>{{ category.title }}</p>
+					
 				</div>
 			</div>
 		{% endfor %}	
