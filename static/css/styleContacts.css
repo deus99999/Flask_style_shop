@@ -19,6 +19,8 @@ header {
 	background-repeat: no-repeat;
 	color: white;
 	grid-column: 1 / -1;
+		margin-bottom: 3%;
+
 }
 
 .grid_menu {
@@ -222,4 +224,5 @@ footer .social {
 footer i {
 	color: white;
 }
+
 

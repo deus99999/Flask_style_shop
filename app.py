@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, render_template_string, current_app
+from flask import Flask, render_template, request, redirect, render_template_string, current_app, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_basicauth import BasicAuth
 from flask_image_alchemy.storages import S3Storage
@@ -6,6 +6,7 @@ from PIL import Image
 import io
 import base64
 import os
+import logging
 
 
 app = Flask(__name__)
@@ -62,23 +63,32 @@ def create_category():
     if request.method == 'POST':
         title = request.form['title']
         category_image = request.files['category_image']
-
         image_path = 'static/images/' + category_image.filename
         category_image.save(image_path)
-
         category = Category(title=title, image_path=image_path)
-        print("1")
         try:
             db.session.add(category)
-            print("11")
-
             db.session.commit()
-            print("111")
-
             return redirect("/")
         except:
             return "Ошибка. Возможно не создана база данных"
+    if request.method == 'GET':
+        categories = Category.query.all()
+        return render_template("/add_category.html", categories=categories)
+
     return render_template("/add_category.html")
+
+
+@app.route('/delete_post', methods=['POST'])
+def remove_category():
+    if request.method == 'POST':
+        category_id = request.form['id']
+        category = Category.query.get(category_id)
+        db.session.delete(category)
+        db.session.commit()
+        return redirect('/add_category')
+
+
 
 
 @app.route('/admin')
