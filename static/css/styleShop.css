@@ -9,7 +9,7 @@ body {
 }
 
 header {
-	height: 60vh;
+	height: 70vh;
 
 	border: 1px solid black;
 	background-image: url(../images/bg/shop_header_back.jpg);
@@ -76,6 +76,11 @@ header {
 	font-size: 23px;
 	padding: 40px 0px;
 	text-align: center;
+}
+
+.item_info p {
+text-align: center;
+
 }
 
 .clothes {

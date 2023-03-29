@@ -43,6 +43,7 @@ class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(2000), nullable=False)
+    item_image_path = db.Column(db.String(255), nullable=False)
     price = db.Column(db.Float, nullable=False)
     in_stock = db.Column(db.String(100), default=True)
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)
@@ -105,7 +106,8 @@ def home():
 
 @app.route("/shop")
 def shop():
-    return render_template("/shop.html")
+    products = Product.query.all()
+    return render_template("/shop.html", products=products)
 
 
 @app.route("/about")
@@ -137,12 +139,26 @@ def add_items():
         category_id = request.form['category']
         title = request.form['title']
         description = request.form['description']
+
+        if Category:
+            categories = Category.query.all()
+            for category in categories:
+                if not os.path.exists(f"static/images/{category.title}"):
+                    os.makedirs(f"static/images/{category.title}")
+
+
+                item_image = request.files['item_image']
+                item_image_path = f'static/images/{category.title}/' + item_image.filename
+        item_image.save(item_image_path)
+
         price = request.form['price']
         in_stock = request.form['is_in_stock']
         print(in_stock)
-        product = Product(category_id=category_id, title=title, description=description, price=price, in_stock=in_stock)
+        product = Product(category_id=category_id, title=title,
+                          description=description,
+                          item_image_path=item_image_path,
+                          price=price, in_stock=in_stock)
 
-        #product = Product(category_id=category_id, title=title, description=description, price=price, in_stock=in_stock)
         try:
             db.session.add(product)
             db.session.commit()
