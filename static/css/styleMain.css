@@ -94,6 +94,10 @@ header {
 	margin-bottom: 100px;
 }
 
+.titles a {
+	text-decoration: none;
+}
+
 .titles .item {
 	display: grid;
 	grid-template-columns: 1;
@@ -158,3 +162,9 @@ footer i {
 	color: white;
 }
 
+@media (max-width: 850px) {
+	.clothes {
+   	 	padding-top: 10px;
+    	padding-bottom: 10px;
+	}
+}

@@ -48,7 +48,6 @@ class Product(db.Model):
     in_stock = db.Column(db.String(100), default=True)
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)
 
-
 # class User(db.Model):
 #     id = db.Column(db.Integer, primary_key=True)
 #     name = db.Column(db.String(50), nullable=False)
@@ -107,7 +106,13 @@ def home():
 @app.route("/shop")
 def shop():
     products = Product.query.all()
-    return render_template("/shop.html", products=products)
+    return render_template("shop.html", products=products)
+
+
+@app.route('/<int:category_id>')
+def show_category_products(category_id):
+    products = Product.query.filter_by(category_id=category_id).all()
+    return render_template('shop.html', products=products)
 
 
 @app.route("/about")
