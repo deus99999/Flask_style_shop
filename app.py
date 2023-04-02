@@ -23,14 +23,6 @@ app.config['BASIC_AUTH_PASSWORD'] = 'flaskadmin'
 
 basic_auth = BasicAuth()
 
-storage = S3Storage()
-storage.init_app(app)
-s3_storage = S3Storage()
-MEDIA_PATH = "/images/"
-
-app.config['SECRET_KEY'] = 'qwerty12'
-app.config['UPLOADED_PHOTOS_DEST'] = 'uploads'
-
 
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -46,7 +38,7 @@ class Product(db.Model):
     item_image_path = db.Column(db.String(255), nullable=False)
     price = db.Column(db.Float, nullable=False)
     in_stock = db.Column(db.String(100), default=True)
-    category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id'), primary_key=True, nullable=False)
 
 # class User(db.Model):
 #     id = db.Column(db.Integer, primary_key=True)
@@ -85,10 +77,17 @@ def create_category():
 def remove_category():
     if request.method == 'POST':
         category_id = request.form['id']
-        category = Category.query.get(category_id)
-        db.session.delete(category)
+        category_to_delete = Category.query.get(category_id)
+        Product.query.filter_by(category_id=category_to_delete.id).delete()
+        db.session.delete(category_to_delete)
         db.session.commit()
         return redirect('/add_category')
+
+
+# @app.route("/<int:product_id>")
+# def product_detail(product_id):
+#     product = Product.query.get_or_404(product_id)
+#     return render_template("/item_detail.html", product=product)
 
 
 @app.route('/admin')
@@ -97,12 +96,14 @@ def secret_view():
     return render_template('admin.html')
 
 
+# Show all categories in home.html
 @app.route("/")
 def home():
-    categories = Category.query.all()
+    categories = Category.query.order_by(Category.id).all()
     return render_template("/home.html", categories=categories)
 
 
+# Show all products in show.html
 @app.route("/shop")
 def shop():
     products = Product.query.all()
@@ -110,9 +111,14 @@ def shop():
 
 
 @app.route('/<int:category_id>')
-def show_category_products(category_id):
+def show_products_of_category(category_id):
     products = Product.query.filter_by(category_id=category_id).all()
     return render_template('shop.html', products=products)
+
+
+@app.route("/product_detail")
+def product_detail():
+    return render_template("/product_detail.html")
 
 
 @app.route("/about")

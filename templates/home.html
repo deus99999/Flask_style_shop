@@ -11,17 +11,17 @@
 		</section>
 
 		<div class="titles">
-		{% for category in categories %}
-		<a href="{{ url_for('show_category_products', category_id=category.id) }}">
-			<div class="item">
+			{% for category in categories %}
+			<a href="{{ url_for('show_products_of_category', category_id=category.id) }}">
+				<div class="item">
 					<img class="item_img" src="{{ category.image_path }}" alt="category.id }}">
 					<div class="overlay">	
 						<p>{{ category.title }}</p>
 					</div>
-			</div>
-		</a>
-
-		{% endfor %}	
+				</div>
+			</a>
+			{% endfor %}	
+		
 		</div>
 				
 

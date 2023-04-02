@@ -108,8 +108,12 @@ text-align: center;
 	font-size: 18px;
 }
 
-.titles .item a {
+.titles a {
 	text-decoration: none;
+}
+
+.titles a:visited {
+	color: black;
 }
 
 .titles .item img {
@@ -163,6 +167,16 @@ text-align: center;
     color: white;
     padding: 15px 30px;
  }
+
+.titles .item button:hover {
+    color: orange;
+    cursor: pointer;
+}
+
+.product_detail {
+	grid-column: 2 / -2;
+	background: ghostwhite;
+}
 
 footer {
 	grid-column: 1 / -1;

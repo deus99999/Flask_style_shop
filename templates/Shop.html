@@ -6,21 +6,30 @@
 {% endblock %}
 
 {% block content %}
+		{% if products %}	
+
 		<section class="clothes">
 			<h1>Clothes</h1>
 		</section>
 
 		<div class="titles">
 			{% for product in products %}
+			<a href="{{ url_for('product_detail', product_id=product.id) }}">
 			<div class="item">
 				<img class="item_img" src="{{ product.item_image_path }}">
 				<div class="overlay"></div>
-				<div class="item_info">
-					<p><strong>{{ product.title }}</strong></p>
-					<p>{{ product.price }} $</p>
+					<div class="item_info">
+						<p><strong>{{ product.title }}</strong></p>
+						<p>{{ product.price }} $</p>
+					</div>
+					<button>Add to card</button>
 				</div>
-				<button>Add to card</button>
-			</div>
+			</a>
 			{% endfor %}
 		</div>
+		{% else %}
+		<section class="clothes">
+			<h1>There are no products in this category</h1>
+		</section>
+		{% endif %}
 {% endblock %}
