@@ -1,6 +1,7 @@
 body {
 	font-size: 1em;
 	font-family: sans-serif;
+	margin: 0;
 }
 
 .main_grid {
@@ -9,7 +10,7 @@ body {
 }
 
 header {
-	height: 70vh;
+	height: 80vh;
 
 	border: 1px solid black;
 	background-image: url(../images/bg/shop_header_back.jpg);
@@ -173,10 +174,7 @@ text-align: center;
     cursor: pointer;
 }
 
-.product_detail {
-	grid-column: 2 / -2;
-	background: ghostwhite;
-}
+
 
 footer {
 	grid-column: 1 / -1;

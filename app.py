@@ -116,9 +116,10 @@ def show_products_of_category(category_id):
     return render_template('shop.html', products=products)
 
 
-@app.route("/product_detail")
-def product_detail():
-    return render_template("/product_detail.html")
+@app.route("/shop/<int:product_id>", methods=["GET"])
+def product_detail(product_id):
+    products = Product.query.filter_by(id=product_id).all()
+    return render_template("/product_detail.html", products=products)
 
 
 @app.route("/about")
@@ -182,6 +183,12 @@ def add_items():
         return render_template("/add_items.html", categories=categories)
 
     return render_template("/add_items.html")
+
+
+@app.route("/cart")
+def cart():
+    products = Product.query.all()
+    return render_template("/cart.html",  products=products)
 
 
 if __name__ == "__main__":
