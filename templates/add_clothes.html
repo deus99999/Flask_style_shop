@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Add item{% endblock %}
+
+{% block style %}
+	<link rel="stylesheet" type="text/css" href="../static/css/styleContacts.css">
+{% endblock %}
+
+{% block content %}
+		<form method="post">
+			<h2>Add item</h2>			
+			<input type="text" name="title" id="title" placeholder="Name of clothes">
+			<textarea placeholder="Product's description" id="description" name="description"></textarea>
+
+		    <input type="number" placeholder="price" id="price" name="price">
+
+		    	<h4>Is this in stock:</h4>
+				<label>
+					<input type="radio" name="is_in_stock">
+					True
+				</label>
+    			<label>		
+    				<input type="radio" name="is_in_stock"> 
+					False
+				</label>
+			
+			<input type="submit" value="Add clothes" id="submit">
+		</form>
+		
+		
+{% endblock %}

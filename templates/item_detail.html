@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Товары{% endblock %}
+
+{% block style %}
+	<link rel="stylesheet" type="text/css" href="../static/css/styleShop.css">
+{% endblock %}
+
+{% block content %}
+		{% if products %}	
+
+		<section class="clothes">
+			<h1>HATS</h1>
+		</section>
+
+		
+
+		<section class="clothes">
+			<h1>Hats</h1>
+		</section>
+
+		
+		<div class="product_detail">
+			 <div class="products_images">
+			 	<img class="item_img" src="{{ product.item_image_path }}">
+			 </div>
+		</div>
+{% endblock %}
