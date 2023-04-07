@@ -15,14 +15,23 @@
 		<div class="titles">
 			{% for product in products %}
 			<a href="{{ url_for('product_detail', product_id=product.id) }}">
+
 			<div class="item">
-				<img class="item_img" src="{{ product.item_image_path }}">
-				<div class="overlay"></div>
-					<div class="item_info">
-						<p><strong>{{ product.title }}</strong></p>
-						<p>{{ product.price }} $</p>
+					<div class="overlay">
+						<img class="item_img" src="{{ product.item_image_path }}">
 					</div>
-					<button>Add to card</button>
+					
+						<div class="item_info">
+							<p><strong>{{ product.title|truncate(25) }}</strong></p>
+							<p>{{ product.price }} $</p>
+						</div>
+					
+        			<form action="{{ url_for('add_to_cart', product_id=product.id) }}" method="GET" enctype="multipart/form-data">
+        				{{ product.id }}
+						<button type="submit">Add to card</button>
+        				
+					</form>
+										
 				</div>
 			</a>
 			{% endfor %}
@@ -32,4 +41,7 @@
 			<h1>There are no products in this category</h1>
 		</section>
 		{% endif %}
+
+		
+
 {% endblock %}

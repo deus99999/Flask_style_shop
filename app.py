@@ -1,15 +1,12 @@
-from flask import Flask, render_template, request, redirect, render_template_string, current_app, url_for
+from flask import Flask, session, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_basicauth import BasicAuth
-from flask_image_alchemy.storages import S3Storage
-from PIL import Image
-import io
-import base64
+
 import os
-import logging
 
 
 app = Flask(__name__)
+app.secret_key = "my_super_secret_key"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 
 db = SQLAlchemy(app)
@@ -100,6 +97,7 @@ def secret_view():
 @app.route("/")
 def home():
     categories = Category.query.order_by(Category.id).all()
+
     return render_template("/home.html", categories=categories)
 
 
@@ -158,14 +156,12 @@ def add_items():
                 if not os.path.exists(f"static/images/{category.title}"):
                     os.makedirs(f"static/images/{category.title}")
 
-
                 item_image = request.files['item_image']
                 item_image_path = f'static/images/{category.title}/' + item_image.filename
         item_image.save(item_image_path)
 
         price = request.form['price']
         in_stock = request.form['is_in_stock']
-        print(in_stock)
         product = Product(category_id=category_id, title=title,
                           description=description,
                           item_image_path=item_image_path,
@@ -185,13 +181,55 @@ def add_items():
     return render_template("/add_items.html")
 
 
-@app.route("/cart")
-def cart():
-    products = Product.query.all()
-    return render_template("/cart.html",  products=products)
+# Код для добавления товара в корзину
+@app.route('/add_to_cart/<int:product_id>')
+def add_to_cart(product_id):
+    #products = Product.query.get_or_404(product_id)
+    products = Product.query.filter_by(id=product_id).all()
+    print(products)
+    session.permanent = False
+    for product in products:
+        if 'cart' not in session:
+            session['cart'] = {}
+        if str(product_id) not in session['cart']:
+            session['cart'][str(product_id)] = {
+                'title': product.title,
+                'price': float(product.price),
+                'img_path': product.item_image_path,
+            }
+        else:
+            session['cart'][str(product_id)]['price'] += float(product.price)
+            session.modified = True
+    return redirect(request.referrer)
 
+
+@app.route('/cart')
+def cart():
+    cart_items = session.get('cart')
+    total_cost = 0
+    products = []
+    print(products, total_cost)
+    if cart_items:
+        for product_id, item in cart_items.items():
+            print(product_id, item)
+            products.append({
+                'product_id': product_id,
+                'title': item['title'],
+                'price': item['price'],
+                'item_image_path': item['img_path'],
+                })
+            total_cost += item['price']
+        print(products, total_cost)
+        return render_template('cart.html', products=products, total_cost=total_cost)
+    else:
+        return render_template('/cart.html')
+@app.route("/cl")
+def clear():
+    session.clear()
+    return "Session was cleared"
 
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
+
     app.run(debug=True)

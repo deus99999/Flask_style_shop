@@ -152,6 +152,7 @@ header {
     text-align: 18px;
     color: white;
     padding: 15px 30px;
+
  }
 
 
@@ -238,6 +239,11 @@ footer i {
 	color: white;
 }
 
+@media (max-width: 1200px) {
+	header {
+		height: 40vh;
+	}
+}
 
 @media (max-width: 820px) {
 	#request {

@@ -30,6 +30,7 @@ header {
 	padding: 20px 50px;
 }
 
+
 .grid_menu img {
 	height: 70%;
 }
@@ -80,8 +81,12 @@ header {
 }
 
 .item_info p {
-text-align: center;
+    text-align: center;
 
+}
+.item_info p strong {
+    width: 100%;
+    height: 50px;
 }
 
 .clothes {
@@ -107,6 +112,7 @@ text-align: center;
 	overflow: hidden;
 	flex-direction: column;
 	font-size: 18px;
+	min-height: 253px;
 }
 
 .titles a {
@@ -118,8 +124,8 @@ text-align: center;
 }
 
 .titles .item img {
-	width: 100%;
-	height: 100%;
+	width: 220px;
+	height: 220px;
 	object-fit: cover;
 	background-size: cover 
 }
@@ -158,7 +164,6 @@ text-align: center;
     text-align: center;
     margin: 25px;
     text-decoration: none;
-
 }
 
 .titles .item button {
@@ -197,6 +202,13 @@ footer .social {
 
 footer i {
 	color: white;
+}
+
+
+@media (max-width: 1200px) {
+	header {
+		height: 40vh;
+	}
 }
 
 
