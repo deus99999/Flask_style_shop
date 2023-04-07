@@ -81,12 +81,6 @@ def remove_category():
         return redirect('/add_category')
 
 
-# @app.route("/<int:product_id>")
-# def product_detail(product_id):
-#     product = Product.query.get_or_404(product_id)
-#     return render_template("/item_detail.html", product=product)
-
-
 @app.route('/admin')
 @basic_auth.required
 def secret_view():
@@ -108,6 +102,7 @@ def shop():
     return render_template("shop.html", products=products)
 
 
+# Show all products of category in show.html
 @app.route('/<int:category_id>')
 def show_products_of_category(category_id):
     products = Product.query.filter_by(category_id=category_id).all()
@@ -184,7 +179,6 @@ def add_items():
 # Код для добавления товара в корзину
 @app.route('/add_to_cart/<int:product_id>')
 def add_to_cart(product_id):
-    #products = Product.query.get_or_404(product_id)
     products = Product.query.filter_by(id=product_id).all()
     print(products)
     session.permanent = False
@@ -194,11 +188,14 @@ def add_to_cart(product_id):
         if str(product_id) not in session['cart']:
             session['cart'][str(product_id)] = {
                 'title': product.title,
+                'price_for_one': float(product.price),
                 'price': float(product.price),
+                'quantity': 1,
                 'img_path': product.item_image_path,
             }
         else:
             session['cart'][str(product_id)]['price'] += float(product.price)
+            session['cart'][str(product_id)]['quantity'] += 1
             session.modified = True
     return redirect(request.referrer)
 
@@ -215,7 +212,9 @@ def cart():
             products.append({
                 'product_id': product_id,
                 'title': item['title'],
+                'price_for_one': item['price_for_one'],
                 'price': item['price'],
+                'quantity': item['quantity'],
                 'item_image_path': item['img_path'],
                 })
             total_cost += item['price']
@@ -223,10 +222,13 @@ def cart():
         return render_template('cart.html', products=products, total_cost=total_cost)
     else:
         return render_template('/cart.html')
+
+
 @app.route("/cl")
 def clear():
     session.clear()
     return "Session was cleared"
+
 
 if __name__ == "__main__":
     with app.app_context():

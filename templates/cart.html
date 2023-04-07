@@ -20,9 +20,9 @@
 						<a href="{{ url_for('product_detail', product_id=product['product_id']) }}">
 							<p><strong>{{ product.title|truncate(20) }}</strong></p>
 						</a>
-						<p>Price: {{ product.price }}</p>
+						<p>Price: {{ product.price_for_one }}</p>
 						<form>
-							<input type="number" name="count">
+							<input type="number" value="{{ product.quantity }}">
 						</form>
 					</div>
 				</div>
