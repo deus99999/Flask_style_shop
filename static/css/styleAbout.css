@@ -10,7 +10,7 @@ body {
 }
 
 header {
-	height: 80vh;
+	height: 60vh;
 
 	border: 1px solid black;
 	background-image: 
@@ -29,6 +29,11 @@ header {
 	justify-content: space-between;
 	align-items: center;
 	padding: 20px 50px;
+
+	box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.2);
+
+	position: sticky;
+	top: 0;
 }
 
 .grid_menu img {
@@ -68,10 +73,11 @@ header {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+
 }
 
 .banner h1 {
-	font-size: 70px;
+		font-size: 2em;
 }
 
 .banner p {
@@ -105,7 +111,10 @@ header {
 	grid-column-gap: 30px;
 	grid-row-gap: 100px;
 	margin-bottom: 100px;
+	margin-left: 10px;
+	margin-right: 10px;
 	padding: 0px minmax(0px, 100px);
+
 }
 
 .tiles_team img {
@@ -137,3 +146,35 @@ footer i {
 	color: white;
 }
 
+@media (max-width: 1200px) {
+	header {
+		height: 40vh;
+	}
+	
+	.clothes {
+		padding-top: 10px;
+		padding-bottom: 10px;
+	}
+
+	footer {
+		height: 20vh;
+	}
+}
+
+@media (max-width: 800px) {
+	.tiles_team {
+    
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 2%;
+    grid-row-gap: 100px;
+    margin-bottom: 100px;
+    padding: 0px minmax(0px, 100px);
+	}
+
+@media (max-width: 500px) {
+	.tiles_team {
+    
+    grid-template-columns: 1fr;
+    
+	}
+}

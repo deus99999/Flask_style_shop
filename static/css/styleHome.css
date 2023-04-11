@@ -10,7 +10,7 @@ body {
 }
 
 header {
-	height: 90vh;
+	height: 60vh;
 
 	border: 1px solid black;
 	background-image: url(../images/bg/header_back.jpg);
@@ -30,7 +30,13 @@ header {
 	align-items: center;
 	padding: 20px 50px;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+/*
+	background-image: url(../images/bg/header_back.jpg);
+	background-size: 100%;*/
+	box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.2);
 
+	position: sticky;
+	top: 0;
   
 }
 
@@ -130,10 +136,11 @@ text-decoration: none;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+
 }
 
 .banner h1 {
-	font-size: 70px;
+	font-size: 2em;
 }
 
 .banner p {

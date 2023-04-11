@@ -18,13 +18,9 @@
 
 		<div class="products_images">
 			 <img src="{{ product.item_image_path }}">
-
 		</div>
 
 		<div class="product_detail">
-			
-
-			 
 			<div class="product_description">
 			 	<p>{{ product.description }}</p>
 			 	<form action="{{ url_for('add_to_cart', product_id=product.id) }}" method="get">

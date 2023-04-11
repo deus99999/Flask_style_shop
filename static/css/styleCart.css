@@ -1,5 +1,5 @@
 .titles {
-	
+	margin: 0 10px;
 }
 
 .purchase {
@@ -61,12 +61,10 @@
 .amount_of_purchases  {
 	grid-column: 2 / -2;
 	padding-bottom: 50px;
-	margin-left: 10px;
 	border-bottom: 2px solid #D3D3D3;
 	display: flex;
 	justify-content: space-around;
-		border-bottom: 2px solid #D3D3D3;
-
+	border-bottom: 2px solid #D3D3D3;
 }
 
 .amount_of_purchases h2 {

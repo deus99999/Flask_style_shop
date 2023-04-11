@@ -109,7 +109,7 @@ def show_products_of_category(category_id):
     return render_template('shop.html', products=products)
 
 
-@app.route("/shop/<int:product_id>", methods=["GET"])
+@app.route("/product_detail/<int:product_id>", methods=["GET"])
 def product_detail(product_id):
     products = Product.query.filter_by(id=product_id).all()
     return render_template("/product_detail.html", products=products)

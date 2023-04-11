@@ -10,7 +10,7 @@ body {
 }
 
 header {
-	height: 80vh;
+	height: 60vh;
 
 	border: 1px solid black;
 	background-image: 
@@ -31,6 +31,11 @@ header {
 	justify-content: space-between;
 	align-items: center;
 	padding: 20px 50px;
+
+	box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.2);
+
+	position: sticky;
+	top: 0;
 }
 
 .grid_menu img {
@@ -73,7 +78,7 @@ header {
 }
 
 .banner h1 {
-	font-size: 70px;
+	font-size: 2em;
 }
 
 .banner p {
@@ -160,6 +165,7 @@ header {
 .contactsBlock {
 	grid-column: 2 / -2;
 	padding: 100px 0px;
+	margin: 10px;
 }
 
 #request {
@@ -209,6 +215,7 @@ select {
 
 #map_desc {
 	grid-column: 2 / -2;
+	margin: 10px;
 }
 
 iframe {
