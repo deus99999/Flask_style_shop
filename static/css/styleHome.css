@@ -68,6 +68,9 @@ header {
 	cursor: pointer;
 }
 
+.menu a i:hover {
+		color: orange;
+} 
 /*#MenuShow {
 text-decoration: none;
 	color: white;
@@ -235,7 +238,7 @@ footer i {
 
 @media (max-width: 1200px) {
 	header {
-		height: 40vh;
+		height: 35vh;
 	}
 }
 

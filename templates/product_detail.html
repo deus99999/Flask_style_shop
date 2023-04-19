@@ -5,30 +5,29 @@
 
 
 {% block style %}
-	<link rel="stylesheet" type="text/css" href="../static/css/styleShop.css">
-	<link rel="stylesheet" type="text/css" href="../static/css/ProductDetailStyle.css">
+	<!-- <link rel="stylesheet" type="text/css" href="../static/css/styleShop.css"> -->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styleShop.css' ) }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/ProductDetailStyle.css' ) }}">
+
 {% endblock %}
 
 {% block content %}
-{% for product in products %}
 
 		<section class="clothes">
 			<h1>{{ product.title }}</h1>
 		</section>
 
-		<div class="products_images">
-			 <img src="{{ product.item_image_path }}">
-		</div>
-
 		<div class="product_detail">
+			<div class="products_images">
+				
+				<img src="{{ product.item_image_path }}" alt="{{ product.item_image_path }}">
+			</div>
 			<div class="product_description">
 			 	<p>{{ product.description }}</p>
 			 	<form action="{{ url_for('add_to_cart', product_id=product.id) }}" method="get">
-			 		<input type="submit" name="" value="Add to Cart">
 				 	<button type="submit">Add to Cart</button>
 				</form>
 			</div>
 		</div>
-{% endfor %}
 {% endblock %}
 

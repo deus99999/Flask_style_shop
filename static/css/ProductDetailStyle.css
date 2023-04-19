@@ -7,8 +7,14 @@
 	grid-column: 2 / -2;
 	background: ghostwhite;
 	color: black;
-    height: 400px;
+    margin-bottom: 5%;
 }
+
+.product_detail img {
+    height: 300px;
+    width: 300px;
+}
+
 
 .product_description {
     padding: 20px;

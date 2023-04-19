@@ -15,7 +15,8 @@
 			<a href="{{ url_for('product_detail', product_id=product.id) }}">
 			<div class="item">
 				<div class="overlay">
-					<img class="item_img" src="{{ product.item_image_path }}">
+					<img class="item_img" src="{{ product.item_image_path }}" alt="{{ product.item_image_path }}">
+
 					</div>
 						<div class="item_info">
 							<p><strong>{{ product.title|truncate(25) }}</strong></p>

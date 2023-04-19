@@ -4,7 +4,6 @@ from flask_basicauth import BasicAuth
 
 import os
 
-
 app = Flask(__name__)
 app.secret_key = "my_super_secret_key"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
@@ -19,7 +18,6 @@ app.config['BASIC_AUTH_PASSWORD'] = 'flaskadmin'
 
 
 basic_auth = BasicAuth()
-
 
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -42,6 +40,7 @@ class Product(db.Model):
 #     name = db.Column(db.String(50), nullable=False)
 #     email = db.Column(db.String(50), nullable=False)
 #     phone_number = db.Column(db.Integer, nullable=False)
+
 
 
 # admin = Admin(app, name='microblog', template_mode='bootstrap3')
@@ -70,15 +69,27 @@ def create_category():
     return render_template("/add_category.html")
 
 
-@app.route('/delete_post', methods=['POST'])
-def remove_category():
+@app.route('/delete_category', methods=['POST'])
+def delete_category():
     if request.method == 'POST':
         category_id = request.form['id']
         category_to_delete = Category.query.get(category_id)
         Product.query.filter_by(category_id=category_to_delete.id).delete()
         db.session.delete(category_to_delete)
         db.session.commit()
-        return redirect('/add_category')
+        return redirect('/edit_category')
+
+@app.route('/delete_item', methods=['POST'])
+def delete_item():
+    if request.method == 'POST':
+        item_id = request.form['item_id']
+        print(item_id)
+        item_to_delete = Product.query.get_or_404(item_id)
+        print(item_to_delete)
+        Product.query.filter_by(id=item_id.id).delete()
+        db.session.delete(item_to_delete)
+        db.session.commit()
+        return redirect('/edit_items')
 
 
 @app.route('/admin')
@@ -91,28 +102,33 @@ def secret_view():
 @app.route("/")
 def home():
     categories = Category.query.order_by(Category.id).all()
-
     return render_template("/home.html", categories=categories)
 
 
-# Show all products in show.html
 @app.route("/shop")
 def shop():
     products = Product.query.all()
     return render_template("shop.html", products=products)
 
+@app.route("/<int:product_id>")
+def product_detail(product_id):
+   # product = Product.query.filter_by(id=product_id)
+   # product = Product.query.get(id=product_id)
+    product = Product.query.filter_by(id=product_id).first()
+    return render_template("/product_detail.html", product=product)
 
 # Show all products of category in show.html
-@app.route('/<int:category_id>')
+@app.route('/category/<int:category_id>')
 def show_products_of_category(category_id):
     products = Product.query.filter_by(category_id=category_id).all()
     return render_template('shop.html', products=products)
 
 
-@app.route("/product_detail/<int:product_id>", methods=["GET"])
-def product_detail(product_id):
-    products = Product.query.filter_by(id=product_id).all()
-    return render_template("/product_detail.html", products=products)
+# Show all products in show.html
+
+
+
+
 
 
 @app.route("/about")
@@ -144,16 +160,20 @@ def add_items():
         category_id = request.form['category']
         title = request.form['title']
         description = request.form['description']
+        print(category_id)
+        print(title)
+        print(description)
 
         if Category:
-            categories = Category.query.all()
-            for category in categories:
-                if not os.path.exists(f"static/images/{category.title}"):
-                    os.makedirs(f"static/images/{category.title}")
+            category = Category.query.get(category_id)
+            print(category)
+            if not os.path.exists(f"static/images/{category.title}"):
+                os.makedirs(f"static/images/{category.title}")
 
-                item_image = request.files['item_image']
-                item_image_path = f'static/images/{category.title}/' + item_image.filename
-        item_image.save(item_image_path)
+            item_image = request.files['item_image']
+                #print(item_image)
+            item_image_path = f'static/images/{category.title}/' + item_image.filename
+            item_image.save(item_image_path)
 
         price = request.form['price']
         in_stock = request.form['is_in_stock']
@@ -171,7 +191,9 @@ def add_items():
 
     if request.method == 'GET':
         categories = Category.query.all()
-        return render_template("/add_items.html", categories=categories)
+        products = Product.query.all()
+
+        return render_template("/add_items.html", categories=categories, products=products)
 
     return render_template("/add_items.html")
 
@@ -180,7 +202,6 @@ def add_items():
 @app.route('/add_to_cart/<int:product_id>')
 def add_to_cart(product_id):
     products = Product.query.filter_by(id=product_id).all()
-    print(products)
     session.permanent = False
     for product in products:
         if 'cart' not in session:
@@ -205,10 +226,8 @@ def cart():
     cart_items = session.get('cart')
     total_cost = 0
     products = []
-    print(products, total_cost)
     if cart_items:
         for product_id, item in cart_items.items():
-            print(product_id, item)
             products.append({
                 'product_id': product_id,
                 'title': item['title'],
@@ -218,7 +237,6 @@ def cart():
                 'item_image_path': item['img_path'],
                 })
             total_cost += item['price']
-        print(products, total_cost)
         return render_template('cart.html', products=products, total_cost=total_cost)
     else:
         return render_template('/cart.html')

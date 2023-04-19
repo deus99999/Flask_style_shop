@@ -40,5 +40,21 @@
 			<input type="submit" value="Add clothes" id="submit">
 		</form>
 		
+		<div class="">
+		{% if products %}
+		<h2>Product List</h2>
+		{% for product in products %}
+			<ul>
+				<li>{{ product.title }}</li>
+				<form method="post" action="/delete_item">
+            		<input type="hidden" name="item_id" value="{{ product.id }}">
+            		<button type="submit" class="btn btn-danger">Удалить</button>
+        		</form>	
+			</ul>
 		
+		{% endfor %}
+		{% else %}	
+			<h2>There are no products</h2>
+		{% endif %}	
+	</div>
 {% endblock %}

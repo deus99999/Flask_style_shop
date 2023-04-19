@@ -20,7 +20,7 @@
 		{% for category in categories %}
 			<ul>
 				<li>{{ category.title }}</li>
-				<form method="post" action="/delete_post">
+				<form method="post" action="/delete_category">
             		<input type="hidden" name="id" value="{{ category.id }}">
             		<button type="submit" class="btn btn-danger">Удалить</button>
         		</form>	
