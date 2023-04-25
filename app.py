@@ -1,7 +1,6 @@
-from flask import Flask, session, render_template, request, redirect
+from flask import Flask, session, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_basicauth import BasicAuth
-
 import os
 
 app = Flask(__name__)
@@ -20,11 +19,19 @@ app.config['BASIC_AUTH_PASSWORD'] = 'flaskadmin'
 basic_auth = BasicAuth()
 
 
+class Team(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), nullable=False)
+    surname = db.Column(db.String(50), nullable=False)
+    photo_path = db.Column(db.String(255), nullable=False)
+    position = db.Column(db.String(100), nullable=False)
+
+
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     image_path = db.Column(db.String(255), nullable=False)
-    products = db.relationship('Product', backref='category', lazy=True)
+    products = db.relationship('Product', backref='category', lazy='dynamic')
 
 
 class Product(db.Model):
@@ -34,7 +41,7 @@ class Product(db.Model):
     item_image_path = db.Column(db.String(255), nullable=False)
     price = db.Column(db.Float, nullable=False)
     in_stock = db.Column(db.String(100), default=True) # Boolean
-    category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)# primary_key=True, )
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)#, primary_key=True)
 
 # class User(db.Model):
 #     id = db.Column(db.Integer, primary_key=True)
@@ -47,6 +54,7 @@ class Product(db.Model):
 # admin = Admin(app, name='microblog', template_mode='bootstrap3')
 # admin.add_view(ModelView(Category, db.session))
 # admin.add_view(ModelView(Item, db.session))
+
 
 
 @app.route("/add_category", methods=['GET', 'POST'])
@@ -124,14 +132,18 @@ def product_detail(product_id):
 
 
 # Show all products of category in show.html
-@app.route('/<int:category_id>')
+@app.route('/categories/<int:category_id>/products')
 def show_products_of_category(category_id):
-    print(category_id)
-    products = Product.query.filter_by(category_id=category_id).all()
-    return render_template('shop.html', products=products)
-
-
-
+    category = Category.query.get_or_404(category_id)
+    products = category.products
+    for product in products:
+        print(product.item_image_path)
+        item_image_path = product.item_image_path
+        print(item_image_path)
+    return render_template('products_of_category.html',
+                           category=category,
+                           products=products,
+                           item_image_path=item_image_path)
 
 
 

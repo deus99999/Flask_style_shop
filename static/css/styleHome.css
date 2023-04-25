@@ -214,6 +214,7 @@ text-decoration: none;
 }
 
 footer {
+	
 	grid-column: 1 / -1;
 	height: 30vh;
 	background: black;
