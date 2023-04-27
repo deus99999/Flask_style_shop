@@ -2,29 +2,34 @@ from flask import Flask, session, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_basicauth import BasicAuth
 import os
+from flask_admin import Admin
+from flask_admin.contrib.sqla import ModelView
+from flask_migrate import Migrate
+from flask_wtf import FlaskForm
+from wtforms import StringField
+from wtforms.validators import DataRequired
+from flask_wtf.file import FileField, FileRequired
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.secret_key = "my_super_secret_key"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
 app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
-app.config['BASIC_AUTH_USERNAME'] = 'flaskadmin'
-app.config['BASIC_AUTH_PASSWORD'] = 'flaskadmin'
+# app.config['BASIC_AUTH_USERNAME'] = 'flaskadmin'
+# app.config['BASIC_AUTH_PASSWORD'] = 'flaskadmin'
 
 
-basic_auth = BasicAuth()
-
-
-class Team(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
-    surname = db.Column(db.String(50), nullable=False)
-    photo_path = db.Column(db.String(255), nullable=False)
-    position = db.Column(db.String(100), nullable=False)
+class Team(FlaskForm):
+    # id = db.Column(db.Integer, primary_key=True)
+    first_name = StringField('first_name', validators=[DataRequired()])
+    surname = StringField('surname', validators=[DataRequired()])
+    photo = FileField(validators=[FileRequired()])
+    position = StringField('surname', validators=[DataRequired()])
 
 
 class Category(db.Model):
@@ -50,11 +55,10 @@ class Product(db.Model):
 #     phone_number = db.Column(db.Integer, nullable=False)
 
 
-
-# admin = Admin(app, name='microblog', template_mode='bootstrap3')
-# admin.add_view(ModelView(Category, db.session))
-# admin.add_view(ModelView(Item, db.session))
-
+admin = Admin(app, name='admin', template_mode='bootstrap3')
+admin.add_view(ModelView(Category, db.session))
+admin.add_view(ModelView(Product, db.session))
+admin.add_view(ModelView(Team, db.session))
 
 
 @app.route("/add_category", methods=['GET', 'POST'])
@@ -101,12 +105,6 @@ def delete_item():
         db.session.delete(item_to_delete)
         db.session.commit()
         return redirect('/add_items')
-
-
-@app.route('/admin')
-@basic_auth.required
-def secret_view():
-    return render_template('admin.html')
 
 
 # Show all categories in home.html
@@ -268,5 +266,6 @@ def clear():
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
+        # db.session.query(Team).delete()
 
     app.run(debug=True)
