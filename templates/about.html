@@ -18,52 +18,14 @@
 		</section>
 
 		<div class="tiles_team">
-
+			{% for team_member in team %}
 			<div class="item">
-				<img class="item_img" src="images/team/1.jpg">
+				<img class="item_img" src="{{ team_member.photo }}" alt="{{ team_member.photo }}">
 				<div class="item_info">
-					<p class="team_name"><strong>Allen Black</strong></p>
-					<p class="position">Position</p>
+					<p class="team_name"><strong>{{ team_member.first_name }} {{ team_member.surname}}</strong></p>
+					<p class="position">{{ team_member.position}} </p>
 				</div>
 			</div>	
-
-			<div class="item">
-				<img class="item_img" src="images/team/2.jpg">
-					<p>Vlinton Howard</p>
-				</div>
-			
-
-			<div class="item">
-				<img class="item_img" src="images/team/3.jpg">
-					<p>Eltan Shepherd</p>
-			</div>
-
-			<div class="item">
-				<img class="item_img" src="images/team/4.jpg">
-					<p>Jane Holt</p>
-			</div>
-
-			<div class="item">
-				<img class="item_img" src="images/team/5.jpg">
-					<p>Grace Dalton</p>
-			</div>
-			
-			<div class="item">
-				<img class="item_img" src="images/team/6.jpg">
-					<p>Pants</p>
-			</div>
-
-			<div class="item">
-				<img class="item_img" src="images/team/7.jpg">
-					<p>Peter Ryan</p>
-			</div>
-
-			<div class="item">
-				<img class="item_img" src="images/team/8.jpg">
-				<div class="item_info">
-					<p class="team_name"><strong>Peter Ryan</strong></p>
-					<p class="position">Position</p>
-				</div>
-			</div>
+			{% endfor %}
 		</div>
 {% endblock %}

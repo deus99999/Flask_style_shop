@@ -6,10 +6,9 @@ from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 from flask_migrate import Migrate
 from flask_wtf import FlaskForm
-from wtforms import StringField
-from wtforms.validators import DataRequired
-from flask_wtf.file import FileField, FileRequired
-from werkzeug.utils import secure_filename
+from wtforms import StringField, SubmitField, TelField
+from wtforms.validators import DataRequired, Email
+from flask_wtf.file import FileField, FileRequired, FileAllowed
 
 app = Flask(__name__)
 app.secret_key = "my_super_secret_key"
@@ -24,12 +23,48 @@ app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
 # app.config['BASIC_AUTH_PASSWORD'] = 'flaskadmin'
 
 
-class Team(FlaskForm):
-    # id = db.Column(db.Integer, primary_key=True)
-    first_name = StringField('first_name', validators=[DataRequired()])
-    surname = StringField('surname', validators=[DataRequired()])
-    photo = FileField(validators=[FileRequired()])
-    position = StringField('surname', validators=[DataRequired()])
+class Team(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String(100), nullable=False)
+    surname = db.Column(db.String(100), nullable=False)
+    position = db.Column(db.String(100), nullable=False)
+    photo = db.Column(db.String(100), nullable=False)
+
+
+class TeamForm(FlaskForm):
+    first_name = StringField("Name: ", validators=[DataRequired()])
+    surname = StringField("Surname: ", validators=[DataRequired()])
+    position = StringField("Position: ", validators=[DataRequired()])
+    photo = FileField('Photo: ', validators=[DataRequired(), FileAllowed(['jpg', 'png', 'jpeg'])])
+
+
+@app.route('/team_form', methods=['GET', 'POST'])
+def team_form_submit():
+    form = TeamForm()
+    if form.validate_on_submit():
+        first_name = form.first_name.data
+        surname = form.surname.data
+        position = form.position.data
+        photo = form.photo.data
+        # photo_filename = secure_filename(photo.filename)
+        photo_path = f'/static/images/team/' + photo.filename
+        print(photo.filename)
+        print(photo_path)
+        photo.save(photo_path)
+
+        team = Team(first_name=first_name, surname=surname, position=position, photo=photo_path)
+        try:
+            db.session.add(team)
+            db.session.commit()
+            return redirect("/team_form")
+        except:
+            return "Ошибка. Возможно не создана база данных"
+        return redirect(url_for('home'))
+
+
+
+        #return redirect(url_for('team_form_submit'))
+    return render_template('team_form.html', form=form)
 
 
 class Category(db.Model):
@@ -134,22 +169,15 @@ def product_detail(product_id):
 def show_products_of_category(category_id):
     category = Category.query.get_or_404(category_id)
     products = category.products
-    for product in products:
-        print(product.item_image_path)
-        item_image_path = product.item_image_path
-        print(item_image_path)
-    return render_template('products_of_category.html',
-                           category=category,
-                           products=products,
-                           item_image_path=item_image_path)
-
+    return render_template('products_of_category.html', category=category, products=products)
 
 
 
 
 @app.route("/about")
 def about():
-    return render_template("/about.html")
+    team = Team.query.all()
+    return render_template("/about.html", team=team)
 
 
 @app.route("/contacts", methods=["POST", "GET"])
@@ -266,6 +294,5 @@ def clear():
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-        # db.session.query(Team).delete()
 
     app.run(debug=True)

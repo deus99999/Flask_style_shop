@@ -10,7 +10,7 @@ body {
 }
 
 header {
-	height: 60vh;
+	height: 50vh;
 
 	border: 1px solid black;
 	background-image: url(../images/bg/header_back.jpg);
@@ -23,7 +23,7 @@ header {
 }
 
 .grid_menu {
-	height: 100px;
+	height: 70px;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
@@ -45,7 +45,7 @@ header {
 }
 
 .grid_menu img {
-	height: 70%;
+	height: 50%;
 }
 
 .menu {
@@ -58,7 +58,7 @@ header {
 .menu a {
 	text-decoration: none;
 	color: white;
-	font-size: 1.5em;
+	font-size: 1.2em;
 	margin-left: 30px;
 
 }
@@ -143,12 +143,12 @@ text-decoration: none;
 }
 
 .banner h1 {
-	font-size: 2em;
+	font-size: 1.7em;
 }
 
 .banner p {
-	font-size: 23px;
-	padding: 40px 0px;
+	font-size: 20px;
+	padding: 8px 0px;
 	text-align: center;
 }
 
