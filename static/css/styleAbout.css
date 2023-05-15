@@ -120,7 +120,7 @@ header {
 .tiles_team img {
 	
 	width: 80%;
-	height: 80%;
+	height: 65%;
 	object-fit: cover;
 
 }

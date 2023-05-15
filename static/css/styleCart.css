@@ -115,7 +115,7 @@
 .delete_from_cart {
 	display: flex;
 	align-items: center;
-	
+	cursor: default;
 	color: #6A6A6A;
 }
 

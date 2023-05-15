@@ -9,6 +9,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, TelField
 from wtforms.validators import DataRequired, Email
 from flask_wtf.file import FileField, FileRequired, FileAllowed
+import datetime
 
 app = Flask(__name__)
 app.secret_key = "my_super_secret_key"
@@ -19,12 +20,15 @@ migrate = Migrate(app, db)
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
-# app.config['BASIC_AUTH_USERNAME'] = 'flaskadmin'
-# app.config['BASIC_AUTH_PASSWORD'] = 'flaskadmin'
+#app.config['BASIC_AUTH_USERNAME'] = 'flaskadmin'
+#app.config['BASIC_AUTH_PASSWORD'] = 'flaskadmin'
+
+app.permanent_session_lifetime = datetime.timedelta(days=365)
 
 class Favorite(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     favorite_item = db.Column(db.String(100), nullable=False)
+
 
 class Team(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -54,7 +58,6 @@ def team_form_submit():
         print(photo.filename)
         print(photo_path)
         photo.save(photo_path)
-
         team = Team(first_name=first_name, surname=surname, position=position, photo=photo_path)
         try:
             db.session.add(team)
@@ -63,12 +66,8 @@ def team_form_submit():
         except:
             return "Ошибка. Возможно не создана база данных"
         return redirect(url_for('home'))
-
-
-
         #return redirect(url_for('team_form_submit'))
     team = Team.query.all()
-
     return render_template('team_form.html', form=form, team=team)
 
 
@@ -133,6 +132,7 @@ def delete_category():
         db.session.commit()
         return redirect('/edit_category')
 
+
 @app.route('/team_form', methods=['POST'])
 def delete_team_member():
     if request.method == 'POST':
@@ -142,6 +142,7 @@ def delete_team_member():
         db.session.delete(member_to_delete)
         db.session.commit()
         return redirect('/team_form')
+
 
 @app.route('/delete_item', methods=['POST'])
 def delete_item():
@@ -177,8 +178,6 @@ def shop():
 
 @app.route("/<int:product_id>")
 def product_detail(product_id):
-    # product = Product.query.filter_by(id=product_id)
-   # product = Product.query.get(id=product_id)
     product = Product.query.filter_by(id=product_id).first()
     return render_template("/product_detail.html", product=product)
 
@@ -189,8 +188,6 @@ def show_products_of_category(category_id):
     category = Category.query.get_or_404(category_id)
     products = category.products
     return render_template('products_of_category.html', category=category, products=products)
-
-
 
 
 @app.route("/about")
@@ -223,9 +220,6 @@ def add_items():
         category_id = request.form['category']
         title = request.form['title']
         description = request.form['description']
-        # print(category_id)
-        # print(title)
-        # print(description)
 
         if Category:
             category = Category.query.get(category_id)
@@ -264,7 +258,7 @@ def add_items():
 @app.route('/add_to_cart/<int:product_id>')
 def add_to_cart(product_id):
     products = Product.query.filter_by(id=product_id).all()
-    session.permanent = False
+    session.permanent = True
     for product in products:
         if 'cart' not in session:
             session['cart'] = {}
@@ -285,37 +279,48 @@ def add_to_cart(product_id):
 
 @app.route('/cart/<int:product_id>')
 def delete_from_cart(product_id):
-    # product = Product.query.filter_by(id=product_id).all()
     cart_items = session.get('cart')
-    # print(product)
-    print(product_id)
-
-    print(cart_items)
     cart_items.pop(str(product_id))
-    print(cart_items)
     session.modified = True
     return redirect(request.referrer)
 
 
+
 @app.route('/cart')
 def cart():
+    all_products = Product.query.all()
+    existing_titles = [one_product.title for one_product in all_products]  # titles of products that are in db
+
     cart_items = session.get('cart')
     total_cost = 0
     products = []
     if cart_items:
         for product_id, item in cart_items.items():
-            products.append({
+            product_dict = {
                 'product_id': product_id,
                 'title': item['title'],
                 'price_for_one': item['price_for_one'],
                 'price': item['price'],
                 'quantity': item['quantity'],
                 'item_image_path': item['img_path'],
-                })
+                }
+
+            products.append(product_dict)
             total_cost += item['price']
+
+        # remove product from cart if product not in db
+        for product_identity in cart_items.copy():
+            product_dict = (cart_items[product_identity])
+            product_title = (product_dict['title'])
+            if product_title not in existing_titles:
+                cart_items.pop(product_identity)
+        session.modified = True
+
         return render_template('cart.html', products=products, total_cost=total_cost)
     else:
         return render_template('/cart.html')
+
+
 
 
 @app.route("/cl")

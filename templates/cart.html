@@ -12,13 +12,14 @@
 			
 			<div class="titles">
 			{% for product in products %}
+			
 				<div class="purchase">
 					<a href="{{ url_for('product_detail', product_id=product['product_id']) }}">
 						<img class="purchase_image" src="{{ product.item_image_path }}">
 					</a>
 					<div class="purchase_info">
 						<a href="{{ url_for('product_detail', product_id=product['product_id']) }}">
-							<p><strong>{{ product.title|truncate(20) }}</strong></p>
+							<p><strong>{{ product.title|truncate(15) }}</strong></p>
 						</a>
 						<p>Price: {{ product.price_for_one }}</p>
 						<form>
