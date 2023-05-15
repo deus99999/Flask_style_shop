@@ -18,6 +18,7 @@
 	width: 140px;
 	border-radius: 4% 0 0 4%;
 	padding: 10px;
+	object-fit: cover;
 }
 
 .purchase_info {
@@ -60,7 +61,7 @@
 
 .amount_of_purchases  {
 	grid-column: 2 / -2;
-	padding-bottom: 50px;
+	padding: 50px 0;
 	border-bottom: 2px solid #D3D3D3;
 	display: flex;
 	justify-content: space-around;
@@ -111,6 +112,18 @@
 }
 
 
+.delete_from_cart {
+	display: flex;
+	align-items: center;
+	
+	color: #6A6A6A;
+}
+
+.delete_from_cart svg:hover {
+	color: #D95E55;
+	transition: 0.1s;
+	cursor: pointer;
+}
 
 @media (max-width: 1200px) {
 	header {

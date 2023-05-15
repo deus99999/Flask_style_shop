@@ -22,6 +22,9 @@ app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
 # app.config['BASIC_AUTH_USERNAME'] = 'flaskadmin'
 # app.config['BASIC_AUTH_PASSWORD'] = 'flaskadmin'
 
+class Favorite(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    favorite_item = db.Column(db.String(100), nullable=False)
 
 class Team(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -47,7 +50,7 @@ def team_form_submit():
         position = form.position.data
         photo = form.photo.data
         # photo_filename = secure_filename(photo.filename)
-        photo_path = f'/static/images/team/' + photo.filename
+        photo_path = f'static/images/team/' + photo.filename
         print(photo.filename)
         print(photo_path)
         photo.save(photo_path)
@@ -64,7 +67,9 @@ def team_form_submit():
 
 
         #return redirect(url_for('team_form_submit'))
-    return render_template('team_form.html', form=form)
+    team = Team.query.all()
+
+    return render_template('team_form.html', form=form, team=team)
 
 
 class Category(db.Model):
@@ -128,6 +133,15 @@ def delete_category():
         db.session.commit()
         return redirect('/edit_category')
 
+@app.route('/team_form', methods=['POST'])
+def delete_team_member():
+    if request.method == 'POST':
+        team_member_id = request.form['id']
+        member_to_delete = Category.query.get(team_member_id)
+        Product.query.filter_by(member_id=member_to_delete.id).delete()
+        db.session.delete(member_to_delete)
+        db.session.commit()
+        return redirect('/team_form')
 
 @app.route('/delete_item', methods=['POST'])
 def delete_item():
@@ -147,6 +161,11 @@ def delete_item():
 def home():
     categories = Category.query.order_by(Category.id).all()
     return render_template("/home.html", categories=categories)
+
+
+@app.route("/my_account")
+def my_account():
+    return render_template("/my_account_form.html")
 
 
 # Show all products in show.html
@@ -261,6 +280,20 @@ def add_to_cart(product_id):
             session['cart'][str(product_id)]['price'] += float(product.price)
             session['cart'][str(product_id)]['quantity'] += 1
             session.modified = True
+    return redirect(request.referrer)
+
+
+@app.route('/cart/<int:product_id>')
+def delete_from_cart(product_id):
+    # product = Product.query.filter_by(id=product_id).all()
+    cart_items = session.get('cart')
+    # print(product)
+    print(product_id)
+
+    print(cart_items)
+    cart_items.pop(str(product_id))
+    print(cart_items)
+    session.modified = True
     return redirect(request.referrer)
 
 
