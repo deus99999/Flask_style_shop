@@ -1,4 +1,4 @@
-from flask import Flask, session, render_template, request, redirect, url_for
+from flask import Flask, flash, session, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_basicauth import BasicAuth
 import os
@@ -173,6 +173,7 @@ def my_account():
 @app.route("/shop")
 def shop():
     products = Product.query.all()
+
     return render_template("shop.html", products=products)
 
 
@@ -241,6 +242,7 @@ def add_items():
         try:
             db.session.add(product)
             db.session.commit()
+
             return redirect('/add_items')
         except:
             return "Неверные данные или не заполнены все поля"
@@ -274,6 +276,7 @@ def add_to_cart(product_id):
             session['cart'][str(product_id)]['price'] += float(product.price)
             session['cart'][str(product_id)]['quantity'] += 1
             session.modified = True
+            flash('Product was added to cart!')
     return redirect(request.referrer)
 
 
@@ -283,7 +286,6 @@ def delete_from_cart(product_id):
     cart_items.pop(str(product_id))
     session.modified = True
     return redirect(request.referrer)
-
 
 
 @app.route('/cart')

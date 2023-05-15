@@ -6,10 +6,21 @@
 {% endblock %}
 
 {% block content %}
+		{% for msg in get_flashed_messages() %}
+		<div class="wrapped_flash">
+			<div class="flash">
+				<p>{{ msg }}</p>
+			</div>
+		</div>
+		{% endfor %}
+		
 	{% if products %}	
 		<section class="clothes">
 			<h1>Clothes</h1>
 		</section>
+
+		
+
 		<div class="titles">
 			{% for product in products %}
 			<a href="{{ url_for('product_detail', product_id=product.id) }}">
