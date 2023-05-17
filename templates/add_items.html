@@ -7,9 +7,9 @@
 {% endblock %}
 
 {% block content %}
-
+	<div class=form_div>
 		<form method="post" id="request" enctype="multipart/form-data">
-			<h2>Add item</h2>
+			<h3>Add item</h3>
 			<label>
 				Choose category:
 				<select name="category">
@@ -26,23 +26,24 @@
 			<input type="file" name="item_image1" id="item_image1">
 			<input type="file" name="item_image2" id="item_image2">
 			<input type="file" name="item_image3" id="item_image3">
-
 		    <input type="number" placeholder="price" id="price" name="price">
 
-		    	<h4>Is this in stock:</h4>
-				<label>
-					<input type="radio" name="is_in_stock" value="True">
-					True
-				</label>
-    			<label>		
-    				<input type="radio" name="is_in_stock" value="False"> 
+		    <h4>Is this in stock:</h4>
+			<label>
+				<input type="radio" name="is_in_stock" value="True">
+						True
+			</label>
+   
+   			<label>		
+   				<input type="radio" name="is_in_stock" value="False"> 
 					False
-				</label>
-			
+			</label>			
 			<input type="submit" value="Add clothes" id="submit">
 		</form>
+	</div>
 		
-		<div class="products">
+		
+	<div class="products">
 		{% if products %}
 		<h2>Product List</h2>
 		{% for product in products %}
@@ -59,10 +60,13 @@
         			</form>	
 				</div>
 			</ul>
-		
 		{% endfor %}
 		{% else %}	
 			<h2>There are no products</h2>
 		{% endif %}	
+	</div>
+
+	<div class="button_back">
+		<a href="{{ url_for('admin_page') }}">To Back</a>
 	</div>
 {% endblock %}

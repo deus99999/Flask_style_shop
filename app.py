@@ -23,7 +23,7 @@ app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
 #app.config['BASIC_AUTH_USERNAME'] = 'flaskadmin'
 # app.config['BASIC_AUTH_PASSWORD'] = 'flaskadmin'
 
-app.permanent_session_lifetime = datetime.timedelta(days=365)
+app.permanent_session_lifetime = datetime.timedelta(days=1)
 
 
 class Favorite(db.Model):
@@ -152,19 +152,6 @@ def delete_team_member():
         return redirect('/team_form')
 
 
-@app.route('/delete_item', methods=['POST'])
-def delete_item():
-    if request.method == 'POST':
-        item_id = request.form['item_id']
-        # print(item_id)
-        item_to_delete = Product.query.get(item_id)
-        # print(item_to_delete)
-        Product.query.filter_by(id=item_id).delete()
-        db.session.delete(item_to_delete)
-        db.session.commit()
-        return redirect('/add_items')
-
-
 # Show all categories in home.html
 @app.route("/")
 def home():
@@ -181,7 +168,6 @@ def my_account():
 @app.route("/shop")
 def shop():
     products = Product.query.all()
-
     return render_template("shop.html", products=products)
 
 
@@ -232,6 +218,8 @@ def add_items():
 
         if Category:
             category = Category.query.get(category_id)
+
+            # creating path for saving images
             if not os.path.exists(f"static/images/{category.title}"):
                 os.makedirs(f"static/images/{category.title}")
 
@@ -247,7 +235,7 @@ def add_items():
             item_image_path3 = f'static/images/{category.title}/' + item_image3.filename
             item_image3.save(item_image_path3)
         else:
-            return "Создайте категорию!"
+            return "You should create category!"
         price = request.form['price']
         in_stock = request.form['is_in_stock']
         product = Product(category_id=category_id, title=title,
@@ -272,6 +260,26 @@ def add_items():
         return render_template("/add_items.html", categories=categories, products=products)
 
     return render_template("/add_items.html")
+
+
+@app.route('/delete_item', methods=['POST'])
+def delete_item():
+    if request.method == 'POST':
+        item_id = request.form['item_id']
+        # print(item_id)
+        item_to_delete = Product.query.get(item_id)
+
+        try:
+            os.remove(item_to_delete.item_image1)
+            os.remove(item_to_delete.item_image2)
+            os.remove(item_to_delete.item_image3)
+        except FileNotFoundError:
+            print("There are no image with this name for removing")
+
+        Product.query.filter_by(id=item_id).delete()
+        db.session.delete(item_to_delete)
+        db.session.commit()
+        return redirect('/add_items')
 
 
 # Код для добавления товара в корзину
@@ -339,8 +347,6 @@ def cart():
         return render_template('cart.html', products=products, total_cost=total_cost)
     else:
         return render_template('/cart.html')
-
-
 
 
 @app.route("/cl")

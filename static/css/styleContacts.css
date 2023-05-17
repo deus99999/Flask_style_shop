@@ -224,6 +224,8 @@ iframe {
 
 }
 
+
+
 footer {
 	grid-column: 1 / -1;
 	height: 30vh;
@@ -272,6 +274,15 @@ footer i {
 	select {
 		margin-left: 10px;
 		margin-right: 10px;
+	}
+
+}
+
+
+@media (max-width: 700px) {
+	.main_grid {
+		grid-template-columns: 1fr;
+
 	}
 
 }
