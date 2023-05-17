@@ -21,9 +21,10 @@ migrate = Migrate(app, db)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
 #app.config['BASIC_AUTH_USERNAME'] = 'flaskadmin'
-#app.config['BASIC_AUTH_PASSWORD'] = 'flaskadmin'
+# app.config['BASIC_AUTH_PASSWORD'] = 'flaskadmin'
 
 app.permanent_session_lifetime = datetime.timedelta(days=365)
+
 
 class Favorite(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -82,7 +83,9 @@ class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(2000), nullable=False)
-    item_image_path = db.Column(db.String(255), nullable=False)
+    item_image1 = db.Column(db.String(255), nullable=False)
+    item_image2 = db.Column(db.String(255), nullable=False)
+    item_image3 = db.Column(db.String(255), nullable=False)
     price = db.Column(db.Float, nullable=False)
     in_stock = db.Column(db.String(100), default=True) # Boolean
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)#, primary_key=True)
@@ -94,10 +97,15 @@ class Product(db.Model):
 #     phone_number = db.Column(db.Integer, nullable=False)
 
 
-admin = Admin(app, name='admin', template_mode='bootstrap3')
-admin.add_view(ModelView(Category, db.session))
-admin.add_view(ModelView(Product, db.session))
-admin.add_view(ModelView(Team, db.session))
+# admin = Admin(app, name='admin', template_mode='bootstrap3')
+# admin.add_view(ModelView(Category, db.session))
+# admin.add_view(ModelView(Product, db.session))
+# admin.add_view(ModelView(Team, db.session))
+
+
+@app.route("/admin_page")
+def admin_page():
+    return render_template("/admin/admin_page.html")
 
 
 @app.route("/add_category", methods=['GET', 'POST'])
@@ -227,16 +235,26 @@ def add_items():
             if not os.path.exists(f"static/images/{category.title}"):
                 os.makedirs(f"static/images/{category.title}")
 
-            item_image = request.files['item_image']
-            item_image_path = f'static/images/{category.title}/' + item_image.filename
-            item_image.save(item_image_path)
+            item_image1 = request.files['item_image1']
+            item_image_path1 = f'static/images/{category.title}/' + item_image1.filename
+            item_image1.save(item_image_path1)
+
+            item_image2 = request.files['item_image2']
+            item_image_path2 = f'static/images/{category.title}/' + item_image2.filename
+            item_image2.save(item_image_path2)
+
+            item_image3 = request.files['item_image3']
+            item_image_path3 = f'static/images/{category.title}/' + item_image3.filename
+            item_image3.save(item_image_path3)
         else:
             return "Создайте категорию!"
         price = request.form['price']
         in_stock = request.form['is_in_stock']
         product = Product(category_id=category_id, title=title,
                           description=description,
-                          item_image_path=item_image_path,
+                          item_image1=item_image_path1,
+                          item_image2=item_image_path2,
+                          item_image3=item_image_path3,
                           price=price, in_stock=in_stock)
 
         try:
@@ -270,7 +288,7 @@ def add_to_cart(product_id):
                 'price_for_one': float(product.price),
                 'price': float(product.price),
                 'quantity': 1,
-                'img_path': product.item_image_path,
+                'img_path': product.item_image1,
             }
         else:
             session['cart'][str(product_id)]['price'] += float(product.price)

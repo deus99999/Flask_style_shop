@@ -36,7 +36,7 @@
 
 .product_detail .small_images img:hover {
     border: 2px solid black;
-    cursor: pointer;
+/*    cursor: pointer;*/
 
 }
 
@@ -163,8 +163,8 @@ button:hover {
     background: #C1FFDC;
     border: 2px solid #5FF978;
     border-radius: 10px;
-    width: 50%;
-    height: 60px;
+    width: 53%;
+    height: 62px;
     display: flex;
     justify-content: center;
     align-items: center;
