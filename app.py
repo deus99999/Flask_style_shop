@@ -1,15 +1,15 @@
 from flask import Flask, flash, session, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-from flask_basicauth import BasicAuth
 import os
-from flask_admin import Admin
-from flask_admin.contrib.sqla import ModelView
 from flask_migrate import Migrate
-from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, TelField
-from wtforms.validators import DataRequired, Email
-from flask_wtf.file import FileField, FileRequired, FileAllowed
 import datetime
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin
+# import login_manager
+from flask_login import LoginManager, login_required, logout_user
+# from flask_login import LoginForm
+login_manager = LoginManager()
+from my_app.auth.forms import TeamForm, LoginForm
 
 app = Flask(__name__)
 app.secret_key = "my_super_secret_key"
@@ -17,13 +17,18 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
-
+login_manager.init_app(app)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
-#app.config['BASIC_AUTH_USERNAME'] = 'flaskadmin'
-# app.config['BASIC_AUTH_PASSWORD'] = 'flaskadmin'
+#my_app.config['BASIC_AUTH_USERNAME'] = 'flaskadmin'
+# my_app.config['BASIC_AUTH_PASSWORD'] = 'flaskadmin'
 
 app.permanent_session_lifetime = datetime.timedelta(days=1)
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 
 class Favorite(db.Model):
@@ -39,11 +44,49 @@ class Team(db.Model):
     photo = db.Column(db.String(100), nullable=False)
 
 
-class TeamForm(FlaskForm):
-    first_name = StringField("Name: ", validators=[DataRequired()])
-    surname = StringField("Surname: ", validators=[DataRequired()])
-    position = StringField("Position: ", validators=[DataRequired()])
-    photo = FileField('Photo: ', validators=[DataRequired(), FileAllowed(['jpg', 'png', 'jpeg'])])
+class Category(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    image_path = db.Column(db.String(255), nullable=False)
+    products = db.relationship('Product', backref='category', lazy='dynamic')
+
+
+class Product(db.Model):
+    user_id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.String(2000), nullable=False)
+    item_image1 = db.Column(db.String(255), nullable=False)
+    item_image2 = db.Column(db.String(255), nullable=False)
+    item_image3 = db.Column(db.String(255), nullable=False)
+    price = db.Column(db.Float, nullable=False)
+    in_stock = db.Column(db.String(100), default=True) # Boolean
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)#, primary_key=True)
+
+
+class User(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), unique=True, nullable=False)
+    email = db.Column(db.String(50), nullable=False)
+    phone_number = db.Column(db.Integer, nullable=False)
+    password_hash = db.Column(db.String(128))
+
+    @property
+    def password(self):
+        raise AttributeError('password is not a readable attribute')
+
+    @password.setter
+    def password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def verify_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
+
+# class TeamForm(FlaskForm):
+#     first_name = StringField("Name: ", validators=[DataRequired()])
+#     surname = StringField("Surname: ", validators=[DataRequired()])
+#     position = StringField("Position: ", validators=[DataRequired()])
+#     photo = FileField('Photo: ', validators=[DataRequired(), FileAllowed(['jpg', 'png', 'jpeg'])])
 
 
 @app.route('/team_form', methods=['GET', 'POST'])
@@ -67,37 +110,11 @@ def team_form_submit():
         except:
             return "Ошибка. Возможно не создана база данных"
         return redirect(url_for('home'))
-        #return redirect(url_for('team_form_submit'))
     team = Team.query.all()
     return render_template('team_form.html', form=form, team=team)
 
 
-class Category(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
-    image_path = db.Column(db.String(255), nullable=False)
-    products = db.relationship('Product', backref='category', lazy='dynamic')
-
-
-class Product(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
-    description = db.Column(db.String(2000), nullable=False)
-    item_image1 = db.Column(db.String(255), nullable=False)
-    item_image2 = db.Column(db.String(255), nullable=False)
-    item_image3 = db.Column(db.String(255), nullable=False)
-    price = db.Column(db.Float, nullable=False)
-    in_stock = db.Column(db.String(100), default=True) # Boolean
-    category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)#, primary_key=True)
-
-# class User(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     name = db.Column(db.String(50), nullable=False)
-#     email = db.Column(db.String(50), nullable=False)
-#     phone_number = db.Column(db.Integer, nullable=False)
-
-
-# admin = Admin(app, name='admin', template_mode='bootstrap3')
+# admin = Admin(my_app, name='admin', template_mode='bootstrap3')
 # admin.add_view(ModelView(Category, db.session))
 # admin.add_view(ModelView(Product, db.session))
 # admin.add_view(ModelView(Team, db.session))
@@ -159,9 +176,26 @@ def home():
     return render_template("/home.html", categories=categories)
 
 
-@app.route("/my_account")
-def my_account():
-    return render_template("/my_account_form.html")
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user is not None and user.verify_password(form.password.data):
+            load_user(user, form.remember_me.data)
+            return redirect(request.args.get('next') or url_for('home'))
+
+        flash('Invalid username or password.')
+
+    return render_template('/login.html', form=form)
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('You have been logged out.')
+    return redirect(url_for('login'))
 
 
 # Show all products in show.html
