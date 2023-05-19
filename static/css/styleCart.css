@@ -125,8 +125,158 @@
 	cursor: pointer;
 }
 
+body {
+	font-size: 1em;
+	font-family: sans-serif;
+	margin: 0;
+}
+
+.main_grid {
+	display: grid;
+	grid-template-columns: 1fr repeat(2, minmax(auto, 25em)) 1fr;
+}
+
+header {
+	height: 50vh;
+
+	border: 1px solid black;
+	background-image: url(../images/bg/shop_header_back.jpg);
+	box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.5);
+	background-size: cover;
+	background-repeat: no-repeat;
+	color: white;
+	grid-column: 1 / -1;
+}
+
+.grid_menu {
+	height: 70px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	padding: 20px 10px;
+
+	box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.2);
+
+	position: sticky;
+	top: 0;
+}
+
+
+.grid_menu img {
+	height: 70%;
+}
+
+.menu {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+.menu a {
+	text-decoration: none;
+	color: white;
+	font-size: 1.2em;
+	margin-left: 30px;
+
+}
+
+.menu a:hover {
+	color: orange;
+	cursor: pointer;
+}
+
+
+.right {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+
+}
+
+.banner {
+	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.banner h1 {
+	font-size: 1.8em;
+}
+
+.banner p {
+	font-size: 20px;
+	padding: 8px 0px;
+	text-align: center;
+}
+
+
+.clothes {
+	grid-column: 1 / -1;
+	text-align: center;
+	align-items: center;
+	padding-top: 60px;
+	padding-bottom: 60px;
+}
+
+.titles {
+	grid-column: 2 / -2;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	grid-gap: 20px;
+	margin-bottom: 100px;
+}
+
+.titles a {
+	text-decoration: none;
+}
+
+.titles a:visited {
+	color: black;
+}
+
+
 @media (max-width: 1200px) {
 	header {
 		height: 35vh;
 	}
 }
+
+@media (max-width: 600px) {
+	.purchase_price {
+		grid-column: 1 / -1;
+	}
+
+	.titles {
+    	grid-column: 1 / -1;
+	}
+
+	.delete_from_cart {
+		width: auto;
+	}
+
+	.purchase_price {
+	    padding-top: 5px;
+    	height: auto;
+    	grid-column: 1 / -1;
+    	padding-right: 10px;
+	}
+
+	.amount_of_purchases {
+    	grid-column: 1 / -1;
+    	padding: 10px 0;
+	}
+
+	.titles {
+	    grid-column: 1 / -1;    
+    	margin-bottom: 20px; 
+	}
+
+	.clothes {
+		padding-top: 10px;
+    	padding-bottom: 10px;
+	}
+}
+

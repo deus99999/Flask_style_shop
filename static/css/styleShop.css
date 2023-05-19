@@ -214,28 +214,7 @@ header {
     font-size: 20px;
 }
 
-footer {
-	grid-column: 1 / -1;
-	height: 30vh;
-	background: black;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	color: white;
-}
 
-footer .social {
-	width: 130px;
-	display: flex;
-	flex-direction: row;
-	justify-content: space-around;
-}
-
-
-footer i {
-	color: white;
-}
 
 
 @media (max-width: 1200px) {
@@ -258,7 +237,7 @@ footer i {
     	grid-template-columns: 1fr 1fr;
     }
 
-@media (max-width: 500px) {
+/*@media (max-width: 600px) {
 	.titles {
     	grid-template-columns: 1fr;
-    }
+    }*/
