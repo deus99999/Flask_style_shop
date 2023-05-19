@@ -237,7 +237,12 @@ header {
     	grid-template-columns: 1fr 1fr;
     }
 
-/*@media (max-width: 600px) {
+@media (max-width: 600px) {
 	.titles {
     	grid-template-columns: 1fr;
-    }*/
+    }
+
+    .titles .item:hover {
+  		transform: scale(1);
+  	}	
+}

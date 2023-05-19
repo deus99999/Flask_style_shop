@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Товары{% endblock %}
+
+{% block style %}
+	<link rel="stylesheet" type="text/css" href="{{ url_for( 'static', filename='/css/styleShop.css', v=1)}}">
+{% endblock %}
+
+{% block content %}
+	{% if products %}	
+		<section class="clothes">
+			<h1>{{ category.title }}</h1>
+		</section>
+		<div class="titles">
+			{% for product in products %}
+			<a href="{{ url_for('product_detail', product_id=product.id) }}">
+			<div class="item">
+				<div class="overlay">
+					<img class="item_img" src="/{{ product.item_image1 }}" alt="{{ product.item_image1 }}">
+					
+
+					</div>
+						<div class="item_info">
+							<p><strong>{{ product.title|truncate(25) }}</strong></p>
+							<p>{{ product.price }} $</p>
+						</div>
+        			<form action="{{ url_for('add_to_cart', product_id=product.id) }}" method="GET" enctype="multipart/form-data">
+						<button type="submit">Add to card</button>
+					</form>					
+				</div>
+			</a>
+			{% endfor %}
+		</div>
+		{% else %}
+		<section class="clothes">
+			<h1>There are no products in this category</h1>
+		</section>
+		{% endif %}
+{% endblock %}

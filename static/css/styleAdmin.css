@@ -86,12 +86,12 @@ header {
 	text-align: center;
 }
 
-.description {
+/*.description {
 	grid-column: 1 / -1;
 	text-align: center;
 	align-items: center;
-	padding-top: 80px;
-	padding-bottom: 80px;
+	padding-top: 100px;
+	padding-bottom: 100px;
 }
 
 .contentInfo {
@@ -102,9 +102,9 @@ header {
 	flex-direction: column;
 	align-items: center;
     padding-bottom: 100px;
-}
+}*/
 
-.tiles_team {
+/*.tiles_team {
 	grid-column: 1 / -1;
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -122,6 +122,74 @@ header {
 	width: 80%;
 	height: 65%;
 	object-fit: cover;
+*/
+}
+
+.button_back {
+	width: 100%;
+	grid-template-columns: 1 / -1;
+	height: 50px;
+}
+
+.button_back a {
+	color: black;
+	background: #E4E1E1;
+	border: 2px solid black;
+	margin-left: 30px;
+	padding: 3%;
+	border-radius: 10px;
+	text-decoration: none;
+}
+
+footer {
+	grid-column: 1 / -1;
+	height: 30vh;
+	background: black;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	color: white;
+}
+
+footer .social {
+	width: 130px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+}
+
+
+footer i {
+	color: white;
+}
+
+.welcome {
+	
+	grid-column: 1 / 3;
+	text-align: center;
+	align-items: center;
+	padding: 20px;
+
+}
+
+.edits {
+	grid-column: 1 / -1;
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
+}
+
+.edits a {
+	text-decoration: none;
+	padding: 2%;
+	color: black;
+}
+
+.edits a:hover {
+	cursor: pointer;
+	background: rgba(0, 0, 0, 0.1);
+	border-radius: 10px;
 
 }
 
@@ -142,25 +210,19 @@ header {
 
 @media (max-width: 800px) {
 	.tiles_team {
-	    grid-template-columns: 1fr 1fr;
-    	grid-column-gap: 2%;
-    	grid-row-gap: 100px;
-    	margin-bottom: 100px;
-    	padding: 0px minmax(0px, 100px);
+    
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 2%;
+    grid-row-gap: 100px;
+    margin-bottom: 100px;
+    padding: 0px minmax(0px, 100px);
 	}
-
-	.description {
-    	padding-top: 10px;
-    	padding-bottom: 10px;
-    }
-
-    .contentInfo {
-	    padding-bottom: 10px;
-	}
-}
 
 @media (max-width: 500px) {
 	.tiles_team {
-	    grid-template-columns: 1fr;
+    
+    grid-template-columns: 1fr;
+    
 	}
 }
+

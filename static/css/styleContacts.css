@@ -20,8 +20,7 @@ header {
 	background-repeat: no-repeat;
 	color: white;
 	grid-column: 1 / -1;
-		margin-bottom: 3%;
-
+	margin-bottom: 3%;
 }
 
 .grid_menu {
@@ -53,7 +52,6 @@ header {
 	color: white;
 	font-size: 1.2em;
 	margin-left: 30px;
-
 }
 
 .menu a:hover {
@@ -61,12 +59,10 @@ header {
 	cursor: pointer;
 }
 
-
 .right {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-
 }
 
 .banner {
@@ -118,8 +114,6 @@ header {
 	object-fit: cover;
 }
 
-
-
 .titles .item .overlay {
 	background: rgba(0, 0, 0, 0.5);
 	grid-column: 1 / -1;
@@ -158,7 +152,6 @@ header {
     text-align: 18px;
     color: white;
     padding: 15px 30px;
-
  }
 
 
@@ -167,9 +160,6 @@ header {
 	padding: 100px 0px;
 	margin: 10px;
 }
-
-
-
 
 #request {
 	grid-column: 2 / -2;
@@ -185,20 +175,15 @@ header {
 	margin: 30px 0px;
 }
 
-#request {
-	grid-column: 2 / -1;
-	display: flex;
-	flex-direction: column;
-}
+
 
 textarea {
 	height: 150px;
-		font-size: 20px;
-
+	font-size: 20px;
 }
 
 label {
-		font-size: 20px;
+	font-size: 20px;
 }
 
 select {
@@ -234,30 +219,6 @@ iframe {
 }
 
 
-
-footer {
-	grid-column: 1 / -1;
-	height: 30vh;
-	background: black;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	color: white;
-}
-
-footer .social {
-	width: 130px;
-	display: flex;
-	flex-direction: row;
-	justify-content: space-around;
-}
-
-
-footer i {
-	color: white;
-}
-
 @media (max-width: 1200px) {
 	header {
 		height: 35vh;
@@ -285,6 +246,12 @@ footer i {
 		margin-right: 10px;
 	}
 
+	.contactsBlock {
+		grid-column: 2 / -2;
+		padding: 20px 0px;
+		margin: 10px;
+}
+
 }
 
 
@@ -294,4 +261,9 @@ footer i {
 
 	}
 
+	#request input {	
+	padding: 10px 5px;
+	font-size: 19px;
+	margin: 10px 0px;
+	}
 }

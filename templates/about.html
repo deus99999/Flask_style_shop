@@ -7,18 +7,18 @@
 
 {% block content %}
 	<section class="description">
-			<h2>About Company</h2>
-			<hr>
-			<p>Real Style for Men - is the largest online-store in Europe, which specializes in the sale of clothes, shoes and accessories for men</p>
+		<h2>About Company</h2>
+		<hr>
+		<p>Real Style for Men - is the largest online-store in Europe, which specializes in the sale of clothes, shoes and accessories for men</p>
 	</section>
 
-		<section class="contentInfo">
-			<h1>Our team</h1>
-			<p>All team members work together on all projects. We have assembled<br> a friendly team of professionals in their field</p>
-		</section>
+	<section class="contentInfo">
+		<h1>Our team</h1>
+		<p>All team members work together on all projects. We have assembled<br> a friendly team of professionals in their field</p>
+	</section>
 
-		<div class="tiles_team">
-			{% for team_member in team %}
+	<div class="tiles_team">
+		{% for team_member in team %}
 			<div class="item">
 				<img class="item_img" src="{{ team_member.photo }}" alt="{{ team_member.photo }}">
 				<div class="item_info">
@@ -26,6 +26,6 @@
 					<p class="position">{{ team_member.position}} </p>
 				</div>
 			</div>	
-			{% endfor %}
-		</div>
+		{% endfor %}
+	</div>
 {% endblock %}
