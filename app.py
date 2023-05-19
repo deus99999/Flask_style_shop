@@ -1,92 +1,33 @@
-from flask import Flask, flash, session, render_template, request, redirect, url_for
-from flask_sqlalchemy import SQLAlchemy
+from flask import flash, session, render_template, request, redirect, url_for
 import os
-from flask_migrate import Migrate
-import datetime
-from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import UserMixin
 # import login_manager
-from flask_login import LoginManager, login_required, logout_user
+from flask_login import login_required, logout_user
 # from flask_login import LoginForm
-login_manager = LoginManager()
-from my_app.auth.forms import TeamForm, LoginForm
+from forms import TeamForm, LoginForm
 
-app = Flask(__name__)
-app.secret_key = "my_super_secret_key"
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+# app = Flask(__name__)
+# app.secret_key = "my_super_secret_key"
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
-login_manager.init_app(app)
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
+# db = SQLAlchemy(app)
+# migrate = Migrate(app, db)
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
 #my_app.config['BASIC_AUTH_USERNAME'] = 'flaskadmin'
 # my_app.config['BASIC_AUTH_PASSWORD'] = 'flaskadmin'
 
-app.permanent_session_lifetime = datetime.timedelta(days=1)
+# app.permanent_session_lifetime = datetime.timedelta(days=1)
+# login_manager = LoginManager()
+# login_manager.init_app(app)
+from config import app, login_manager
+from models import User, Team, Product, Category
+from config import db
+# from my_app.forms import
 
 
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
-
-
-class Favorite(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    favorite_item = db.Column(db.String(100), nullable=False)
-
-
-class Team(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String(100), nullable=False)
-    surname = db.Column(db.String(100), nullable=False)
-    position = db.Column(db.String(100), nullable=False)
-    photo = db.Column(db.String(100), nullable=False)
-
-
-class Category(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
-    image_path = db.Column(db.String(255), nullable=False)
-    products = db.relationship('Product', backref='category', lazy='dynamic')
-
-
-class Product(db.Model):
-    user_id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
-    description = db.Column(db.String(2000), nullable=False)
-    item_image1 = db.Column(db.String(255), nullable=False)
-    item_image2 = db.Column(db.String(255), nullable=False)
-    item_image3 = db.Column(db.String(255), nullable=False)
-    price = db.Column(db.Float, nullable=False)
-    in_stock = db.Column(db.String(100), default=True) # Boolean
-    category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)#, primary_key=True)
-
-
-class User(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), unique=True, nullable=False)
-    email = db.Column(db.String(50), nullable=False)
-    phone_number = db.Column(db.Integer, nullable=False)
-    password_hash = db.Column(db.String(128))
-
-    @property
-    def password(self):
-        raise AttributeError('password is not a readable attribute')
-
-    @password.setter
-    def password(self, password):
-        self.password_hash = generate_password_hash(password)
-
-    def verify_password(self, password):
-        return check_password_hash(self.password_hash, password)
-
-
-# class TeamForm(FlaskForm):
-#     first_name = StringField("Name: ", validators=[DataRequired()])
-#     surname = StringField("Surname: ", validators=[DataRequired()])
-#     position = StringField("Position: ", validators=[DataRequired()])
-#     photo = FileField('Photo: ', validators=[DataRequired(), FileAllowed(['jpg', 'png', 'jpeg'])])
 
 
 @app.route('/team_form', methods=['GET', 'POST'])

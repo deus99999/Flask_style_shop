@@ -28,12 +28,16 @@
                         <a href="{{ url_for('about') }}">About</a>
                         <a href="{{ url_for('contacts') }}">Contacts</a>
                         
-                         <a href="{{ url_for('login') }}">
+                        {% if current_user.is_authenticated %}
+                        <a href="{{ url_for('logout') }}">
                             <i class='fas fa-user-circle'></i>
                         </a>
+                        {% else %}
+                        <a href="{{ url_for('login') }}">
+                            <i class='fas fa-user-circle'></i>
+                        </a>
+                        {% endif %}
                         
-                      
-
                         <a href="">
                             <i class="fa-sharp fa-regular fa-heart"></i>
                         </a>
