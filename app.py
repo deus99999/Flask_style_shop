@@ -3,8 +3,7 @@ import os
 # import login_manager
 from flask_login import login_required, logout_user
 # from flask_login import LoginForm
-from forms import TeamForm, LoginForm
-
+from forms import TeamForm, LoginForm, RegistrationForm
 # app = Flask(__name__)
 # app.secret_key = "my_super_secret_key"
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
@@ -328,6 +327,19 @@ def cart():
 def clear():
     session.clear()
     return "Session was cleared"
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        user = User(email=form.email.data,
+                    username=form.username.data,
+                    password=form.password.data)
+        db.session.add(user)
+        flash('You can now login.')
+        return redirect(url_for('login'))
+    return render_template('/register.html', form=form)
 
 
 if __name__ == "__main__":

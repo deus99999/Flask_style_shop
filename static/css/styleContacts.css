@@ -168,6 +168,9 @@ header {
 	margin: 10px;
 }
 
+
+
+
 #request {
 	grid-column: 2 / -2;
 	display: flex;
@@ -180,6 +183,12 @@ header {
 	padding: 20px 5px;
 	font-size: 20px;
 	margin: 30px 0px;
+}
+
+#request {
+	grid-column: 2 / -1;
+	display: flex;
+	flex-direction: column;
 }
 
 textarea {
