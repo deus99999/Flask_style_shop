@@ -130,13 +130,11 @@
             HiddenMenu.hidden = !HiddenMenu.hidden;
             
             if (HiddenMenu.hidden) {
-                headerElem.style.height = '30vh';
-                bunnerHeader.hidden = true;
+                bunnerHeader.style.display = 'flex';
             }
 
             if (!HiddenMenu.hidden) {
-                headerElem.style.height = '71vh';
-                bunnerHeader.hidden = false;
+                bunnerHeader.style.display = 'none';
             }
         };
     </script>

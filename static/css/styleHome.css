@@ -2,56 +2,6 @@ header {
 	background-image: url(../images/bg/header_back.jpg);
 }
 
-
-
-/*
-
-.minimenu {
-		background: ghostwhite;
-		border: 2px solid black;
-		border-radius: 4%;
-		width: 100px;
-		margin-top: 250px;
-		position: relative;
-
-		margin-right: 8%;
-		padding: 10%;
-		
-}
-
-.minimenu {
-	
-	background: black;
-}
-
-.minimenu a {
-	text-decoration: none;
-	color: white;
-	font-size: 1.5em;
-
-}
-
-.minimenu a:active {
-	background: rgba(0, 0, 0, 0.2);
-	
-} 
-
-.minimenu a:hover {
-	color: orange;
-	cursor: pointer;
-} 
-
-.minimenu a:hover {
-		text-decoration: none;
-		background: rgba(0, 0, 0, 0.2);
-}
-
-.minimenu li {
-		list-style: none;
-}
-*/
-
-
 .titles {
 	grid-column: 2 / -2;
 	display: grid;
