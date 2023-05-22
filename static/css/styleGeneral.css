@@ -160,6 +160,7 @@ footer {
 	color: white;
 }
 
+
 footer .social {
 	width: 130px;
 	display: flex;
@@ -172,10 +173,16 @@ footer i {
 	color: white;
 }
 
+
+footer i:hover {
+	color: orange;
+}
+
 @media (max-width: 1200px) {
 	header {
 		height: 35vh;
 	}
+
 
 	.banner p {
 		display: none;
