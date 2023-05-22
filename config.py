@@ -9,6 +9,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, login_required, logout_user
 # from flask_login import LoginForm
 from flask_bootstrap import Bootstrap
+from password import password
+
 
 app = Flask(__name__)
 SECRET_KEY = "my_super_secret_key"
@@ -25,12 +27,13 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 # email server
-MAIL_SERVER = 'smtp.googlemail.com'
-MAIL_PORT = 465
+MAIL_SERVER = 'smtp.ukr.net'
+MAIL_PORT = '465'
+MAIL_USERNAME = 'rudenkoalexey@ukr.net'
+MAIL_PASSWORD = password
 MAIL_USE_TLS = False
 MAIL_USE_SSL = True
-MAIL_USERNAME = 'your-gmail-username'
-MAIL_PASSWORD = 'your-gmail-password'
+
 
 # administrator list
 ADMINS = ['your-gmail-username@gmail.com']
