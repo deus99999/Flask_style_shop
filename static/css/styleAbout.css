@@ -13,6 +13,7 @@ header {
 	align-items: center;
 	padding-top: 80px;
 	padding-bottom: 80px;
+	margin: 5%;
 }
 
 .contentInfo {
@@ -23,6 +24,8 @@ header {
 	flex-direction: column;
 	align-items: center;
     padding-bottom: 100px;
+   	margin: 5%;
+
 }
 
 .tiles_team {
