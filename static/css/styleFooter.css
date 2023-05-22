@@ -16,7 +16,17 @@ footer .social {
 	justify-content: space-around;
 }
 
+footer p {
+	margin-left: 15px;
+
+}
 
 footer i {
 	color: white;
+}
+
+@media (max-width: 700px) {
+	footer {
+    	height: 18vh;
+	}
 }

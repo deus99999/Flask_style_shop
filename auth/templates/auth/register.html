@@ -2,6 +2,7 @@
 {% extends 'base.html' %}
 {% block title %}register{% endblock %}
 
+
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block style %}
@@ -10,16 +11,11 @@
 {% endblock %}
 
 {% block content %}
-	<div class="register_h2">
-		<h2>Register</h2>
+	<div class="register_h3">
+		<h3>Register</h3>
 	</div>
 	
-	<form method="POST" id="request">
-		{{ form.email }}
-		{{ form.username }}
-		{{ form.password }}
-		{{ form.password2 }}
-		{{ form.submit }}
-	</form>
+		<div class="register">			
+			{{ wtf.quick_form(form) }}
+		</div>	
 {% endblock %}
-

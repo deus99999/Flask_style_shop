@@ -1,9 +1,12 @@
 from flask import flash, session, render_template, request, redirect, url_for
 import os
 # import login_manager
-from flask_login import login_required, logout_user
+from flask_login import login_required, logout_user, current_user
 # from flask_login import LoginForm
 from forms import TeamForm, LoginForm, RegistrationForm
+from mail import mail
+
+
 # app = Flask(__name__)
 # app.secret_key = "my_super_secret_key"
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
@@ -338,14 +341,29 @@ def register():
                     username=form.username.data,
                     password=form.password.data)
         db.session.add(user)
-        flash('You can now login.')
-        return redirect(url_for('login'))
+        db.session.commit()
+        token = user.generate_confirmation_token()
+        mail.send_email(user.email, 'Confirm Your Account', 'auth/email/confirm', user=user, token=token)
+        flash('A confirmation email has been sent to you by email.')
+        return redirect(url_for('home'))
     return render_template('/register.html', form=form)
+
+
+@app.route('/confirm/<token>')
+@login_required
+def confirm(token):
+    if current_user.confirmed:
+        return redirect(url_for('home'))
+    if current_user.confirm(token):
+        flash('You have confirmed your account. Thanks!')
+    else:
+        flash('The confirmation link is invalid or has expired.')
+    return redirect(url_for('home'))
 
 
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
 
-    app.run(debug=True)
-    # app.run(host='0.0.0.0', debug=True)
+    # app.run(debug=True)
+    app.run(host='0.0.0.0', debug=True)

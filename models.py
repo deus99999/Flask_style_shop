@@ -60,7 +60,6 @@ class User(UserMixin, db.Model):
         db.session.add(self)
         return True
 
-
     @property
     def password(self):
         raise AttributeError('password is not a readable attribute')
