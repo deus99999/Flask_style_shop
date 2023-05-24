@@ -1,39 +1,48 @@
-from flask import Flask, flash, session, render_template, request, redirect, url_for
-from flask_sqlalchemy import SQLAlchemy
 import os
-from flask_migrate import Migrate
-import datetime
-from werkzeug.security import generate_password_hash, check_password_hash
-
 # import login_manager
-from flask_login import LoginManager, login_required, logout_user
 # from flask_login import LoginForm
-from flask_bootstrap import Bootstrap
-from password import password
+from secret import password, my_email, SECRET_KEY
+
+basedir = os.path.abspath(os.path.dirname(__file__))
 
 
-app = Flask(__name__)
-SECRET_KEY = "my_super_secret_key"
-app.secret_key = SECRET_KEY
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
-app.permanent_session_lifetime = datetime.timedelta(days=1)
-login_manager = LoginManager()
-login_manager.init_app(app)
-Bootstrap(app)
+class Config:
+    SECRET_KEY = SECRET_KEY
+    SQLALCHEMY_COMMIT_ON_TEARDOWN = True
+    REAL_STYLE_MAIL_SUBJECT_PREFIX = ['Real Style for Men']
+    REAL_STYLE_MAIL_SENDER = 'Real Style Admin <mail@example.com>'
 
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
-
-# email server
-MAIL_SERVER = 'smtp.ukr.net'
-MAIL_PORT = '465'
-MAIL_USERNAME = 'rudenkoalexey@ukr.net'
-MAIL_PASSWORD = password
-MAIL_USE_TLS = False
-MAIL_USE_SSL = True
+    @staticmethod
+    def init_app(app):
+        pass
 
 
-# administrator list
-ADMINS = ['your-gmail-username@gmail.com']
+class DevelopmentConfig(Config):
+    DEBUG = True
+    # email server
+    MAIL_SERVER = 'smtp.ukr.net'
+    MAIL_PORT = '465'
+    MAIL_USERNAME = my_email
+    MAIL_PASSWORD = password
+    MAIL_USE_TLS = False
+    MAIL_USE_SSL = True
+
+    # administrator list
+    ADMINS = ['your-gmail-username@gmail.com']
+
+
+class TestingConfig(Config):
+    Testing= True
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///data-test.db'
+
+
+class ProductionConfig(Config):
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///database.db'
+
+
+config = {
+    'development': DevelopmentConfig,
+    'testing': TestingConfig,
+    'default': DevelopmentConfig,
+    'production': ProductionConfig
+}

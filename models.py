@@ -1,7 +1,10 @@
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import UserMixin
-from config import db, SECRET_KEY
+from secret import SECRET_KEY
 from itsdangerous import TimedSerializer
+from flask_login import UserMixin, LoginManager
+from . import db, login_manager
+
+from flask import current_app
 
 
 class Favorite(db.Model):
@@ -70,3 +73,9 @@ class User(UserMixin, db.Model):
 
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+
+# loading user's information function
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
