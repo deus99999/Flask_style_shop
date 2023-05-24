@@ -2,7 +2,6 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField, BooleanField
 from wtforms.validators import DataRequired, Email, Length, Regexp, EqualTo, ValidationError
 from flask_wtf.file import FileField, FileAllowed
-from models import User
 
 
 class TeamForm(FlaskForm):
@@ -10,6 +9,12 @@ class TeamForm(FlaskForm):
     surname = StringField("Surname: ", validators=[DataRequired()])
     position = StringField("Position: ", validators=[DataRequired()])
     photo = FileField('Photo: ', validators=[DataRequired(), FileAllowed(['jpg', 'png', 'jpeg'])])
+
+
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField, PasswordField, BooleanField
+from wtforms.validators import DataRequired, Email, Length, Regexp, EqualTo, ValidationError
+from models import User
 
 
 class LoginForm(FlaskForm):
@@ -46,3 +51,6 @@ class RegistrationForm(FlaskForm):
     def validate_username(self, field):
         if User.query.filter_by(username=field.data).first():
             raise ValidationError('Username already in use.')
+
+
+
