@@ -1,0 +1,25 @@
+
+{% extends 'base.html' %}
+{% block title %}register{% endblock %}
+
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block style %}
+	<link rel="stylesheet" type="text/css" href="../static/css/styleContacts.css">
+	<link rel="stylesheet" type="text/css" href="../static/css/styleRegister.css">
+{% endblock %}
+
+{% block content %}
+	<div class="register_h2">
+		<h2>Register</h2>
+	</div>
+	
+	<form method="POST" id="request">
+		{{ form.email }}
+		{{ form.username }}
+		{{ form.password }}
+		{{ form.password2 }}
+		{{ form.submit }}
+	</form>
+{% endblock %}
+
