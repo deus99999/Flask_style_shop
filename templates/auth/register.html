@@ -10,11 +10,19 @@
 {% endblock %}
 
 {% block content %}
+	{% for msg in get_flashed_messages() %}
+		<!-- <div class="wrapped_flash">
+			<div class="flash"> -->
+				<p>{{ msg }}</p>
+			<!-- </div>
+		</div> -->
+		{% endfor %}
+
 	<div class="register_h2">
 		<h2>Register</h2>
 	</div>
 	
-	<form method="POST" id="request">
+	<form method="post" id="request" enctype="multipart/form-data">
 		{{ form.email }}
 		{{ form.username }}
 		{{ form.password }}

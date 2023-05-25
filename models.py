@@ -1,7 +1,16 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from config import db, SECRET_KEY
-from itsdangerous import TimedSerializer
+# from itsdangerous import TimedSerializer
+# TimedJSONWebSignatureSerializer
+from itsdangerous.url_safe import URLSafeTimedSerializer as Serializer
+from flask import current_app
+from config import SECRET_KEY, login_manager
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 
 class Favorite(db.Model):
@@ -37,28 +46,12 @@ class Product(db.Model):
 
 
 class User(UserMixin, db.Model):
-    user_id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), unique=True, nullable=False)
-    email = db.Column(db.String(50), nullable=False)
-    phone_number = db.Column(db.Integer, nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(64), unique=False, index=True)
+    username = db.Column(db.String(64), unique=True, index=True)
+    #phone_number = db.Column(db.Integer, nullable=True)
     password_hash = db.Column(db.String(128))
     confirmed = db.Column(db.Boolean, default=False)
-
-    def generate_confirmation_token(self, expiration=3600):
-        s = TimedSerializer(SECRET_KEY, expiration)
-        return s.dumps({'confirm': self.id})
-
-    def confirm(self, token):
-        s = TimedSerializer(SECRET_KEY)
-        try:
-            data = s.loads(token)
-        except:
-            return False
-        if data.get('confirm') != self.id:
-            return False
-        self.confirmed = True
-        db.session.add(self)
-        return True
 
     @property
     def password(self):
@@ -66,7 +59,30 @@ class User(UserMixin, db.Model):
 
     @password.setter
     def password(self, password):
-        self.password_hash = generate_password_hash(password)
+        # print(password)
+        if password:
+            self.password_hash = generate_password_hash(password)
+        else:
+            password = 'password'
+            self.password_hash = generate_password_hash(password)
 
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+    def generate_confirmation_token(self, expiration=3600):
+        s = Serializer(SECRET_KEY, expiration)
+        print(s)
+        return s.dumps({'confirm': self.id})
+
+    def confirm(self, token):
+        s = Serializer(SECRET_KEY)
+        try:
+            data = s.loads(token.encode('utf-8'))
+            print("data:", data)
+        except:
+            return False
+        if data.get('confirm') != self.id:
+            return False
+        self.confirmed = True
+        db.session.add(self)
+        return True

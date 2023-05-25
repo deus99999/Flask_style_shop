@@ -14,7 +14,7 @@ from config import app, login_manager
 from config import db
 from views import home, admin_page, create_category, delete_category, delete_team_member, shop, \
     product_detail, show_products_of_category, about, contacts, add_items, delete_item, add_to_cart, \
-    delete_from_cart, cart, clear, register, confirm
+    delete_from_cart, cart, clear#, register, confirm
 #from auth.views import login, logout
 
 
