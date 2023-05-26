@@ -42,7 +42,7 @@
                         
                         {% if current_user.is_authenticated %}
                         <a href="{{ url_for('logout') }}">
-                            <i class='fas fa-user-circle'></i>
+                            Log Out
                         </a>
                         {% else %}
                         <a href="{{ url_for('login') }}">

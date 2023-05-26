@@ -3,7 +3,7 @@ from flask_login import UserMixin
 from config import db, SECRET_KEY
 # from itsdangerous import TimedSerializer
 # TimedJSONWebSignatureSerializer
-from itsdangerous.url_safe import URLSafeTimedSerializer as Serializer
+#from itsdangerous.url_safe import URLSafeTimedSerializer as Serializer
 from flask import current_app
 from config import SECRET_KEY, login_manager
 
@@ -51,8 +51,16 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), unique=True, index=True)
     #phone_number = db.Column(db.Integer, nullable=True)
     password_hash = db.Column(db.String(128))
-    confirmed = db.Column(db.Boolean, default=False)
+    #confirmed = db.Column(db.Boolean, default=False)
 
+# class User(UserMixin, db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     email = db.Column(db.String(64), unique=False, index=True)
+#     username = db.Column(db.String(64), unique=True, index=True)
+#     #phone_number = db.Column(db.Integer, nullable=True)
+#     password_hash = db.Column(db.String(128))
+#     confirmed = db.Column(db.Boolean, default=False)
+#
     @property
     def password(self):
         raise AttributeError('password is not a readable attribute')
@@ -60,29 +68,26 @@ class User(UserMixin, db.Model):
     @password.setter
     def password(self, password):
         # print(password)
-        if password:
-            self.password_hash = generate_password_hash(password)
-        else:
-            password = 'password'
-            self.password_hash = generate_password_hash(password)
+        self.password_hash = generate_password_hash(password)
 
     def verify_password(self, password):
+        #print(password)
         return check_password_hash(self.password_hash, password)
 
-    def generate_confirmation_token(self, expiration=3600):
-        s = Serializer(SECRET_KEY, expiration)
-        print(s)
-        return s.dumps({'confirm': self.id})
+    # def generate_confirmation_token(self, expiration=3600):
+    #     s = Serializer(SECRET_KEY, expiration)
+    #     # print(s)
+    #     return s.dumps({'confirm': self.id})
 
-    def confirm(self, token):
-        s = Serializer(SECRET_KEY)
-        try:
-            data = s.loads(token.encode('utf-8'))
-            print("data:", data)
-        except:
-            return False
-        if data.get('confirm') != self.id:
-            return False
-        self.confirmed = True
-        db.session.add(self)
-        return True
+    # def confirm(self, token):
+    #     s = Serializer(SECRET_KEY)
+    #     try:
+    #         data = s.loads(token)
+    #        # print("data:", data)
+    #     except:
+    #         return False
+    #     if data.get('confirm') != self.id:
+    #         return False
+    #     self.confirmed = True
+    #     db.session.add(self)
+    #     return True

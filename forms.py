@@ -19,13 +19,30 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Log In')
 
 
+class RegistrationForm(FlaskForm):
+    email = StringField('Your email', validators=[DataRequired(), Length(1, 64), Email()],
+                        render_kw={"placeholder": "Email"})
+    username = StringField('Username',
+                           validators=[DataRequired(),
+                                       Length(1, 64),
+                                       Regexp('^[A-Za-z][A-Za-z0-9_.]*$', 0,
+                                              'Usernames must have only letters, '
+                                              'numbers, dots or underscores')],
+                           render_kw={"placeholder": "Username"})
+    password = PasswordField('Password',
+                             validators=[DataRequired(),
+                                         ],
+                             render_kw={"placeholder": "Password"})
+    submit = SubmitField('Register')
+
+
 # class RegistrationForm(FlaskForm):
-#     email = StringField('Your email', validators=[DataRequired(), Email()], render_kw={"placeholder": "Email"})
+#     email = StringField('Your email', validators=[DataRequired(), Length(1, 64), Email()],
+#                         render_kw={"placeholder": "Email"})
 #     username = StringField('Username',
 #                            validators=[DataRequired(),
 #                                        Length(1, 64),
-#                                        Regexp('^[A-Za-z][A-Za-z0-9_.]*$',
-#                                               0,
+#                                        Regexp('^[A-Za-z][A-Za-z0-9_.]*$', 0,
 #                                               'Usernames must have only letters, '
 #                                               'numbers, dots or underscores')],
 #                            render_kw={"placeholder": "Username"})
@@ -34,21 +51,18 @@ class LoginForm(FlaskForm):
 #                                          EqualTo('password2',
 #                                                  message='Passwords must match.')],
 #                              render_kw={"placeholder": "Password"})
-#     password2 = PasswordField('Confirm password',
-#                               validators=[DataRequired()],
-#                               render_kw={"placeholder": "Confirm password"})
-#     submit = SubmitField('Register')
-#
-#    # print(type(password), password2)
-#
-#
-#     def validate_email(self, field):
-#         if User.query.filter_by(email=field.data).first():
-#             raise ValidationError('Email already registered.')
-#
-#     def validate_username(self, field):
-#         if User.query.filter_by(username=field.data).first():
-#             raise ValidationError('Username already in use.')
+    # password2 = PasswordField('Confirm password',
+    #                           validators=[DataRequired()],
+    #                           render_kw={"placeholder": "Confirm password"})
+    # submit = SubmitField('Register')
+    #
+    # def validate_email(self, field):
+    #     if User.query.filter_by(email=field.data).first():
+    #         raise ValidationError('Email already registered.')
+    #
+    # def validate_username(self, field):
+    #     if User.query.filter_by(username=field.data).first():
+    #         raise ValidationError('Username already in use.')
 
 
 

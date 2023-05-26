@@ -93,7 +93,13 @@ header {
 	margin: 30px 0px;
 }
 
+.no_category {
+	margin: 10%;
+}
 
+.no_team {
+	margin: 10%;
+}
 
 textarea {
 	height: 150px;
