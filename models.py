@@ -51,27 +51,17 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), unique=True, index=True)
     #phone_number = db.Column(db.Integer, nullable=True)
     password_hash = db.Column(db.String(128))
-    #confirmed = db.Column(db.Boolean, default=False)
+    confirmed = db.Column(db.Boolean, default=False)
 
-# class User(UserMixin, db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     email = db.Column(db.String(64), unique=False, index=True)
-#     username = db.Column(db.String(64), unique=True, index=True)
-#     #phone_number = db.Column(db.Integer, nullable=True)
-#     password_hash = db.Column(db.String(128))
-#     confirmed = db.Column(db.Boolean, default=False)
-#
     @property
     def password(self):
         raise AttributeError('password is not a readable attribute')
 
     @password.setter
     def password(self, password):
-        # print(password)
         self.password_hash = generate_password_hash(password)
 
     def verify_password(self, password):
-        #print(password)
         return check_password_hash(self.password_hash, password)
 
     # def generate_confirmation_token(self, expiration=3600):

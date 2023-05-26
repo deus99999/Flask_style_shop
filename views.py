@@ -3,7 +3,7 @@ import os
 from flask_login import login_required, current_user, logout_user, login_user
 from forms import LoginForm, RegistrationForm
 from forms import TeamForm
-from mail import send_email
+from config import send_email
 from models import User, Team, Product, Category
 from config import app, db, login_manager
 
@@ -11,6 +11,12 @@ from config import app, db, login_manager
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
+
+@login_required
+@app.route('/my_account')
+def my_account():
+    return render_template('my_account.html')
 
 
 @app.route('/team_form', methods=['GET', 'POST'])
@@ -300,7 +306,7 @@ def login():
             print(user)
             print(form.password.data)
             if user is not None and user.verify_password(form.password.data):
-                login_user(user)#, form.remember_me.data)
+                login_user(user, form.remember_me.data)
                 return redirect(request.args.get('next') or url_for('home'))
 
             flash('Invalid username or password.')
@@ -326,14 +332,18 @@ def register():
     password = form.password.data
 
     if email and username and password:
-
         if form.validate_on_submit:
             user = User(email=email, username=username, password=password)
             print(user)
             db.session.add(user)
             print("U can log in.")
             flash("You can log in.")
-            db.session.commit()
+            if app.config['FLASKY_ADMIN']:
+                send_email('rudenkoalexey@ukr.net',
+                           #app.config['FLASKY_ADMIN'],
+                           'Success regisration', 'mail/new_user', user=user)
+                db.session.commit()
+
             return redirect(url_for('login'))
     return render_template('auth/register.html', form=form)
 
