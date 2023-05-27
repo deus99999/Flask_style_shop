@@ -10,119 +10,8 @@ body {
 }
 
 header {
-	height: 50vh;
-
-	border: 1px solid black;
 	background-image: 
 		url(../images/bg/about_header_back.jpg);
-	box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.5);
-	background-size: cover;
-	background-repeat: no-repeat;
-	color: white;
-	grid-column: 1 / -1;
-}
-
-.grid_menu {
-	height: 70px;
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
-	padding: 20px 10px;
-
-	box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.2);
-
-	position: sticky;
-	top: 0;
-}
-
-.grid_menu img {
-	height: 70%;
-}
-
-.menu {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-}
-
-.menu a {
-	text-decoration: none;
-	color: white;
-	font-size: 1.2em;
-	margin-left: 30px;
-
-}
-
-.menu a:hover {
-	color: orange;
-	cursor: pointer;
-}
-
-
-.right {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-
-}
-
-.banner {
-	flex-grow: 1;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-
-}
-
-.banner h1 {
-		font-size: 1.8em;
-}
-
-.banner p {
-	font-size: 20px;
-	padding: 8px 0px;
-	text-align: center;
-}
-
-/*.description {
-	grid-column: 1 / -1;
-	text-align: center;
-	align-items: center;
-	padding-top: 100px;
-	padding-bottom: 100px;
-}
-
-.contentInfo {
-	grid-column: 1 / -1;
-	text-align: center;
-	display: flex;
-	justify-content: center;
-	flex-direction: column;
-	align-items: center;
-    padding-bottom: 100px;
-}*/
-
-/*.tiles_team {
-	grid-column: 1 / -1;
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr 1fr;
-	grid-column-gap: 30px;
-	grid-row-gap: 100px;
-	margin-bottom: 100px;
-	margin-left: 10px;
-	margin-right: 10px;
-	padding: 0px minmax(0px, 100px);
-
-}
-
-.tiles_team img {
-	
-	width: 80%;
-	height: 65%;
-	object-fit: cover;
-*/
 }
 
 .button_back {
@@ -141,28 +30,7 @@ header {
 	text-decoration: none;
 }
 
-footer {
-	grid-column: 1 / -1;
-	height: 30vh;
-	background: black;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	color: white;
-}
 
-footer .social {
-	width: 130px;
-	display: flex;
-	flex-direction: row;
-	justify-content: space-around;
-}
-
-
-footer i {
-	color: white;
-}
 
 .welcome {
 	

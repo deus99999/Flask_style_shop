@@ -148,6 +148,36 @@ header {
 	padding-bottom: 60px;
 }
 
+.button_back {
+	grid-column: 1 / -1;
+}
+
+.wrapped_flash {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    grid-column: 2 / -2;
+}
+
+.flash_dangerous {
+    opacity: 0.9;
+    background: #FF6666;
+    border: 2px solid #940808;
+    border-radius: 10px;
+    width: 53%;
+    height: 62px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 999999;
+}
+
+.flash p {
+    font-size: 20px;
+}
+
 footer {
 	
 	grid-column: 1 / -1;
@@ -214,6 +244,10 @@ footer i:hover {
 
 	.grid_menu {
  	   height: auto;
+	}
+
+	.main_grid {
+    display: block;
 	}
 
 	header {

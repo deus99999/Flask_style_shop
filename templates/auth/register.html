@@ -10,19 +10,23 @@
 {% endblock %}
 
 {% block content %}
-	{% for msg in get_flashed_messages() %}
-		<!-- <div class="wrapped_flash">
-			<div class="flash"> -->
-				<p>{{ msg }}</p>
-			<!-- </div>
-		</div> -->
-		{% endfor %}
+	
 
 	<div class="register_h2">
 		<h2>Register</h2>
 	</div>
-	
+
+	{% for msg in get_flashed_messages() %}
+		<div class="wrapped_flash">
+			<div class="flash_dangerous">
+				<p>{{ msg }}</p>
+			</div>
+		</div>
+		{% endfor %}
+
 	<form method="post" id="request" enctype="multipart/form-data">
+	<p>Create login and password to register an account or <a href="{{ url_for('login') }}">login</a> in existing account</p>
+
 		{{ form.email }}
 		{{ form.username }}
 		{{ form.password }}

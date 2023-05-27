@@ -3,7 +3,7 @@ import os
 from flask_login import login_required, current_user, logout_user, login_user
 from forms import LoginForm, RegistrationForm
 from forms import TeamForm
-from config import send_email
+from mail import send_email
 from models import User, Team, Product, Category
 from config import app, db, login_manager
 
@@ -199,7 +199,7 @@ def add_items():
         categories = Category.query.all()
         products = Product.query.all()
 
-        return render_template("/add_items.html", categories=categories, products=products)
+        return render_template("admin/add_items.html", categories=categories, products=products)
 
     return render_template("admin/add_items.html")
 
@@ -325,6 +325,7 @@ def logout():
 # Adding user's information to db after checking form by validators without sending email
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    users = User.query.all()
     form = RegistrationForm()
     email = form.email.data
     username = form.username.data
@@ -334,17 +335,20 @@ def register():
     if email and username and password:
         if form.validate_on_submit:
             user = User(email=email, username=username, password=password)
-            print(user)
             db.session.add(user)
-            print("U can log in.")
-            flash("You can log in.")
             if app.config['FLASKY_ADMIN']:
-                send_email('rudenkoalexey@ukr.net',
+                send_email(email,
                            #app.config['FLASKY_ADMIN'],
-                           'Success regisration', 'mail/new_user', user=user)
-                db.session.commit()
-
-            return redirect(url_for('login'))
+                           ' Success regisration', 'mail/new_user', user=user)
+                for u in users:
+                    if u.email:
+                        flash("User with this email is already exist.")
+                        #return redirect(request.referrer)
+                        return render_template('auth/register.html', form=form)
+                    else:
+                        db.session.commit()
+                        flash("You can log in.")
+                        return redirect(url_for('login'))
     return render_template('auth/register.html', form=form)
 
 

@@ -29,12 +29,21 @@ class RegistrationForm(FlaskForm):
                                               'Usernames must have only letters, '
                                               'numbers, dots or underscores')],
                            render_kw={"placeholder": "Username"})
-    password = PasswordField('Password',
-                             validators=[DataRequired(),
-                                         ],
+    password = PasswordField('Password', validators=[DataRequired(), EqualTo('password2',
+                                                                             message='Passwords must match.')],
                              render_kw={"placeholder": "Password"})
+    password2 = PasswordField('Confirm password', validators=[DataRequired()],
+                              render_kw={"placeholder": "Confirm password"})
+
     submit = SubmitField('Register')
 
+    def validate_email(self, field):
+        if User.query.filter_by(email=field.data).first():
+            raise ValidationError('Email already registered.')
+
+    def validate_username(self, field):
+        if User.query.filter_by(username=field.data).first():
+            raise ValidationError('Username already in use.')
 
 # class RegistrationForm(FlaskForm):
 #     email = StringField('Your email', validators=[DataRequired(), Length(1, 64), Email()],
