@@ -336,60 +336,33 @@ def register():
         if form.validate_on_submit:
             user = User(email=email, username=username, password=password)
             db.session.add(user)
+
             if app.config['FLASKY_ADMIN']:
-                send_email(email,
-                           #app.config['FLASKY_ADMIN'],
-                           ' Success regisration', 'mail/new_user', user=user)
-                for u in users:
-                    if u.email:
-                        flash("User with this email is already exist.")
-                        #return redirect(request.referrer)
-                        return render_template('auth/register.html', form=form)
-                    else:
-                        db.session.commit()
-                        flash("You can log in.")
-                        return redirect(url_for('login'))
+               # flash("User with this email is already exist.")
+                            #return redirect(request.referrer)
+    #             return render_template('auth/register.html', form=form)
+                db.session.commit()
+                token = user.generate_confirmation_token()
+                send_email(email, 'Confirm Your Account', 'auth/email/confirm', user=user, token=token)
+                flash("A confirmation email has been sent to you be email.")
+                return redirect(url_for('home'))
     return render_template('auth/register.html', form=form)
 
 
-# Adding user's information to db after checking form by validators
-# @app.route('/register', methods=['GET', 'POST'])
-# def register():
-#     form = RegistrationForm()
-#     if form.validate_on_submit:
-#         user = User(
-#             email=form.email.data,
-#             username=form.username.data,
-#             #phone_number=form.phone_number.data,
-#             password=form.password.data,
-#         )
-#         db.session.add(user)
-#         print("U can log in.")
-#         db.session.commit()
-#         print("comitted")
-#         token = user.generate_confirmation_token()
-#         print("token: ", token)
-#         send_email(user.email, 'Confirm Your Account', 'auth/email/confirm', user=user, token=token)
-#         print("Email was send")
-#         flash('A confirmation email has been sent to you by email.')
-#         return redirect(url_for('home'))
-#     return render_template('auth/register.html', form=form)
+@app.route('/confirm/<token>')
+@login_required
+def confirm(token):
+    # if user confirmed his account via email
+    if current_user.confirmed:
+        return redirect(url_for('home'))
 
-
-# @app.route('/confirm/<token>')
-# @login_required
-# def confirm(token):
-#     # if user confirmed his account via email
-#     if current_user.confirmed:
-#         return redirect(url_for('home'))
-#
-#     if current_user.confirm(token):
-#         flash('You have confirmed your account. Thanks!')
-#         print('You have confirmed your account. Thanks!')
-#     else:
-#         flash('The confirmation link is invalid or has expired.')
-#         print('The confirmation link is invalid or has expired.')
-#     return redirect(url_for('home'))
+    if current_user.confirm(token):
+        flash('You have confirmed your account. Thanks!')
+        print('You have confirmed your account. Thanks!')
+    else:
+        flash('The confirmation link is invalid or has expired.')
+        print('The confirmation link is invalid or has expired.')
+    return redirect(url_for('my_account'))
 
 
 # @app.before_request

@@ -8,8 +8,8 @@ from flask_bootstrap import Bootstrap
 from flask_mail import Mail, Message
 
 app = Flask(__name__)
-SECRET_KEY = SECRET_KEY
-app.secret_key = SECRET_KEY
+
+app.config['SECRET_KEY'] = SECRET_KEY
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # email server

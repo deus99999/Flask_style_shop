@@ -6,6 +6,13 @@
 {% endblock %}
 
 {% block content %}
+		{% for msg in get_flashed_messages() %}
+		<div class="wrapped_flash">
+			<div class="flash">
+				<p>{{ msg }}</p>
+			</div>
+		</div>
+		{% endfor %}
 		<section class="clothes">
 			<h1>Clothing categories</h1>
 		</section>

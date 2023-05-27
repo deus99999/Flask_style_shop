@@ -1,8 +1,7 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-from config import db, SECRET_KEY
-# from itsdangerous import TimedSerializer
-# TimedJSONWebSignatureSerializer
+from config import app, db, SECRET_KEY
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 #from itsdangerous.url_safe import URLSafeTimedSerializer as Serializer
 from flask import current_app
 from config import SECRET_KEY, login_manager
@@ -64,20 +63,20 @@ class User(UserMixin, db.Model):
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-    # def generate_confirmation_token(self, expiration=3600):
-    #     s = Serializer(SECRET_KEY, expiration)
-    #     # print(s)
-    #     return s.dumps({'confirm': self.id})
+    def generate_confirmation_token(self, expiration=3600):
+        s = Serializer((app.config['SECRET_KEY']), expiration)
+        print(s)
+        return s.dumps({'confirm': self.id})
 
-    # def confirm(self, token):
-    #     s = Serializer(SECRET_KEY)
-    #     try:
-    #         data = s.loads(token)
-    #        # print("data:", data)
-    #     except:
-    #         return False
-    #     if data.get('confirm') != self.id:
-    #         return False
-    #     self.confirmed = True
-    #     db.session.add(self)
-    #     return True
+    def confirm(self, token):
+        s = Serializer(app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token)
+            print("data:", data)
+        except:
+            return False
+        if data.get('confirm') != self.id:
+            return False
+        self.confirmed = True
+        db.session.add(self)
+        return True
