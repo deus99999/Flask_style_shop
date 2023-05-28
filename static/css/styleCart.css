@@ -1,3 +1,7 @@
+header {
+	background-image: url(../images_for_css/bg/about_header_back.jpg);
+}
+
 .titles {
 	margin: 0 10px;
 }
@@ -126,17 +130,6 @@
 	cursor: pointer;
 }
 
-body {
-	font-size: 1em;
-	font-family: sans-serif;
-	margin: 0;
-}
-
-
-
-header {
-	background-image: url(../images/bg/shop_header_back.jpg);
-}
 
 
 .titles {

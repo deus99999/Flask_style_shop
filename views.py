@@ -362,33 +362,34 @@ def confirm(token):
     else:
         flash('The confirmation link is invalid or has expired.')
         print('The confirmation link is invalid or has expired.')
-    return redirect(url_for('my_account'))
+    return redirect(url_for('home'))
 
 
-# @app.before_request
-# def before_request():
-#     if current_user.is_authenticated and not current_user.confirmed and request.endpoint[:5] != 'auth.':
-#         return redirect(url_for('unconfirmed'))
+@app.before_request
+def before_request():
+    print(request.endpoint)
+    if current_user.is_authenticated and not current_user.confirmed and request.endpoint[:5] != 'auth.':
+        return redirect(url_for('unconfirmed'))
 
 
 # confirming an account via email
-# @app.route('/unconfirmed')
-# def unconfirmed():
-#     if current_user.is_anonymous() or current_user.confirmed:
-#         return redirect('home')
-#     return render_template('auth/unconfirmed.html')
+@app.route('/unconfirmed')
+def unconfirmed():
+    if current_user.is_anonymous() or current_user.confirmed:
+        return redirect('home')
+    return render_template('auth/unconfirmed.html')
 
 
-# @app.route('/confirm')
-# @login_required
-# def resend_confirmation():
-#     token = current_user.generate_confirmation_token()
-#     send_email('auth/email/confirm',
-#                'Confirm Your Account',
-#                user=current_user,
-#                token=token)
-#     flash('A new confirmation email has been sent to you by email.')
-#     print('A new confirmation email has been sent to you by email.')
-#     return redirect(url_for('home'))
+@app.route('/confirm')
+@login_required
+def resend_confirmation():
+    token = current_user.generate_confirmation_token()
+    send_email('auth/email/confirm',
+               'Confirm Your Account',
+               user=current_user,
+               token=token)
+    flash('A new confirmation email has been sent to you by email.')
+    print('A new confirmation email has been sent to you by email.')
+    return redirect(url_for('home'))
 
 
