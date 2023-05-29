@@ -1,6 +1,4 @@
-
-from views import home, shop,\
-    product_detail, show_products_of_category, about, contacts, add_items, delete_item, add_to_cart, \
+from views import home, shop, product_detail, show_products_of_category, about, contacts, add_to_cart, \
     delete_from_cart, cart, clear
 # , register, confirm
 

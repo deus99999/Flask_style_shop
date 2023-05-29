@@ -83,77 +83,77 @@ def contacts():
         return render_template("/contacts.html")
 
 
-@app.route("/add_items", methods=['POST', 'GET'])
-def add_items():
-    if request.method == "POST":
-        category_id = request.form['category']
-        title = request.form['title']
-        description = request.form['description']
+# @app.route("/add_items", methods=['POST', 'GET'])
+# def add_items():
+#     if request.method == "POST":
+#         category_id = request.form['category']
+#         title = request.form['title']
+#         description = request.form['description']
+#
+#         if Category:
+#             category = Category.query.get(category_id)
+#
+#             # creating path for saving images
+#             if not os.path.exists(f"static/images/{category.title}"):
+#                 os.makedirs(f"static/images/{category.title}")
+#
+#             item_image1 = request.files['item_image1']
+#             item_image_path1 = f'static/images/{category.title}/' + item_image1.filename
+#             item_image1.save(item_image_path1)
+#
+#             item_image2 = request.files['item_image2']
+#             item_image_path2 = f'static/images/{category.title}/' + item_image2.filename
+#             item_image2.save(item_image_path2)
+#
+#             item_image3 = request.files['item_image3']
+#             item_image_path3 = f'static/images/{category.title}/' + item_image3.filename
+#             item_image3.save(item_image_path3)
+#         else:
+#             return "You should create category!"
+#         price = request.form['price']
+#         in_stock = request.form['is_in_stock']
+#         product = Product(category_id=category_id, title=title,
+#                           description=description,
+#                           item_image1=item_image_path1,
+#                           item_image2=item_image_path2,
+#                           item_image3=item_image_path3,
+#                           price=price, in_stock=in_stock)
+#
+#         try:
+#             db.session.add(product)
+#             db.session.commit()
+#
+#             return redirect('admin/add_items')
+#         except:
+#             return "Неверные данные или не заполнены все поля"
+#
+#     if request.method == 'GET':
+#         categories = Category.query.all()
+#         products = Product.query.all()
+#
+#         return render_template("admin/add_items.html", categories=categories, products=products)
+#
+#     return render_template("admin/add_items.html")
 
-        if Category:
-            category = Category.query.get(category_id)
 
-            # creating path for saving images
-            if not os.path.exists(f"static/images/{category.title}"):
-                os.makedirs(f"static/images/{category.title}")
-
-            item_image1 = request.files['item_image1']
-            item_image_path1 = f'static/images/{category.title}/' + item_image1.filename
-            item_image1.save(item_image_path1)
-
-            item_image2 = request.files['item_image2']
-            item_image_path2 = f'static/images/{category.title}/' + item_image2.filename
-            item_image2.save(item_image_path2)
-
-            item_image3 = request.files['item_image3']
-            item_image_path3 = f'static/images/{category.title}/' + item_image3.filename
-            item_image3.save(item_image_path3)
-        else:
-            return "You should create category!"
-        price = request.form['price']
-        in_stock = request.form['is_in_stock']
-        product = Product(category_id=category_id, title=title,
-                          description=description,
-                          item_image1=item_image_path1,
-                          item_image2=item_image_path2,
-                          item_image3=item_image_path3,
-                          price=price, in_stock=in_stock)
-
-        try:
-            db.session.add(product)
-            db.session.commit()
-
-            return redirect('admin/add_items')
-        except:
-            return "Неверные данные или не заполнены все поля"
-
-    if request.method == 'GET':
-        categories = Category.query.all()
-        products = Product.query.all()
-
-        return render_template("admin/add_items.html", categories=categories, products=products)
-
-    return render_template("admin/add_items.html")
-
-
-@app.route('/delete_item', methods=['POST'])
-def delete_item():
-    if request.method == 'POST':
-        item_id = request.form['item_id']
-        # print(item_id)
-        item_to_delete = Product.query.get(item_id)
-
-        try:
-            os.remove(item_to_delete.item_image1)
-            os.remove(item_to_delete.item_image2)
-            os.remove(item_to_delete.item_image3)
-        except FileNotFoundError:
-            print("There are no image with this name for removing")
-
-        Product.query.filter_by(id=item_id).delete()
-        db.session.delete(item_to_delete)
-        db.session.commit()
-        return redirect('admin/add_items')
+# @app.route('/delete_item', methods=['POST'])
+# def delete_item():
+#     if request.method == 'POST':
+#         item_id = request.form['item_id']
+#         # print(item_id)
+#         item_to_delete = Product.query.get(item_id)
+#
+#         try:
+#             os.remove(item_to_delete.item_image1)
+#             os.remove(item_to_delete.item_image2)
+#             os.remove(item_to_delete.item_image3)
+#         except FileNotFoundError:
+#             print("There are no image with this name for removing")
+#
+#         Product.query.filter_by(id=item_id).delete()
+#         db.session.delete(item_to_delete)
+#         db.session.commit()
+#         return redirect('admin/add_items')
 
 
 # Код для добавления товара в корзину

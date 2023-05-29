@@ -50,7 +50,7 @@
 			<ul>
 				<li>{{ product.title }}</li>
 				<div class="btn_forms">
-					<form method="post" action="/delete_item">
+					<form method="post" action="{{ url_for('admin.delete_item') }}">
             			<input type="hidden" name="item_id" value="{{ product.id }}">
             			<button type="submit" class="btn btn-danger">Remove</button>
         			</form>	
