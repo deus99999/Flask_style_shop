@@ -31,7 +31,7 @@
 			<ul>
 				<li>{{ team_member.first_name }} {{ team_member.surname }}</li>
 				<form method="POST" action="{{ url_for('admin.delete_team_member') }}">
-            		<input  name="team_member_id" id="team_member_id" value="{{ team_member.id }}">
+            		<input  type="hidden" name="team_member_id" value="{{ team_member.id }}">
             		<button type="submit" class="btn btn-danger">Delete</button>
         		</form>
 			</ul>
