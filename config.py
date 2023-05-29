@@ -7,6 +7,7 @@ from flask_bootstrap import Bootstrap
 # from mail import mail
 from flask_mail import Mail, Message
 
+
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = SECRET_KEY
@@ -26,6 +27,8 @@ app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
 # app.permanent_session_lifetime = datetime.timedelta(days=1)
 app.config['CELERY_BROKER_URL'] = 'redis://localhost:6379/0'
 app.config['CELERY_RESULT_BACKEND'] = 'redis://localhost:6379/0'
+
+
 
 login_manager = LoginManager()
 login_manager.session_protection = 'strong'

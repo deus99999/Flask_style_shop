@@ -5,13 +5,6 @@ from wtforms.validators import DataRequired, Email, Length, Regexp, EqualTo, Val
 from models import User
 
 
-class TeamForm(FlaskForm):
-    first_name = StringField("Name: ", validators=[DataRequired()])
-    surname = StringField("Surname: ", validators=[DataRequired()])
-    position = StringField("Position: ", validators=[DataRequired()])
-    photo = FileField('Photo: ', validators=[DataRequired(), FileAllowed(['jpg', 'png', 'jpeg'])])
-
-
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Length(1, 64), Email()])
     password = PasswordField('Password', validators=[DataRequired()])

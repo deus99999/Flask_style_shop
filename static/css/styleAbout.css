@@ -35,8 +35,7 @@ header {
 	grid-column-gap: 30px;
 	grid-row-gap: 70px;
 	margin-bottom: 70px;
-	margin-left: 10px;
-	margin-right: 10px;
+
 	padding: 0px minmax(0px, 100px);
 
 }
@@ -46,6 +45,13 @@ header {
 	width: 80%;
 	height: 65%;
 	object-fit: cover;
+}
+
+.item {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 
 @media (max-width: 1200px) {

@@ -25,7 +25,7 @@
 
                     <div id="MainMenu" class="menu">
                         {% if current_user.is_authenticated %}
-                            <a href="{{ url_for('admin_page') }}">Admin</a>
+                            <a href="{{ url_for('admin.admin_page') }}">Admin</a>
                         {% endif %}
                         <a href="{{ url_for('home') }}">Home</a>
                         <a href="{{ url_for('shop') }}">Shop</a>
@@ -58,7 +58,7 @@
                 </nav>
                  <div hidden id="HiddenMenu" class="menu animate__animated animate__fadeIn">
                         {% if current_user.is_authenticated %}
-                            <a href="{{ url_for('admin_page') }}">Admin</a>
+                            <a href="{{ url_for('admin.admin_page') }}">Admin</a>
                         {% endif %}
                         <a href="{{ url_for('home') }}">Home</a>
                         <a href="{{ url_for('shop') }}">Shop</a>

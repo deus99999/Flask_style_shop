@@ -30,10 +30,10 @@
 		{% for team_member in team %}
 			<ul>
 				<li>{{ team_member.first_name }} {{ team_member.surname }}</li>
-				<form method="post" action="/delete_team_member">
-            		<input type="hidden" name="id" value="{{ team.id }}">
+				<form method="POST" action="{{ url_for('admin.delete_team_member') }}">
+            		<input  name="team_member_id" id="team_member_id" value="{{ team_member.id }}">
             		<button type="submit" class="btn btn-danger">Delete</button>
-        		</form>	
+        		</form>
 			</ul>
 		
 		{% endfor %}
@@ -45,6 +45,6 @@
 	</div>
 
 	<div class="button_back">
-		<a href="{{ url_for('admin_page') }}">To Back</a>
+		<a href="{{ url_for('admin.admin_page') }}">To Back</a>
 	</div>
 {% endblock %}

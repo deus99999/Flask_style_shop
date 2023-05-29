@@ -4,15 +4,17 @@ body {
 	margin: 0;
 }
 
+header {
+	background-image:
+		url(../images_for_css/bg/about_header_back.jpg);
+}
+
 .main_grid {
 	display: grid;
 	grid-template-columns: 1fr repeat(2, minmax(auto, 25em)) 1fr;
 }
 
-header {
-	background-image: 
-		url(../images/bg/about_header_back.jpg);
-}
+
 
 .button_back {
 	width: 100%;
@@ -59,6 +61,10 @@ header {
 	background: rgba(0, 0, 0, 0.1);
 	border-radius: 10px;
 
+}
+
+.category_list {
+	margin-top: 10%;
 }
 
 @media (max-width: 1200px) {

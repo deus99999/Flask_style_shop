@@ -176,6 +176,10 @@ select {
 	margin: 10px;
 }
 
+.category_list {
+	margin-top: 10%;
+}
+
 iframe {
 	grid-column: 2 / -2;
 	margin-bottom: 30px;

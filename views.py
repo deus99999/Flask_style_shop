@@ -2,7 +2,6 @@ from flask import flash, session, render_template, request, redirect, url_for
 import os
 from flask_login import login_required, current_user, logout_user, login_user
 from forms import LoginForm, RegistrationForm
-from forms import TeamForm
 from mail import send_email
 from models import User, Team, Product, Category
 from config import app, db, login_manager
@@ -19,84 +18,17 @@ def my_account():
     return render_template('my_account.html')
 
 
-@app.route('/team_form', methods=['GET', 'POST'])
-def team_form_submit():
-    form = TeamForm()
-    if form.validate_on_submit():
-        first_name = form.first_name.data
-        surname = form.surname.data
-        position = form.position.data
-        photo = form.photo.data
-        # photo_filename = secure_filename(photo.filename)
-        photo_path = f'static/images/team/' + photo.filename
-        print(photo.filename)
-        print(photo_path)
-        photo.save(photo_path)
-        team = Team(first_name=first_name, surname=surname, position=position, photo=photo_path)
-        try:
-            db.session.add(team)
-            db.session.commit()
-            return redirect("/team_form")
-        except:
-            return "Ошибка. Возможно не создана база данных"
-        return redirect(url_for('home'))
-    team = Team.query.all()
-    return render_template('admin/team_form.html', form=form, team=team)
-
-
 # admin = Admin(my_app, name='admin', template_mode='bootstrap3')
 # admin.add_view(ModelView(Category, db.session))
 # admin.add_view(ModelView(Product, db.session))
 # admin.add_view(ModelView(Team, db.session))
 
 
-@app.route("/admin_page")
-def admin_page():
-    return render_template("/admin/admin_page.html")
 
 
-@app.route("/add_category", methods=['GET', 'POST'])
-def create_category():
-    if request.method == 'POST':
-        title = request.form['title']
-        category_image = request.files['category_image']
-        image_path = 'static/images/' + category_image.filename
-        category_image.save(image_path)
-        category = Category(title=title, image_path=image_path)
-        try:
-            db.session.add(category)
-            db.session.commit()
-            return redirect("admin/add_category")
-        except:
-            return "Ошибка. Возможно не создана база данных"
-
-    if request.method == 'GET':
-        categories = Category.query.all()
-        return render_template("admin/add_category.html", categories=categories)
-
-    return render_template("admin/add_category.html")
 
 
-@app.route('/delete_category', methods=['POST'])
-def delete_category():
-    if request.method == 'POST':
-        category_id = request.form['id']
-        category_to_delete = Category.query.get(category_id)
-        Product.query.filter_by(category_id=category_to_delete.id).delete()
-        db.session.delete(category_to_delete)
-        db.session.commit()
-        return redirect('admin/edit_category')
 
-
-@app.route('/team_form', methods=['POST'])
-def delete_team_member():
-    if request.method == 'POST':
-        team_member_id = request.form['id']
-        member_to_delete = Category.query.get(team_member_id)
-        Product.query.filter_by(member_id=member_to_delete.id).delete()
-        db.session.delete(member_to_delete)
-        db.session.commit()
-        return redirect('/team_form')
 
 
 # Show all categories in home.html
@@ -365,19 +297,19 @@ def confirm(token):
     return redirect(url_for('home'))
 
 
-@app.before_request
-def before_request():
-    print(request.endpoint)
-    if current_user.is_authenticated and not current_user.confirmed and request.endpoint[:5] != 'auth.':
-        return redirect(url_for('unconfirmed'))
+# @app.before_request
+# def before_request():
+#     print(request.endpoint)
+#     if current_user.is_authenticated and not current_user.confirmed and request.endpoint[:5] != 'auth.':
+#         return redirect(url_for('unconfirmed'))
 
 
 # confirming an account via email
-@app.route('/unconfirmed')
-def unconfirmed():
-    if current_user.is_anonymous() or current_user.confirmed:
-        return redirect('home')
-    return render_template('auth/unconfirmed.html')
+# @app.route('/unconfirmed')
+# def unconfirmed():
+#     if current_user.is_anonymous() or current_user.confirmed:
+#         return redirect('home')
+#     return render_template('auth/unconfirmed.html')
 
 
 @app.route('/confirm')

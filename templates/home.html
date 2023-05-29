@@ -19,7 +19,7 @@
 
 		<div class="titles">
 			{% for category in categories %}
-			<!-- <a href="/category/{{ category.id }}" style="color: black;">{{ category.name }}</a> -->
+			<!-- <a href="/category/{{ category.id }}" static="color: black;">{{ category.name }}</a> -->
 			<a href="{{ url_for('show_products_of_category', category_id=category.id) }}">
 				<div class="item">
 					<img class="item_img" src="{{ category.image_path }}" alt="{{ category.id }}">
