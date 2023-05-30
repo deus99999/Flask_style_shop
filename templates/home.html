@@ -7,12 +7,13 @@
 
 {% block content %}
 		{% for msg in get_flashed_messages() %}
-		<div class="wrapped_flash">
-			<div class="flash">
+		 <div class="wrapped_flash">
+			<div class="flash_green"> 
 				<p>{{ msg }}</p>
 			</div>
-		</div>
+		</div> 
 		{% endfor %}
+
 		<section class="clothes">
 			<h1>Clothing categories</h1>
 		</section>
@@ -29,8 +30,8 @@
 				</div>
 			</a>
 			{% endfor %}	
-		
 		</div>
+
 				
 
 {% endblock %}

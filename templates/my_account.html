@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}My account{% endblock %}
+
+{% block style %}
+	<link rel="stylesheet" type="text/css" href="../static/css/styleHome.css">
+{% endblock %}
+
+{% block content %}
+	{% for msg in get_flashed_messages() %}
+		<div class="wrapped_flash">
+			<div class="flash">
+				<p>{{ msg }}</p>
+			</div>
+		</div>
+		{% endfor %}
+
+		<section class="clothes">
+			<h1>My favorite</h1>
+		</section>
+
+		<div class="titles">
+			<a href="#">
+				<div class="item">
+					<img class="item_img" src="#" alt="">
+					<div class="overlay">	
+						<p> </p>
+					</div>
+				</div>
+			</a>
+				
+		
+		</div>
+				
+
+{% endblock %}

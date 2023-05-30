@@ -1,7 +1,5 @@
-
 {% extends 'base.html' %}
 {% block title %}register{% endblock %}
-
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block style %}
@@ -10,7 +8,6 @@
 {% endblock %}
 
 {% block content %}
-	
 
 	<div class="register_h2">
 		<h2>Register</h2>
@@ -18,15 +15,14 @@
 
 	{% for msg in get_flashed_messages() %}
 		<div class="wrapped_flash">
-			<div class="flash_dangerous">
+			<div class="flash_green">
 				<p>{{ msg }}</p>
 			</div>
 		</div>
 		{% endfor %}
 
 	<form method="post" id="request" enctype="multipart/form-data">
-	<p>Create login and password to register an account or <a href="{{ url_for('login') }}">login</a> in existing account</p>
-
+	<p>Create login and password to register an account or <a href="{{ url_for('auth.login') }}">login</a> in existing account</p>
 		{{ form.email }}
 		{{ form.username }}
 		{{ form.password }}

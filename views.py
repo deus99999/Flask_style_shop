@@ -1,34 +1,16 @@
 from flask import flash, session, render_template, request, redirect, url_for
 import os
-from flask_login import login_required, current_user, logout_user, login_user
-from forms import LoginForm, RegistrationForm
+#from forms import LoginForm, RegistrationForm
 from mail import send_email
 from models import User, Team, Product, Category
 from config import app, db, login_manager
-
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
-
-
-@login_required
-@app.route('/my_account')
-def my_account():
-    return render_template('my_account.html')
+from flask_login import login_required, current_user, logout_user, login_user
 
 
 # admin = Admin(my_app, name='admin', template_mode='bootstrap3')
 # admin.add_view(ModelView(Category, db.session))
 # admin.add_view(ModelView(Product, db.session))
 # admin.add_view(ModelView(Team, db.session))
-
-
-
-
-
-
-
 
 
 # Show all categories in home.html
@@ -81,79 +63,6 @@ def contacts():
             return "Ошибка. Возможно не создана база данных"
     else:
         return render_template("/contacts.html")
-
-
-# @app.route("/add_items", methods=['POST', 'GET'])
-# def add_items():
-#     if request.method == "POST":
-#         category_id = request.form['category']
-#         title = request.form['title']
-#         description = request.form['description']
-#
-#         if Category:
-#             category = Category.query.get(category_id)
-#
-#             # creating path for saving images
-#             if not os.path.exists(f"static/images/{category.title}"):
-#                 os.makedirs(f"static/images/{category.title}")
-#
-#             item_image1 = request.files['item_image1']
-#             item_image_path1 = f'static/images/{category.title}/' + item_image1.filename
-#             item_image1.save(item_image_path1)
-#
-#             item_image2 = request.files['item_image2']
-#             item_image_path2 = f'static/images/{category.title}/' + item_image2.filename
-#             item_image2.save(item_image_path2)
-#
-#             item_image3 = request.files['item_image3']
-#             item_image_path3 = f'static/images/{category.title}/' + item_image3.filename
-#             item_image3.save(item_image_path3)
-#         else:
-#             return "You should create category!"
-#         price = request.form['price']
-#         in_stock = request.form['is_in_stock']
-#         product = Product(category_id=category_id, title=title,
-#                           description=description,
-#                           item_image1=item_image_path1,
-#                           item_image2=item_image_path2,
-#                           item_image3=item_image_path3,
-#                           price=price, in_stock=in_stock)
-#
-#         try:
-#             db.session.add(product)
-#             db.session.commit()
-#
-#             return redirect('admin/add_items')
-#         except:
-#             return "Неверные данные или не заполнены все поля"
-#
-#     if request.method == 'GET':
-#         categories = Category.query.all()
-#         products = Product.query.all()
-#
-#         return render_template("admin/add_items.html", categories=categories, products=products)
-#
-#     return render_template("admin/add_items.html")
-
-
-# @app.route('/delete_item', methods=['POST'])
-# def delete_item():
-#     if request.method == 'POST':
-#         item_id = request.form['item_id']
-#         # print(item_id)
-#         item_to_delete = Product.query.get(item_id)
-#
-#         try:
-#             os.remove(item_to_delete.item_image1)
-#             os.remove(item_to_delete.item_image2)
-#             os.remove(item_to_delete.item_image3)
-#         except FileNotFoundError:
-#             print("There are no image with this name for removing")
-#
-#         Product.query.filter_by(id=item_id).delete()
-#         db.session.delete(item_to_delete)
-#         db.session.commit()
-#         return redirect('admin/add_items')
 
 
 # Код для добавления товара в корзину
@@ -229,99 +138,22 @@ def clear():
     return "Session was cleared"
 
 
-@app.route("/login", methods=['GET', 'POST'])
-def login():
-    form = LoginForm()
-    if form.validate_on_submit:
-        user = User.query.filter_by(email=form.email.data).first()
-        if user is not None:
-            print(user)
-            print(form.password.data)
-            if user is not None and user.verify_password(form.password.data):
-                login_user(user, form.remember_me.data)
-                return redirect(request.args.get('next') or url_for('home'))
-
-            flash('Invalid username or password.')
-            print('Invalid username or password.')
-    return render_template('auth/login.html', form=form)
-
-
-@app.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    flash('You have been logged out.')
-    return redirect(url_for('login'))
+# @app.route('/confirm/<token>')
+# @login_required
+# def confirm(token):
+#     # if user confirmed his account via email
+#     if current_user.confirmed:
+#         return redirect(url_for('home'))
+#
+#     if current_user.confirm(token):
+#         flash('You have confirmed your account. Thanks!')
+#         print('You have confirmed your account. Thanks!')
+#     else:
+#         flash('The confirmation link is invalid or has expired.')
+#         print('The confirmation link is invalid or has expired.')
+#     return redirect(url_for('home'))
 
 
-# Adding user's information to db after checking form by validators without sending email
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    users = User.query.all()
-    form = RegistrationForm()
-    email = form.email.data
-    username = form.username.data
-    #phone_number=form.phone_number.data
-    password = form.password.data
 
-    if email and username and password:
-        if form.validate_on_submit:
-            user = User(email=email, username=username, password=password)
-            db.session.add(user)
-
-            if app.config['FLASKY_ADMIN']:
-               # flash("User with this email is already exist.")
-                            #return redirect(request.referrer)
-    #             return render_template('auth/register.html', form=form)
-                db.session.commit()
-                token = user.generate_confirmation_token()
-                send_email(email, 'Confirm Your Account', 'auth/email/confirm', user=user, token=token)
-                flash("A confirmation email has been sent to you be email.")
-                return redirect(url_for('home'))
-    return render_template('auth/register.html', form=form)
-
-
-@app.route('/confirm/<token>')
-@login_required
-def confirm(token):
-    # if user confirmed his account via email
-    if current_user.confirmed:
-        return redirect(url_for('home'))
-
-    if current_user.confirm(token):
-        flash('You have confirmed your account. Thanks!')
-        print('You have confirmed your account. Thanks!')
-    else:
-        flash('The confirmation link is invalid or has expired.')
-        print('The confirmation link is invalid or has expired.')
-    return redirect(url_for('home'))
-
-
-# @app.before_request
-# def before_request():
-#     print(request.endpoint)
-#     if current_user.is_authenticated and not current_user.confirmed and request.endpoint[:5] != 'auth.':
-#         return redirect(url_for('unconfirmed'))
-
-
-# confirming an account via email
-# @app.route('/unconfirmed')
-# def unconfirmed():
-#     if current_user.is_anonymous() or current_user.confirmed:
-#         return redirect('home')
-#     return render_template('auth/unconfirmed.html')
-
-
-@app.route('/confirm')
-@login_required
-def resend_confirmation():
-    token = current_user.generate_confirmation_token()
-    send_email('auth/email/confirm',
-               'Confirm Your Account',
-               user=current_user,
-               token=token)
-    flash('A new confirmation email has been sent to you by email.')
-    print('A new confirmation email has been sent to you by email.')
-    return redirect(url_for('home'))
 
 

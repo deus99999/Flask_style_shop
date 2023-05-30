@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+</head>
+<body>
+	<p>Dear {{ user.username }},</p>
+
+	<p>Welcome to Real style for Men!</p>
+
+	<p>To confirm your account please click on the following link:
+		{{ url_for('auth.confirm', token=token, _external=True) }}</p>
+
+	<p>Sincerely,<p>
+
+	<p>Real style for Men Team</p>
+
+	<p>Note: replies to this email address are not monitored.</p>
+</body>
+</html>

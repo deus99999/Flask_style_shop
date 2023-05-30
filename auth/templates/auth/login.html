@@ -7,10 +7,16 @@
 {% endblock %}
 
 {% block content %}
+		{% for msg in get_flashed_messages() %}
+		<div class="wrapped_flash">
+			<div class="flash_green">
+				<p>{{ msg }}</p>
+			</div>
+		</div>
+		{% endfor %}
 
-		
 		<form method="post" id="request">			
-			<p>Enter your login and password to login to your account or <a href="{{ url_for('register') }}">register</a> to create account</p>
+			<p>Enter your login and password to login to your account or <a href="{{ url_for('auth.register') }}">register</a> to create account</p>
 
 			<input type="text" name="email" placeholder="Email">
 			<input type="password" name="password" placeholder="password">

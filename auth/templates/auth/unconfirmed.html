@@ -1,8 +1,12 @@
-{% extends "base.html" %}
-
+{% extends 'base.html' %}
 {% block title %}Confirm your account{% endblock %}
 
-{% block page_content %}
+{% block style %}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styleContacts.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styleGeneral.css') }}">
+{% endblock %}
+
+{% block content %}
 <div class="page-header">
     <h1>
         Hello, {{ current_user.username }}!
@@ -14,7 +18,7 @@
     </p>
     <p>
         Need another confirmation email?
-        <a href="{{ url_for('resend_confirmation') }}">Click here</a>
+        <a href="{{ url_for('auth.resend_confirmation') }}">Click here</a>
     </p>
 </div>
 {% endblock %}
