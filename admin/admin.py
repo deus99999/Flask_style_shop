@@ -4,12 +4,16 @@ from admin.forms import TeamForm
 from models import Team, Product, Category
 from config import db
 import os
+#from decorators import admin_required
+from flask_login import login_required
 
 
 admin = Blueprint('admin', __name__, template_folder='templates', static_folder='static')
 
 
 @admin.route("/")
+@login_required
+#@admin_required
 def admin_page():
     return render_template("admin/admin_page.html")
 
@@ -26,8 +30,7 @@ def team_form_submit():
             os.makedirs(f"static/images/team/")
         # photo_filename = secure_filename(photo.filename)
         photo_path = f'static/images/team/' + photo.filename
-        print(photo.filename)
-        print(photo_path)
+
         photo.save(photo_path)
         team = Team(first_name=first_name, surname=surname, position=position, photo=photo_path)
         try:

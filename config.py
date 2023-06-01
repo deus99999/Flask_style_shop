@@ -2,7 +2,7 @@ from flask import Flask, flash, session, render_template, request, redirect, url
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager, login_required, logout_user
-from secret import password, SECRET_KEY, my_email, my_email_username
+from secret import password, SECRET_KEY, my_email, my_email_username, admin_email
 from flask_bootstrap import Bootstrap
 # from mail import mail
 from flask_mail import Mail, Message
@@ -27,7 +27,7 @@ app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
 # app.permanent_session_lifetime = datetime.timedelta(days=1)
 app.config['CELERY_BROKER_URL'] = 'redis://localhost:6379/0'
 app.config['CELERY_RESULT_BACKEND'] = 'redis://localhost:6379/0'
-
+app.config['ADMIN'] = admin_email
 
 
 login_manager = LoginManager()
@@ -41,5 +41,3 @@ migrate = Migrate(app, db)
 mail = Mail(app)
 mail.init_app(app)
 
-# administrator list
-ADMINS = ['your-gmail-username@gmail.com']

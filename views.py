@@ -138,21 +138,6 @@ def clear():
     return "Session was cleared"
 
 
-# @app.route('/confirm/<token>')
-# @login_required
-# def confirm(token):
-#     # if user confirmed his account via email
-#     if current_user.confirmed:
-#         return redirect(url_for('home'))
-#
-#     if current_user.confirm(token):
-#         flash('You have confirmed your account. Thanks!')
-#         print('You have confirmed your account. Thanks!')
-#     else:
-#         flash('The confirmation link is invalid or has expired.')
-#         print('The confirmation link is invalid or has expired.')
-#     return redirect(url_for('home'))
-
 
 
 

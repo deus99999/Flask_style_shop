@@ -1,15 +1,8 @@
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import UserMixin
+from flask_login import UserMixin, AnonymousUserMixin
 from config import app, db, SECRET_KEY
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-#from itsdangerous.url_safe import URLSafeTimedSerializer as Serializer
-from flask import current_app
 from config import SECRET_KEY, login_manager
-
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
 
 
 class Favorite(db.Model):
@@ -51,6 +44,24 @@ class User(UserMixin, db.Model):
     #phone_number = db.Column(db.Integer, nullable=True)
     password_hash = db.Column(db.String(128))
     confirmed = db.Column(db.Boolean, default=False)
+    is_admin = db.Column(db.Boolean, default=False)
+
+    # role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
+    # role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
+    # is_administrator = db.Column(db.Boolean, default=False)
+
+    # def is_administrator(self):
+    #     if self.
+    #         return True
+
+    # def __init__(self, **kwargs):
+    #     super(User, self).__init__(**kwargs)
+    #     if self.role is None:
+    #         if self.email == app.config['ADMIN']:
+    #             self.role = Role.query.filter_by(name='Administrator').first()  # if entered email of admin,
+    #                                                                         # user get admins permissions
+    #         if self.role is None:
+    #             self.role = Role.query.filter_by(default=True).first()
 
     @property
     def password(self):
@@ -65,14 +76,12 @@ class User(UserMixin, db.Model):
 
     def generate_confirmation_token(self, expiration=3600):
         s = Serializer((app.config['SECRET_KEY']), expiration)
-        print(s)
         return s.dumps({'confirm': self.id})
 
     def confirm(self, token):
         s = Serializer(app.config['SECRET_KEY'])
         try:
             data = s.loads(token)
-            print("data:", data)
         except:
             return False
         if data.get('confirm') != self.id:
@@ -80,3 +89,80 @@ class User(UserMixin, db.Model):
         self.confirmed = True
         db.session.add(self)
         return True
+
+    # True, if user have all permissions
+    # def can(self, permissions):
+    #     print("can: ", self.role is not None and (self.role.permissions and permissions) == permissions)
+    #     return self.role is not None and (self.role.permissions and permissions) == permissions
+
+#     def is_administrator(self):
+#         if self.can(Permission.ADMINISTER):
+#             print("is admin true")
+#             return True
+#
+#
+# class AnonymousUser(AnonymousUserMixin):
+#     def can(self, permissions):
+#         return True
+#
+#     def is_administrator(self):
+#         return False
+#
+#
+# login_manager.anonymous_user = AnonymousUser
+#
+#
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+#
+#
+# class Role(db.Model):
+#     __tablename__ = 'roles'
+#     id = db.Column(db.Integer, primary_key=True)
+#     name = db.Column(db.String(64), unique=True)
+#     default = db.Column(db.Boolean, default=False, index=True)
+#     permissions = db.Column(db.Integer)
+#     users = db.relationship('User', backref='role', lazy='dynamic')
+#
+#     @staticmethod
+#     def insert_roles():
+#         roles = {
+#             'User': [Permission.FOLLOW, Permission.COMMENT],
+#             'Moderator': [Permission.WRITE_ARTICLES],
+#             'Administrator': (0xff, True)
+#         }
+#
+#         # roles = {
+#         #     'User': [Permission.FOLLOW, Permission.COMMENT, Permission.WRITE],
+#         #     'Moderator': [Permission.FOLLOW, Permission.COMMENT,
+#         #                   Permission.WRITE, Permission.MODERATE],
+#         #     'Administrator': [Permission.FOLLOW, Permission.COMMENT,
+#         #                       Permission.WRITE, Permission.MODERATE,
+#         #                       Permission.ADMIN],
+#         # }
+#
+#         for r in roles:
+#             print(r)
+#             role = Role.query.filter_by(name=r).first()
+#             if role is None:
+#                 role = Role(name=r)
+#             role.permissions = roles[r][0]
+#             role.default = roles[r][1]
+#             db.session.add(role)
+#         db.session.commit()
+#
+#
+# class Permission:
+#     FOLLOW = 0x01
+#     COMMENT = 0x02
+#     WRITE_ARTICLES = 0x04
+#     MODERATE_COMMENTS = 0x08
+#     ADMINISTER = 0x80
+#
+# # class Permission:
+# #     FOLLOW = 1
+# #     COMMENT = 2
+# #     WRITE = 4
+# #     MODERATE = 8
+# #     ADMINISTER = 16
