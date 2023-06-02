@@ -7,7 +7,8 @@ from config import SECRET_KEY, login_manager
 
 class Favorite(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    favorite_item = db.Column(db.String(100), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id'))
 
 
 class Team(db.Model):

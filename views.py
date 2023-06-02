@@ -2,7 +2,7 @@ from flask import flash, session, render_template, request, redirect, url_for
 import os
 #from forms import LoginForm, RegistrationForm
 from mail import send_email
-from models import User, Team, Product, Category
+from models import User, Team, Product, Category, Favorite
 from config import app, db, login_manager
 from flask_login import login_required, current_user, logout_user, login_user
 
@@ -65,6 +65,41 @@ def contacts():
         return render_template("/contacts.html")
 
 
+@app.route('/cart')
+def cart():
+    all_products = Product.query.all()
+    existing_titles = [one_product.title for one_product in all_products]  # titles of products that are in db
+
+    cart_items = session.get('cart')
+    total_cost = 0
+    products = []
+    if cart_items:
+        for product_id, item in cart_items.items():
+            product_dict = {
+                'product_id': product_id,
+                'title': item['title'],
+                'price_for_one': item['price_for_one'],
+                'price': item['price'],
+                'quantity': item['quantity'],
+                'item_image_path': item['img_path'],
+                }
+
+            products.append(product_dict)
+            total_cost += item['price']
+
+        # remove product from cart if product not in db
+        for product_identity in cart_items.copy():
+            product_dict = (cart_items[product_identity])
+            product_title = (product_dict['title'])
+            if product_title not in existing_titles:
+                cart_items.pop(product_identity)
+        session.modified = True
+
+        return render_template('/cart.html', products=products, total_cost=total_cost)
+    else:
+        return render_template('/cart.html')
+
+
 # Код для добавления товара в корзину
 @app.route('/add_to_cart/<int:product_id>')
 def add_to_cart(product_id):
@@ -97,39 +132,22 @@ def delete_from_cart(product_id):
     return redirect(request.referrer)
 
 
-@app.route('/cart')
-def cart():
-    all_products = Product.query.all()
-    existing_titles = [one_product.title for one_product in all_products]  # titles of products that are in db
+@app.route("/add_favorite", methods=["POST"])
+def add_favorite():
+    user_id = request.form['user_id']
+    product_id = request.form['product_id']
 
-    cart_items = session.get('cart')
-    total_cost = 0
-    products = []
-    if cart_items:
-        for product_id, item in cart_items.items():
-            product_dict = {
-                'product_id': product_id,
-                'title': item['title'],
-                'price_for_one': item['price_for_one'],
-                'price': item['price'],
-                'quantity': item['quantity'],
-                'item_image_path': item['img_path'],
-                }
-
-            products.append(product_dict)
-            total_cost += item['price']
-
-        # remove product from cart if product not in db
-        for product_identity in cart_items.copy():
-            product_dict = (cart_items[product_identity])
-            product_title = (product_dict['title'])
-            if product_title not in existing_titles:
-                cart_items.pop(product_identity)
-        session.modified = True
-
-        return render_template('cart.html', products=products, total_cost=total_cost)
+    if user_id:
+        favorite = Favorite(user_id=user_id, product_id=product_id)
     else:
-        return render_template('/cart.html')
+        favorite = Favorite(product_id=product_id)
+    try:
+        db.session.add(favorite)
+        db.session.commit()
+        flash("Product was added wi favorite")
+    except:
+        flash("Adding to database error")
+    return redirect(request.referrer)
 
 
 @app.route("/cl")

@@ -4,7 +4,7 @@ from admin.forms import TeamForm
 from models import Team, Product, Category
 from config import db
 import os
-#from decorators import admin_required
+from decorators import admin_required
 from flask_login import login_required
 
 
@@ -13,12 +13,13 @@ admin = Blueprint('admin', __name__, template_folder='templates', static_folder=
 
 @admin.route("/")
 @login_required
-#@admin_required
+@admin_required
 def admin_page():
     return render_template("admin/admin_page.html")
 
 
 @admin.route('/team_form', methods=['GET', 'POST'])
+@admin_required
 def team_form_submit():
     form = TeamForm()
     if form.validate_on_submit():
@@ -45,6 +46,7 @@ def team_form_submit():
 
 
 @admin.route('/delete_team_member', methods=['POST'])
+@admin_required
 def delete_team_member():
     if request.method == 'POST':
         team_member_id = request.form['team_member_id']
@@ -56,6 +58,7 @@ def delete_team_member():
 
 
 @admin.route("/edit_category", methods=['GET', 'POST'])
+@admin_required
 def add_category():
     if request.method == 'POST':
         title = request.form['title']
@@ -80,6 +83,7 @@ def add_category():
 
 
 @admin.route('/delete_category', methods=['POST'])
+@admin_required
 def delete_category():
     if request.method == 'POST':
         category_id = request.form['id']
@@ -91,6 +95,7 @@ def delete_category():
 
 
 @admin.route("/edit_items", methods=['POST', 'GET'])
+@admin_required
 def edit_items():
     if request.method == "POST":
         category_id = request.form['category']
@@ -141,6 +146,7 @@ def edit_items():
 
 
 @admin.route('/delete_item', methods=['POST'])
+@admin_required
 def delete_item():
     if request.method == 'POST':
         item_id = request.form['item_id']

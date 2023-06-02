@@ -16,7 +16,7 @@
 
 		{% for msg in get_flashed_messages() %}
 		<div class="wrapped_flash">
-			<div class="flash">
+			<div class="flash_green">
 				<p>{{ msg }}</p>
 			</div>
 		</div>
@@ -66,12 +66,13 @@
 			
 			<div class="product_description">
 				<div class="favorite_and_share">
-					<div class="favorite">
-						<svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" class="icon___IB7JS"><path d="M11 2c-1.16 0-2.274.54-3 1.393A3.992 3.992 0 0 0 5 2a3.631 3.631 0 0 0-3.667 3.667c0 2.52 2.267 4.573 5.7 7.693l.967.873.966-.88c3.434-3.113 5.7-5.166 5.7-7.686A3.631 3.631 0 0 0 11 2zM8.066 12.367 8 12.433l-.067-.066c-3.173-2.874-5.267-4.774-5.267-6.7 0-1.334 1-2.334 2.334-2.334 1.026 0 2.026.66 2.38 1.574h1.246C8.973 3.993 9.973 3.333 11 3.333c1.333 0 2.333 1 2.333 2.334 0 1.926-2.093 3.826-5.267 6.7z" fill="currentColor"></path></svg>
-						<span>В избранное</span>
+					<div id="myButton" class="favorite" onclick="ChangeFavoriteCheck()">
+						<input hidden type="checkbox" name="favorite_check" id="favorite_check">
+						<svg id="favorite_icon"  width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" class="icon___IB7JS"><path d="M11 2c-1.16 0-2.274.54-3 1.393A3.992 3.992 0 0 0 5 2a3.631 3.631 0 0 0-3.667 3.667c0 2.52 2.267 4.573 5.7 7.693l.967.873.966-.88c3.434-3.113 5.7-5.166 5.7-7.686A3.631 3.631 0 0 0 11 2zM8.066 12.367 8 12.433l-.067-.066c-3.173-2.874-5.267-4.774-5.267-6.7 0-1.334 1-2.334 2.334-2.334 1.026 0 2.026.66 2.38 1.574h1.246C8.973 3.993 9.973 3.333 11 3.333c1.333 0 2.333 1 2.333 2.334 0 1.926-2.093 3.826-5.267 6.7z" fill="currentColor"></path></svg>
+						<span id="favorite_span">В избранное</span>
 					</div>
 					<div class="share">
-						<svg class="share" width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" class="icon___IB7JS"><path d="M11.333 10.72c-.506 0-.96.2-1.306.513L5.273 8.467A2.15 2.15 0 0 0 5.333 8c0-.16-.026-.313-.06-.467l4.7-2.74a1.997 1.997 0 0 0 3.36-1.46c0-1.106-.893-2-2-2-1.106 0-2 .894-2 2 0 .16.027.314.06.467l-4.7 2.74A1.997 1.997 0 0 0 1.333 8a1.997 1.997 0 0 0 3.36 1.46l4.747 2.773a1.88 1.88 0 0 0-.053.434c0 1.073.873 1.946 1.946 1.946a1.95 1.95 0 0 0 1.947-1.946 1.95 1.95 0 0 0-1.947-1.947z" fill="currentColor"></path></svg>
+						<svg id="" class="share" width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" class="icon___IB7JS"><path d="M11.333 10.72c-.506 0-.96.2-1.306.513L5.273 8.467A2.15 2.15 0 0 0 5.333 8c0-.16-.026-.313-.06-.467l4.7-2.74a1.997 1.997 0 0 0 3.36-1.46c0-1.106-.893-2-2-2-1.106 0-2 .894-2 2 0 .16.027.314.06.467l-4.7 2.74A1.997 1.997 0 0 0 1.333 8a1.997 1.997 0 0 0 3.36 1.46l4.747 2.773a1.88 1.88 0 0 0-.053.434c0 1.073.873 1.946 1.946 1.946a1.95 1.95 0 0 0 1.947-1.946 1.95 1.95 0 0 0-1.947-1.947z" fill="currentColor"></path></svg>
 			 			<span class="label___lAE07">Поделиться</span>
 					</div>
 					
@@ -104,6 +105,7 @@
 			</div>
 		</div>
 
+<script type="text/javascript" src="{{ url_for('static', filename='/js/javascript.js') }}"></script>
 
 {% endblock %}
 

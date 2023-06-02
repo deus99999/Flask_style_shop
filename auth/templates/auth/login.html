@@ -17,17 +17,14 @@
 		{% endfor %}
 
 		<form method="post" id="request">			
-			<p>Enter your login and password to login to your account or <a href="{{ url_for('auth.register') }}">register</a> to create account</p>
-
-				{{ wtf.quick_form(form) }}
-<!--			<input type="text" name="email" placeholder="Email">-->
-<!--			<input type="password" name="password" placeholder="password">-->
-<!--			<label for="keep_me">-->
-<!--				<input type="checkbox" id="keep_me" name="keep_me">-->
-<!--				Keep me logged in-->
-<!--			</label>-->
-<!--      			-->
-<!--			<input type="submit" value="Login" id="submit">-->
-			
+			<p>Enter your login and password to login to your account or <a href="{{ url_for('auth.register') }}">
+				register</a> to create account</p>
+				{{ form.email }}
+				{{ form.password }}
+				<label>
+					{{ form.remember_me }}
+					Keep me logged in
+				</label>
+				{{ form.submit }}
 		</form>
 {% endblock %}
