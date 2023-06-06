@@ -7,8 +7,9 @@ from config import SECRET_KEY, login_manager
 
 class Favorite(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
-    product_id = db.Column(db.Integer, db.ForeignKey('product.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)
+    products = db.relationship('Product', backref='favorite_products')
 
 
 class Team(db.Model):
@@ -36,6 +37,7 @@ class Product(db.Model):
     price = db.Column(db.Float, nullable=False)
     in_stock = db.Column(db.String(100), default=True) # Boolean
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)#, primary_key=True)
+    # favorites = db.relationship('Favorite', backref='products', lazy='dynamic')
 
 
 class User(UserMixin, db.Model):

@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, flash, redirect, url_for, request
-from config import app, db, login_manager
+from config import app, db, login_manager, session
 from models import User, Team, Product, Category
 from auth.forms import RegistrationForm, LoginForm
 from mail import send_email
@@ -37,6 +37,9 @@ def register():
 
 @auth.route("/login", methods=['GET', 'POST'])
 def login():
+    session['cart'] = {}  # clear session before login
+    session['favorite'] = {}
+
     form = LoginForm()
     if form.validate_on_submit:
         user = User.query.filter_by(email=form.email.data).first()
@@ -63,12 +66,6 @@ def confirm(token):
         flash('The confirmation link is invalid or has expired.')
         print('The confirmation link is invalid or has expired.')
     return redirect(url_for('home'))
-
-
-@login_required
-@app.route('/my_account')
-def my_account():
-    return render_template('my_account.html')
 
 
 @auth.route('/logout')

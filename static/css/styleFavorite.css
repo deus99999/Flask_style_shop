@@ -1,0 +1,47 @@
+.titles {
+	grid-column: 1 / -1;
+	
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.titles .favorite_item {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
+	flex-direction: column;
+	font-size: 18px;
+	min-height: 253px;
+	padding: 20px;
+	border-radius: 10px;
+	background: #EFE0E0;
+}
+
+.titles a {
+	text-decoration: none;
+}
+
+.titles a:visited {
+	color: black;
+}
+
+.titles .favorite_item img {
+	width: 220px;
+	height: 220px;
+	object-fit: cover;
+	background-size: cover 
+}
+
+.titles .favorite_item button {
+    background: black;
+    border-radius: 7px;
+    text-align: 18px;
+    color: white;
+    padding: 15px 30px;
+ }
+
+.titles .favorite_item button:hover {
+    color: orange;
+    cursor: pointer;
+}

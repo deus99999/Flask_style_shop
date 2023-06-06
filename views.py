@@ -1,6 +1,6 @@
 from flask import flash, session, render_template, request, redirect, url_for
 import os
-#from forms import LoginForm, RegistrationForm
+from forms import FavoriteForm
 from mail import send_email
 from models import User, Team, Product, Category, Favorite
 from config import app, db, login_manager
@@ -25,20 +25,6 @@ def home():
 def shop():
     products = Product.query.all()
     return render_template("shop.html", products=products)
-
-
-@app.route("/<int:product_id>")
-def product_detail(product_id):
-    product = Product.query.filter_by(id=product_id).first()
-    return render_template("/product_detail.html", product=product)
-
-
-# Show all products of category in show.html
-@app.route('/categories/<int:category_id>/products')
-def show_products_of_category(category_id):
-    category = Category.query.get_or_404(category_id)
-    products = category.products
-    return render_template('products_of_category.html', category=category, products=products)
 
 
 @app.route("/about")
@@ -132,22 +118,156 @@ def delete_from_cart(product_id):
     return redirect(request.referrer)
 
 
-@app.route("/add_favorite", methods=["POST"])
-def add_favorite():
-    user_id = request.form['user_id']
-    product_id = request.form['product_id']
+# Show all products of category in show.html
+@app.route('/categories/<int:category_id>/products')
+def show_products_of_category(category_id):
+    category = Category.query.get_or_404(category_id)
+    products = category.products
+    return render_template('products_of_category.html', category=category, products=products)
 
-    if user_id:
-        favorite = Favorite(user_id=user_id, product_id=product_id)
+
+@app.route("/<int:product_id>")
+def product_detail(product_id):
+    product = Product.query.filter_by(id=product_id).first()
+    favorite_items = session.get('favorite')
+    favorites_id_list = [int(product_id) for product_id in favorite_items]
+    print(favorites_id_list)
+    return render_template("/product_detail.html", product=product, favorites_id_list=favorites_id_list)
+
+
+@app.route("/favorite")
+def favorite():
+    all_products = Product.query.all()
+    existing_titles = [one_product.title for one_product in all_products]  # titles of products that are in db
+
+    favorite_items = session.get('favorite')
+    products = []
+    print(products)
+    if favorite_items:
+        for product_id, item in favorite_items.items():
+            product_dict = {
+                'product_id': product_id,
+                'title': item['title'],
+                'price': item['price'],
+                'item_image_path': item['img_path'],
+                }
+
+            products.append(product_dict)
+
+        # remove product from favorite if product not in db
+        for product_identity in favorite_items.copy():
+            product_dict = (favorite_items[product_identity])
+            product_title = (product_dict['title'])
+            if product_title not in existing_titles:
+                favorite_items.pop(product_identity)
+        session.modified = True
+
+        return render_template('/favorite.html', products=products)
     else:
-        favorite = Favorite(product_id=product_id)
-    try:
-        db.session.add(favorite)
-        db.session.commit()
-        flash("Product was added wi favorite")
-    except:
-        flash("Adding to database error")
+        return render_template('/favorite.html')
+
+
+@app.route("/add_to_favorites/<int:product_id>")
+def add_to_favorites(product_id):
+    if not current_user.is_authenticated:
+        products = Product.query.filter_by(id=product_id).all()
+        session.permanent = True
+        for product in products:
+            # if product.id in session['favorite']:
+            #     flash('Product is already in favorites.')
+
+            if 'favorite' not in session:
+                session['favorite'] = {}
+            if str(product_id) not in session['favorite']:
+                session['favorite'][str(product_id)] = {
+                    'title': product.title,
+                    'price': float(product.price),
+                    'img_path': product.item_image1,
+                }
+                session.modified = True
+                flash('Product was added to favorite!')
+                print('Product was added to favorite!')
+            return redirect(request.referrer)
     return redirect(request.referrer)
+
+
+@app.route('/delete_from_favorites/<int:product_id>')
+def delete_from_favorites(product_id):
+    favorite_items = session.get('favorite')
+    favorite_items.pop(str(product_id))
+    session.modified = True
+    flash('Product was removed from favorite!')
+
+    return redirect(request.referrer)
+
+
+# @app.route("/add_favorite/<int:product_id>", methods=["POST"])
+# def add_favorite(product_id):
+#     print(product_id)
+#
+#     if current_user.is_authenticated:
+#         form = FavoriteForm()
+#         user_id = current_user.id
+#         print((user_id))
+#         print((product_id))
+#         #in_favorite = True
+#         #print(in_favorite)
+#         favorite = Favorite(user_id=user_id, product_id=product_id)
+#
+#         try:
+#             db.session.add(favorite)
+#             print("added to db")
+#             db.session.commit()
+#             print("commit")
+#             flash("Product was added to favorite")
+#         except:
+#             flash("Adding to database error")
+#     return redirect(request.referrer)
+
+
+@app.route("/my_account")
+def my_account():
+    all_products = Product.query.all()
+    existing_titles = [one_product.title for one_product in all_products]  # titles of products that are in db
+
+    cart_items = session.get('favorite')
+    products = []
+    if cart_items:
+        for product_id, item in cart_items.items():
+            product_dict = {
+                'product_id': product_id,
+                'title': item['title'],
+                'price_for_one': item['price_for_one'],
+                'price': item['price'],
+                'item_image_path': item['img_path'],
+                }
+            products.append(product_dict)
+
+        # remove product from cart if product not in db
+        for product_identity in cart_items.copy():
+            product_dict = (cart_items[product_identity])
+            product_title = (product_dict['title'])
+            if product_title not in existing_titles:
+                cart_items.pop(product_identity)
+        session.modified = True
+
+        return render_template('/my_account.html', products=products)
+    else:
+        return render_template('/my_account.html')
+
+
+
+
+
+
+# @login_required
+# @app.route("/my_account", methods=["GET"])
+# def my_account():
+#     if current_user.is_authenticated:
+#         form = FavoriteForm()
+#         user_id = current_user.id
+#         favorites = Favorite.query.filter_by(user_id=user_id).all()
+#     return render_template('my_account.html', favorites=favorites)
 
 
 @app.route("/cl")

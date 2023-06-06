@@ -2,7 +2,6 @@ from views import home, shop, product_detail, show_products_of_category, about, 
 #add_to_cart,
     #delete_from_cart, cart, clear
 # , register, confirm
-
 from config import app, db
 from admin.admin import admin, add_category, delete_category
 from auth.auth import auth

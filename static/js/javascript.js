@@ -10,14 +10,28 @@
   		}
 	});
 
-	function ChangeFavoriteCheck() {
+	function ChangeFavoriteCheck(product_id) {
 		if (favoriteCheck.checked) {
 			favoriteIcon.style.color = "currentColor";
 			favoriteIcon.style.width = "16";
 			favoriteIcon.style.height = "16";
 		} else {
 			favoriteIcon.style.color = "red";
-			favoriteIcon.style.width = "18";
-			favoriteIcon.style.height = "18";
+			favoriteIcon.style.width = "17";
+			favoriteIcon.style.height = "17";
+			AddToFavorite(product_id);
 		}
+	}
+
+
+
+	function AddToFavorite(product_id) {
+		let xhr = new XMLHttpRequest();
+		xhr.open('GET', `/add_to_favorite/${product_id}`);
+		xhr.onload = function() {
+			if (xhr.status === 200) {
+				console.log(xhr.responseText);
+			}
+		}
+		xhr.send();
 	}

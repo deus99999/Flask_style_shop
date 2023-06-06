@@ -5,6 +5,9 @@ from wtforms.validators import DataRequired, Email, Length, Regexp, EqualTo, Val
 from models import User
 
 
+class FavoriteForm(FlaskForm):
+    in_favorites = BooleanField()
+
 # class RegistrationForm(FlaskForm):
 #     email = StringField('Your email', validators=[DataRequired(), Length(1, 64), Email()],
 #                         render_kw={"placeholder": "Email"})

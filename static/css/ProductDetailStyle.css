@@ -180,6 +180,13 @@ button:hover {
     font-size: 20px;
 }
 
+#none_submit {
+    background-image: url('data:image/svg+xml, <svg id="favorite_icon"  width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" class="icon___IB7JS"><path d="M11 2c-1.16 0-2.274.54-3 1.393A3.992 3.992 0 0 0 5 2a3.631 3.631 0 0 0-3.667 3.667c0 2.52 2.267 4.573 5.7 7.693l.967.873.966-.88c3.434-3.113 5.7-5.166 5.7-7.686A3.631 3.631 0 0 0 11 2zM8.066 12.367 8 12.433l-.067-.066c-3.173-2.874-5.267-4.774-5.267-6.7 0-1.334 1-2.334 2.334-2.334 1.026 0 2.026.66 2.38 1.574h1.246C8.973 3.993 9.973 3.333 11 3.333c1.333 0 2.333 1 2.333 2.334 0 1.926-2.093 3.826-5.267 6.7z" fill="currentColor"></path></svg>') no-repeat;
+ padding: 30px;
+ background-size: 20px;
+        background-position: calc(100% - 20px) center;
+}
+
 @media (max-width: 900px) {
     .product_detail {
         display: flex;

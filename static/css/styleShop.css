@@ -142,6 +142,12 @@ header {
 	}
 }
 
+@media (max-width: 850px) {
+	header {
+    	height: auto;
+	}
+}	
+
 @media (max-width: 800px) {
 	.titles {
     	grid-template-columns: 1fr 1fr;
