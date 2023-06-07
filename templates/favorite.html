@@ -21,7 +21,8 @@
 		</section>
 		<!-- {{ favorites }} -->
 		<div class="titles">
-			{% for product in products %}		
+			{% if not current_user.is_authenticated %}
+				{% for product in products %}		
 				<div class="favorite_item">
 					<a href="{{ url_for('product_detail', product_id=product['product_id']) }}">
 						<img class="purchase_image" src="{{ product.item_image_path }}">
@@ -36,8 +37,28 @@
 						<button type="submit">Add to card</button>
 					</form>
 				</div>
-			{% endfor %}
+				{% endfor %}
+			{% endif %}
+
+			{% if current_user.is_authenticated %}
+				{% for product in favorite_list %}		
+				<div class="favorite_item">
+					<a href="{{ url_for('product_detail', product_id=product.id) }}">
+						<img class="purchase_image" src="{{ product.item_image1 }}">
+					</a>
+					<div class="purchase_info">
+						<a href="{{ url_for('product_detail', product_id=product.id) }}">
+							<p><strong>{{ product.title|truncate(15) }}</strong></p>
+						</a>
+						<p>Price: {{ product.price }}</p>
+					</div>
+					<form action="{{ url_for('add_to_cart', product_id=product.id) }}" method="GET" enctype="multipart/form-data">
+						<button type="submit">Add to card</button>
+					</form>
+				</div>		
+				{% endfor %}
+			{% endif %}
 			</div>
-				
+			
 
 {% endblock %}
