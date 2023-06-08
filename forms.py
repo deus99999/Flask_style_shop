@@ -5,6 +5,39 @@ from wtforms.validators import DataRequired, Email, Length, Regexp, EqualTo, Val
 from models import User
 
 
+class EditEmailForm(FlaskForm):
+    email = StringField('Your new email', validators=[DataRequired(), Length(1, 64), Email()],
+                        render_kw={"placeholder": "Your new email"})
+    username = StringField('New username',
+                           validators=[DataRequired(),
+                                       Length(1, 64),
+                                       Regexp('^[A-Za-z][A-Za-z0-9_.]*$', 0,
+                                              'Usernames must have only letters, '
+                                              'numbers, dots or underscores')],
+                           render_kw={"placeholder": "New username"})
+    submit = SubmitField('Change email')
+
+
+class EditUsernameForm(FlaskForm):
+    username = StringField('New username',
+                           validators=[DataRequired(),
+                                       Length(1, 64),
+                                       Regexp('^[A-Za-z][A-Za-z0-9_.]*$', 0,
+                                              'Usernames must have only letters, '
+                                              'numbers, dots or underscores')],
+                           render_kw={"placeholder": "New username"})
+    submit = SubmitField('Change username')
+
+
+class EditPasswordForm(FlaskForm):
+    old_password = PasswordField('Password', validators=[DataRequired(), EqualTo('password2',
+                                                                             message='Passwords must match.')],
+                             render_kw={"placeholder": "Old password"})
+    new_password = PasswordField('Confirm password', validators=[DataRequired()],
+                              render_kw={"placeholder": "New password"})
+    submit = SubmitField('Change password')
+
+
 class FavoriteForm(FlaskForm):
     in_favorites = BooleanField()
 

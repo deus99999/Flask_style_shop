@@ -6,6 +6,7 @@ from secret import password, SECRET_KEY, my_email, my_email_username, admin_emai
 from flask_bootstrap import Bootstrap
 # from mail import mail
 from flask_mail import Mail, Message
+from flask_share import Share
 
 
 app = Flask(__name__)
@@ -38,6 +39,10 @@ login_manager.init_app(app)
 bootstrap = Bootstrap(app)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+
 mail = Mail(app)
 mail.init_app(app)
+
+share = Share()
+share = Share(app)
 

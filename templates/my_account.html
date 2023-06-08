@@ -3,20 +3,20 @@
 
 {% block style %}
 	<link rel="stylesheet" type="text/css" href="../static/css/styleHome.css">
-	
+	<link rel="stylesheet" type="text/css" href="../static/css/styleMyAccount.css">
 {% endblock %}
 
 {% block content %}
 	{% for msg in get_flashed_messages() %}
 		<div class="wrapped_flash">
-			<div class="flash">
+			<div class="flash_green">
 				<p>{{ msg }}</p>
 			</div>
 		</div>
 		{% endfor %}
 
 		<section class="clothes">
-			<h1>My favorite</h1>
+			<h1>My account</h1>
 		</section>
 		<!-- {{ favorites }} -->
 		<div class="titles">
@@ -24,35 +24,11 @@
 				{{ favorite.product_id }}
 			{% endfor %} -->
 
-			{% for product in products %}
-			
-				<div class="purchase">
-					<a href="{{ url_for('product_detail', product_id=product['product_id']) }}">
-						<img class="purchase_image" src="{{ product.item_image_path }}">
-					</a>
-					<div class="purchase_info">
-						<a href="{{ url_for('product_detail', product_id=product['product_id']) }}">
-							<p><strong>{{ product.title|truncate(15) }}</strong></p>
-						</a>
-						<p>Price: {{ product.price_for_one }}</p>
-						<form>
-							<input type="number" value="{{ product.quantity }}">
-						</form>
-					</div>
-				</div>
+		<div class="edits">
+			<a href="{{ url_for('favorite') }}">My favorites</a>
+			<a href="{{ url_for('edit_email') }}">Edit email</a>
+			<a href="{{ url_for('admin.team_form_submit') }}">Edit password</a>
+		</div>
 				
-
-				<a class="delete_from_cart" href="{{ url_for('delete_from_cart', product_id=product['product_id']) }}">
-					<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1.2em" viewBox="0 0 18 18" class="icon___FELxM block___r27IC">
-						<path fill="currentColor" fill-rule="evenodd" d="M2 6v10c0 1.1.9 2 2 2h10a2 2 0 0 0 2-2V6H2zm11-3V1c0-.6-.4-1-1-1H6c-.6 0-1 .4-1 1v2H0v2h18V3h-5zm-2 0H7V2h4v1z"></path>
-					</svg>
-				</a>	
-				
-				<div class="purchase_price">
-					<p>{{ product.price }} $</p>
-				</div>
-			{% endfor %}
-			</div>
-				
-
+	</div>
 {% endblock %}

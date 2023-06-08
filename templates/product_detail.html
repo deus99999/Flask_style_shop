@@ -2,6 +2,7 @@
 
 
 {% block title %}{% for product in products %}{{ product.title }}{% endfor %}{% endblock %}
+{{ share.load() }}
 
 
 {% block style %}
@@ -94,6 +95,7 @@
 					<div class="share">
 						<svg id="" class="share" width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" class="icon___IB7JS"><path d="M11.333 10.72c-.506 0-.96.2-1.306.513L5.273 8.467A2.15 2.15 0 0 0 5.333 8c0-.16-.026-.313-.06-.467l4.7-2.74a1.997 1.997 0 0 0 3.36-1.46c0-1.106-.893-2-2-2-1.106 0-2 .894-2 2 0 .16.027.314.06.467l-4.7 2.74A1.997 1.997 0 0 0 1.333 8a1.997 1.997 0 0 0 3.36 1.46l4.747 2.773a1.88 1.88 0 0 0-.053.434c0 1.073.873 1.946 1.946 1.946a1.95 1.95 0 0 0 1.947-1.946 1.95 1.95 0 0 0-1.947-1.947z" fill="currentColor"></path></svg>
 			 			<span class="label___lAE07">Share</span>
+
 					</div>
 					
 				</div>

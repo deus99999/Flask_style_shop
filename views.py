@@ -1,8 +1,8 @@
-from flask import flash, session, render_template, request, redirect, url_for
-from models import Team, Product, Category, Favorite
+from flask import flash, session, render_template, request, redirect, url_for, abort
+from models import Team, Product, Category, Favorite, User
 from config import app, db
-from flask_login import current_user
-
+from flask_login import current_user, login_required
+from forms import EditEmailForm, EditPasswordForm
 
 # admin = Admin(my_app, name='admin', template_mode='bootstrap3')
 # admin.add_view(ModelView(Category, db.session))
@@ -278,33 +278,62 @@ def delete_from_favorites(product_id):
 
 @app.route("/my_account")
 def my_account():
-    all_products = Product.query.all()
-    existing_titles = [one_product.title for one_product in all_products]  # titles of products that are in db
+    # user = User.query.filter_by(username=username).first()
+    # if user is None:
+    #     abort(404)
+    # return render_template('my_account.html', user=user)
 
-    cart_items = session.get('favorite')
-    products = []
-    if cart_items:
-        for product_id, item in cart_items.items():
-            product_dict = {
-                'product_id': product_id,
-                'title': item['title'],
-                'price_for_one': item['price_for_one'],
-                'price': item['price'],
-                'item_image_path': item['img_path'],
-                }
-            products.append(product_dict)
+    return render_template('/my_account.html')
 
-        # remove product from cart if product not in db
-        for product_identity in cart_items.copy():
-            product_dict = (cart_items[product_identity])
-            product_title = (product_dict['title'])
-            if product_title not in existing_titles:
-                cart_items.pop(product_identity)
-        session.modified = True
 
-        return render_template('/my_account.html', products=products)
-    else:
-        return render_template('/my_account.html')
+@app.route('/edit_email', methods=['GET', 'POST'])
+@login_required
+def edit_email():
+    form = EditEmailForm()
+    if form.email.data:
+        if form.validate_on_submit:
+            current_user.email = form.email.data
+            db.session.commit()
+            flash("Your email has been updated.")
+            return redirect(url_for('edit_email'))
+    form.email.data = current_user.email
+    return render_template("edit_email.html", form=form)
+
+
+@app.route('/edit_username', methods=['GET', 'POST'])
+@login_required
+def edit_username():
+    form = EditEmailForm()
+    if form.validate_on_submit:
+        current_user.username = form.username.data
+
+        db.session.add(current_user)
+        print("Your username has been updated.")
+        flash("Your username has been updated.")
+        db.session.commit()
+        return render_template('/edit_username.html', username=current_user.username, form=form)
+    form.username.data = current_user.usename
+    return render_template("edit_username.html", form=form)
+
+
+@app.route('/edit_password', methods=['GET', 'POST'])
+@login_required
+def edit_password():
+    form = EditPasswordForm()
+
+    if form.validate_on_submit:
+        current_user.email = form.email.data
+        current_user.username = form.username.data
+
+        #user = User(email=email, username=username, password=password, is_admin=is_admin)
+        db.session.add(current_user)
+        print("Your password has been updated.")
+        flash("Your password has been updated.")
+        db.session.commit()
+        return render_template('/edit_password.html', username=current_user.username, form=form)
+    form.email.data = current_user.email
+    form.username.data = current_user.username
+    return render_template("edit_password.html", form=form)
 
 
 @app.route("/cl")
