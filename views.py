@@ -107,6 +107,42 @@ def add_to_cart(product_id):
     return redirect(request.referrer)
 
 
+@app.route('/add_quantity_to_cart/<int:product_id>')
+def add_quantity_to_cart(product_id):
+    products = Product.query.filter_by(id=product_id).all()
+    session.permanent = True
+    for product in products:
+        # if 'cart' not in session:
+        #     session['cart'] = {}
+        # if str(product_id) not in session['cart']:
+        #     session['cart'][str(product_id)] = {
+        #         'title': product.title,
+        #         'price_for_one': float(product.price),
+        #         'price': float(product.price),
+        #         'quantity': 1,
+        #         'img_path': product.item_image1,
+        #     }
+        # else:
+        session['cart'][str(product_id)]['price'] += float(product.price)
+        session['cart'][str(product_id)]['quantity'] += 1
+        session.modified = True
+    return redirect(request.referrer)
+
+
+# delete quantity of product from cart
+@app.route('/delete_quantity_from_cart/<int:product_id>')
+def delete_quantity_from_cart(product_id):
+    products = Product.query.filter_by(id=product_id).all()
+    session.permanent = True
+    for product in products:
+        if session['cart'][str(product_id)]['quantity'] > 1:
+            session['cart'][str(product_id)]['price'] -= float(product.price)
+            session['cart'][str(product_id)]['quantity'] -= 1
+            session.modified = True
+    return redirect(request.referrer)
+
+
+# delete all quantity of product from card
 @app.route('/cart/<int:product_id>')
 def delete_from_cart(product_id):
     cart_items = session.get('cart')
@@ -142,15 +178,13 @@ def product_detail(product_id):
 
 def get_favorite_list():
     favorites = Favorite.query.filter_by(user_id=current_user.id).all()
-    if not favorites:
-        flash("There are no favorites")
-
     favorite_list = []
     for favorite in favorites:
         product = Product.query.filter_by(id=favorite.product_id).first()
         favorite_list.append(product)
     print(favorite_list)
     return favorite_list
+
 
 @app.route("/favorite")
 def favorite():
@@ -183,8 +217,6 @@ def favorite():
         favorite_list = get_favorite_list()
         return render_template('/favorite.html', favorite_list=favorite_list)
     return render_template('/favorite.html')
-
-
 
 
 @app.route("/add_to_favorites/<int:product_id>")

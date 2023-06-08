@@ -148,6 +148,26 @@ header {
 	color: black;
 }
 
+.quantity {
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	font-size: 1.2em;
+}
+
+.quantity a {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: 1px solid black;
+	border-radius: 50%;
+	width: 30px;
+	height: 30px;
+	color: white;
+	background: #DADADA;
+		font-size: 1.2em;
+
+}
 
 @media (max-width: 600px) {
 	.purchase_price {

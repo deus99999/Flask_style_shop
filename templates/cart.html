@@ -6,6 +6,15 @@
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styleGeneral.css') }}">
 {% endblock %}
 {% block content %}
+		
+		{% for msg in get_flashed_messages() %}
+		<div class="wrapped_flash">
+			<div class="flash_green"> 
+				<p>{{ msg }}</p>
+			</div>
+		</div> 
+		{% endfor %}
+
 		{% if products %}
 			<section class="clothes">
 				<h1>Your purchases</h1> 
@@ -23,12 +32,19 @@
 							<p><strong>{{ product.title|truncate(15) }}</strong></p>
 						</a>
 						<p>Price: {{ product.price_for_one }}</p>
-						<form>
+
+						<!-- <form>
 							<input type="number" value="{{ product.quantity }}">
-						</form>
+						</form> -->
+						<div class="quantity">
+							<a href="{{ url_for('delete_quantity_from_cart', product_id=product['product_id']) }}">-</a>
+							<div>
+								{{ product.quantity }}
+							</div>
+							<a href="{{ url_for('add_quantity_to_cart', product_id=product['product_id']) }}">+</a>
+						</div>
 					</div>
 				</div>
-				
 
 				<a class="delete_from_cart" href="{{ url_for('delete_from_cart', product_id=product['product_id']) }}">
 						<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1.2em" viewBox="0 0 18 18" class="icon___FELxM block___r27IC"><path fill="currentColor" fill-rule="evenodd" d="M2 6v10c0 1.1.9 2 2 2h10a2 2 0 0 0 2-2V6H2zm11-3V1c0-.6-.4-1-1-1H6c-.6 0-1 .4-1 1v2H0v2h18V3h-5zm-2 0H7V2h4v1z"></path></svg>
