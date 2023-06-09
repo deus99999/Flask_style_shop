@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, flash, redirect, url_for, request
 from config import app, db, login_manager, session
 from models import User, Team, Product, Category
-from auth.forms import RegistrationForm, LoginForm
+from auth.forms import RegistrationForm, LoginForm, ChangePasswordForm
 from mail import send_email
 from flask_login import login_required, current_user, logout_user, login_user
 
@@ -108,3 +108,23 @@ def resend_confirmation():
     return redirect(url_for('home'))
 
 
+@auth.route('/change_password', methods=['GET', 'POST'])
+@login_required
+def change_password():
+    form = ChangePasswordForm()
+    old_password = form.old_password.data
+    new_password = form.new_password.data
+
+    if old_password and new_password:
+        if form.validate_on_submit:
+            print(current_user.verify_password(old_password))
+            if current_user.verify_password(old_password):
+
+                current_user.password = form.new_password.data
+                db.session.add(current_user)
+                db.session.commit()
+                flash('Your password has been updated.')
+                return redirect(url_for('auth.change_password'))
+            else:
+                flash('Invalid password.')
+    return render_template("auth/change_password.html", form=form)

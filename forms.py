@@ -29,13 +29,7 @@ class EditUsernameForm(FlaskForm):
     submit = SubmitField('Change username')
 
 
-class EditPasswordForm(FlaskForm):
-    old_password = PasswordField('Password', validators=[DataRequired(), EqualTo('password2',
-                                                                             message='Passwords must match.')],
-                             render_kw={"placeholder": "Old password"})
-    new_password = PasswordField('Confirm password', validators=[DataRequired()],
-                              render_kw={"placeholder": "New password"})
-    submit = SubmitField('Change password')
+
 
 
 class FavoriteForm(FlaskForm):

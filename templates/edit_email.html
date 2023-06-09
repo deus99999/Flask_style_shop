@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Edit email{% endblock %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block style %}
+	<link rel="stylesheet" type="text/css" href="../static/css/styleContacts.css">
+	<link rel="stylesheet" type="text/css" href="../static/css/styleRegister.css">
+	  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styleGeneral.css') }}">
+
+{% endblock %}
+
+{% block content %}
+
+	<div class="register_h2">
+		<h2>Edit email</h2>
+	</div>
+
+	{% for msg in get_flashed_messages() %}
+		<div class="wrapped_flash">
+			<div class="flash_green">
+				<p>{{ msg }}</p>
+			</div>
+		</div>
+		{% endfor %}
+
+	<form method="post" id="request" enctype="multipart/form-data">
+	<p>Enter your new email</p>
+		New Email:
+		{{ form.email }}
+
+		{{ form.submit }}
+	</form>
+{% endblock %}

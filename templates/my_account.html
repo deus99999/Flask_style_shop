@@ -27,11 +27,13 @@
 			{% endfor %} -->
 
 		<div class="edits">
-			<a href="{{ url_for('favorite') }}">My favorites</a>
+			<a href="{{ url_for('favorite') }}"><i class="fa-sharp fa-regular fa-heart"></i>  My favorites   
+				 
+            </a>
 			<a href="{{ url_for('edit_email') }}">Edit email</a>
 			<a href="{{ url_for('edit_username') }}">Edit username</a>
 
-			<a href="{{ url_for('admin.team_form_submit') }}">Edit password</a>
+			<a href="{{ url_for('auth.change_password') }}">Change password</a>
 			<br>  
 			<a class="logout_a" href="{{ url_for('auth.logout') }}">Logout</a>
 		</div>
