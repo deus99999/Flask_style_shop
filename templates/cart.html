@@ -62,7 +62,7 @@
 				</div>
 			</div>
 
-			<form action="" class="buy">
+			<form action="{{ url_for('buy', total_cost=total_cost )}}" class="buy">
 				 	<button type="submit" class="buy_button">Buy</button>
 				</form>
 			{% else %}

@@ -4,7 +4,7 @@ from flask_migrate import Migrate
 from flask_login import LoginManager, login_required, logout_user
 from secret import password, SECRET_KEY, my_email, my_email_username, admin_email
 from flask_bootstrap import Bootstrap
-# from mail import mail
+from cloudipsp import Api, Checkout
 from flask_mail import Mail, Message
 from flask_share import Share
 

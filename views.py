@@ -4,6 +4,8 @@ from config import app, db
 from flask_login import current_user, login_required
 from forms import EditEmailForm, EditUsernameForm
 from werkzeug.security import generate_password_hash
+from config import Api, Checkout
+
 
 # admin = Admin(my_app, name='admin', template_mode='bootstrap3')
 # admin.add_view(ModelView(Category, db.session))
@@ -326,27 +328,17 @@ def edit_username():
     return render_template("edit_username.html", form=form)
 
 
-
-
-
-# @app.route('/edit_password', methods=['GET', 'POST'])
-# @login_required
-# def edit_password():
-#     form = EditPasswordForm()
-#
-#     if form.validate_on_submit:
-#         current_user.email = form.email.data
-#         current_user.username = form.username.data
-#
-#         #user = User(email=email, username=username, password=password, is_admin=is_admin)
-#         db.session.add(current_user)
-#         print("Your password has been updated.")
-#         flash("Your password has been updated.")
-#         db.session.commit()
-#         return render_template('/edit_password.html', username=current_user.username, form=form)
-#     form.email.data = current_user.email
-#     form.username.data = current_user.username
-#     return render_template("edit_password.html", form=form)
+@app.route('/buy/<int:total_cost>')
+def buy(total_cost):
+    api = Api(merchant_id=1396424,
+              secret_key='test')
+    checkout = Checkout(api=api)
+    data = {
+        "currency": "USD",
+        "amount": str(total_cost) + "00"
+    }
+    url = checkout.url(data).get('checkout_url')
+    return redirect(url)
 
 
 @app.route("/cl")
