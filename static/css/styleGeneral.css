@@ -124,6 +124,7 @@ header {
 }
 
 .banner {
+	width: 50%;
 	flex-grow: 1;
 	display: flex;
 	flex-direction: column;
@@ -132,7 +133,7 @@ header {
 }
 
 .banner h1 {
-	font-size: 1.8em;
+	font-size: 1.9em;
 }
 
 .banner p {
@@ -195,6 +196,14 @@ header {
     font-size: 20px;
 }
 
+.btn_forms {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.btn_forms .edit_btn {
+	margin-left: 12px;
+}
 
 footer {
 	

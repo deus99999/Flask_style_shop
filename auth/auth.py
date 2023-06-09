@@ -22,6 +22,12 @@ def register():
         is_admin = True
     if email and username and password:
         if form.validate_on_submit:
+
+            existing_user = User.query.filter_by(email=email).first()  # check is exist this email in db
+            if existing_user and existing_user.email == email:
+                flash("This email is already exist.")
+                return redirect(url_for('auth.register'))
+
             user = User(email=email, username=username, password=password, is_admin=is_admin)
             db.session.add(user)
             try:

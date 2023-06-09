@@ -2,7 +2,7 @@ from flask import flash, session, render_template, request, redirect, url_for, a
 from models import Team, Product, Category, Favorite, User
 from config import app, db
 from flask_login import current_user, login_required
-from forms import EditEmailForm, EditPasswordForm
+from forms import EditEmailForm, EditPasswordForm, EditUsernameForm
 
 # admin = Admin(my_app, name='admin', template_mode='bootstrap3')
 # admin.add_view(ModelView(Category, db.session))
@@ -290,11 +290,19 @@ def my_account():
 @login_required
 def edit_email():
     form = EditEmailForm()
+
     if form.email.data:
         if form.validate_on_submit:
-            current_user.email = form.email.data
-            db.session.commit()
-            flash("Your email has been updated.")
+            new_email = form.email.data
+            existing_user = User.query.filter_by(email=new_email).first()
+
+            if existing_user and existing_user.id != current_user.id:
+                flash("This email is already exist.")
+            else:
+                current_user.email = new_email
+                db.session.commit()
+                flash("Your email has been updated.")
+
             return redirect(url_for('edit_email'))
     form.email.data = current_user.email
     return render_template("edit_email.html", form=form)
@@ -303,16 +311,22 @@ def edit_email():
 @app.route('/edit_username', methods=['GET', 'POST'])
 @login_required
 def edit_username():
-    form = EditEmailForm()
-    if form.validate_on_submit:
-        current_user.username = form.username.data
+    form = EditUsernameForm()
 
-        db.session.add(current_user)
-        print("Your username has been updated.")
-        flash("Your username has been updated.")
-        db.session.commit()
-        return render_template('/edit_username.html', username=current_user.username, form=form)
-    form.username.data = current_user.usename
+    if form.username.data:
+        if form.validate_on_submit:
+            new_username = form.username.data
+            existing_user = User.query.filter_by(email=new_username).first()
+
+            if existing_user and existing_user.id != current_user.id:
+                flash("This username is already exist.")
+            else:
+                current_user.username = new_username
+                db.session.commit()
+                flash("Your username has been updated.")
+
+            return redirect(url_for('edit_username'))
+    form.username.data = current_user.username
     return render_template("edit_username.html", form=form)
 
 

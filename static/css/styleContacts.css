@@ -5,9 +5,6 @@ header {
 		url(../images_for_css/bg/contacts_header_back.jpg);
 }
 
-
-
-
 .titles {
 	grid-column: 2 / -2;
 	display: grid;
