@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template
 from flask import flash, session, render_template, request, redirect, url_for
-from admin.forms import TeamForm
+from admin.forms import TeamForm, ProductForm
 from models import Team, Product, Category
 from config import db
 import os
@@ -60,6 +60,7 @@ def delete_team_member():
 @admin.route("/edit_category", methods=['GET', 'POST'])
 @admin_required
 def add_category():
+    form = ProductForm()
     if request.method == 'POST':
         title = request.form['title']
         category_image = request.files['category_image']
@@ -94,6 +95,7 @@ def delete_category():
         return redirect('edit_category')
 
 
+# create products
 @admin.route("/edit_items", methods=['POST', 'GET'])
 @admin_required
 def edit_items():
@@ -164,3 +166,63 @@ def delete_item():
         db.session.delete(item_to_delete)
         db.session.commit()
         return redirect('edit_items')
+
+
+@admin.route('/change_item/<int:product_id>', methods=['POST', 'GET'])
+@admin_required
+def change_item(product_id):
+    product = Product.query.filter_by(id=product_id).first()
+    if request.method == 'POST':
+        form = ProductForm(formdata=request.form, obj=product)
+        form.populate_obj(product)
+        db.session.commit()
+    #    return redirect(url_for('product_detail', product_id=product_id))
+        return render_template('admin/change_item.html', product=product, form=form)
+
+    if request.method == 'GET':
+        form = ProductForm(obj=product)
+    return render_template('admin/change_item.html', product=product, form=form)
+#     categories = Category.query.all()
+#
+#     # category_id = request.form['category']
+#
+#     if request.method == 'POST':
+#         #product_id = request.form['product_id']
+#         #product = Product.query.filter_by(id=product_id).first()
+#         #print(product_id)
+#         #product.title = request.form['title']
+#         #product.description = request.form['description']
+#         #category = Category.query.get(product.category_id)
+#
+#         # if request.files['item_image1']:
+#         #     item_image1 = request.files['item_image1']
+#         #     item_image_path1 = f'static/images/Categories/{category.title}/' + item_image1.filename
+#         #     item_image1.save(item_image_path1)
+#         #     product.item_image1 = item_image_path1,
+#         #
+#         # if request.files['item_image2']:
+#         #     item_image2 = request.files['item_image2']
+#         #     item_image_path2 = f'static/images/Categories/{category.title}/' + item_image2.filename
+#         #     item_image2.save(item_image_path2)
+#         #     product.item_image2 = item_image_path2,
+#         #
+#         # if request.files['item_image3']:
+#         #     item_image3 = request.files['item_image3']
+#         #     item_image_path3 = f'static/images/Categories/{category.title}/' + item_image3.filename
+#         #     item_image3.save(item_image_path3)
+#         #     product.item_image3 = item_image_path3
+#
+#        # product.price = request.form['price']
+#        # product.in_stock = request.form['is_in_stock']
+#
+#         try:
+#             db.session.commit()
+#             flash("Product's info has been updated.")
+#             return render_template("admin/change_item.html")
+#         except:
+#             print("Error")
+#         else:
+#             return render_template("admin/change_item.html")#, categories=categories, product=product)
+#
+#     return render_template("admin/change_item.html", categories=categories, product=product)
+

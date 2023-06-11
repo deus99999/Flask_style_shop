@@ -3,7 +3,6 @@ from models import Team, Product, Category, Favorite, User
 from config import app, db
 from flask_login import current_user, login_required
 from forms import EditEmailForm, EditUsernameForm
-from werkzeug.security import generate_password_hash
 from config import Api, Checkout
 
 
@@ -115,17 +114,6 @@ def add_quantity_to_cart(product_id):
     products = Product.query.filter_by(id=product_id).all()
     session.permanent = True
     for product in products:
-        # if 'cart' not in session:
-        #     session['cart'] = {}
-        # if str(product_id) not in session['cart']:
-        #     session['cart'][str(product_id)] = {
-        #         'title': product.title,
-        #         'price_for_one': float(product.price),
-        #         'price': float(product.price),
-        #         'quantity': 1,
-        #         'img_path': product.item_image1,
-        #     }
-        # else:
         session['cart'][str(product_id)]['price'] += float(product.price)
         session['cart'][str(product_id)]['quantity'] += 1
         session.modified = True

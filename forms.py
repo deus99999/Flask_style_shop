@@ -29,9 +29,6 @@ class EditUsernameForm(FlaskForm):
     submit = SubmitField('Change username')
 
 
-
-
-
 class FavoriteForm(FlaskForm):
     in_favorites = BooleanField()
 
