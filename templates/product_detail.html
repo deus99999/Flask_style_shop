@@ -11,6 +11,9 @@
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/ProductDetailStyle.css' ) }}">
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styleGeneral.css') }}">
 
+	<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+
 {% endblock %}
 
 {% block content %}
@@ -93,11 +96,11 @@
 					{% endif %}
 					</div>
 					<div class="share">
-						<svg id="" class="share" width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" class="icon___IB7JS"><path d="M11.333 10.72c-.506 0-.96.2-1.306.513L5.273 8.467A2.15 2.15 0 0 0 5.333 8c0-.16-.026-.313-.06-.467l4.7-2.74a1.997 1.997 0 0 0 3.36-1.46c0-1.106-.893-2-2-2-1.106 0-2 .894-2 2 0 .16.027.314.06.467l-4.7 2.74A1.997 1.997 0 0 0 1.333 8a1.997 1.997 0 0 0 3.36 1.46l4.747 2.773a1.88 1.88 0 0 0-.053.434c0 1.073.873 1.946 1.946 1.946a1.95 1.95 0 0 0 1.947-1.946 1.95 1.95 0 0 0-1.947-1.947z" fill="currentColor"></path></svg>
-			 			<span class="label___lAE07">Share</span>
-
+						<button id="openModal">
+							<svg id="" class="share" width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" class="icon___IB7JS"><path d="M11.333 10.72c-.506 0-.96.2-1.306.513L5.273 8.467A2.15 2.15 0 0 0 5.333 8c0-.16-.026-.313-.06-.467l4.7-2.74a1.997 1.997 0 0 0 3.36-1.46c0-1.106-.893-2-2-2-1.106 0-2 .894-2 2 0 .16.027.314.06.467l-4.7 2.74A1.997 1.997 0 0 0 1.333 8a1.997 1.997 0 0 0 3.36 1.46l4.747 2.773a1.88 1.88 0 0 0-.053.434c0 1.073.873 1.946 1.946 1.946a1.95 1.95 0 0 0 1.947-1.946 1.95 1.95 0 0 0-1.947-1.947z" fill="currentColor"></path></svg>
+			 				<span class="label___lAE07">Share</span>
+						</button>
 					</div>
-					
 				</div>
 				<div class="product_price">
 					<p>{{ product.price }} $</p>
@@ -129,5 +132,57 @@
 			</div>
 		</div>
 
+		<div hidden class="modal" id="modal">
+			<div class="modal_window">
+				<div class="copy_div">
+					<input type="text" class="copy" id="copy_url" name="" value="{{ request.url }}">
+
+					<box-icon type='solid' id="copy_icon" name='copy'></box-icon>
+					<!-- <button class="copy_btn">Copy</button> -->
+				</div>
+					
+				<button class="btn_close">X</button>
+			</div>
+			<div class="overlay">
+				
+			</div>
+		</div>
+
+ <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+	let modal = document.getElementById("modal");
+	modal.hidden = false;
+
+	$("#modal").hide();
+	$("#url_was_copied").hide();
+
+	$(document).ready(function() {
+		$("#openModal").click(function() {
+			$("#modal").toggle();
+
+		});
+		$(".btn_close").click(function() {
+			$("#modal").hide();
+		});
+		$("#copy_icon").click(function () {
+			$("#copy_icon").css("height", "+=10"); 
+			$("#url_was_copied").show();
+
+			setTimeout(function() {
+				let copy_url = document.getElementById("copy_url").value;
+				navigator.clipboard.writeText(copy_url).then(function() {			
+				console.log("Текст скопирован в буфер обмена");
+				});
+				$("#copy_icon").css("height", "-=10");
+			}, 100);
+			 
+
+		});
+	});
+
+
+</script>
 {% endblock %}
 

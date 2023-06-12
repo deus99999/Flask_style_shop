@@ -134,8 +134,12 @@ header {
 	margin: 10%;
 }
 
+.team {
+	margin-top: 12%;
+}
+
 .no_team {
-	margin: 10%;
+	margin: 5%;
 }
 
 textarea {
