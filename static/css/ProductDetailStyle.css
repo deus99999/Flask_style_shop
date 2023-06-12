@@ -109,8 +109,18 @@ button:hover {
     cursor: pointer;
 }
 
+.favorite a {
+    color: black;
+    text-decoration: none;
+}
+
+.favorite a:hover {
+    color: #6F6F6F;
+    cursor: pointer;
+}
+
 .limited {
-    max-height: 54px;
+    max-height: 53px;
     overflow: hidden;
     position: relative;
 }

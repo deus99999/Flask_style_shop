@@ -119,9 +119,11 @@
 					<form action="{{ url_for('add_to_cart', product_id=product.id) }}" method="get">
 				 		<button class="add_btn" type="submit">Add to Cart</button>
 					</form>
-			 		<form action="{{ url_for('add_to_cart', product_id=product.id) }}" method="get">
+			 		<form action="{{ url_for('buy_now', price=product.price) }}" method="get">
 						<button class="buy_btn" type="submit">Buy now</button>
 					</form>
+
+
 				</div>
 			 	
 			</div>

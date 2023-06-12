@@ -329,6 +329,19 @@ def buy(total_cost):
     return redirect(url)
 
 
+@app.route('/buy_now/<int:price>')
+def buy_now(price):
+    api = Api(merchant_id=1396424,
+              secret_key='test')
+    checkout = Checkout(api=api)
+    data = {
+        "currency": "USD",
+        "amount": str(price) + "00"
+    }
+    url = checkout.url(data).get('checkout_url')
+    return redirect(url)
+
+
 @app.route("/cl")
 def clear():
     session.clear()

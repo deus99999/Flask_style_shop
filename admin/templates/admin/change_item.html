@@ -6,9 +6,6 @@
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
 	  integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous"
 	  xmlns="http://www.w3.org/1999/html">
-
-	
-
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styleEdit.css') }}"> 
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styleGeneral.css') }}">
 {% endblock %}
@@ -16,14 +13,18 @@
 {% block content %}
 		<form action="{{ url_for('admin.change_item', product_id=product.id) }}" method="post" id="request" enctype="multipart/form-data">
 			{{ form.csrf_token }}
-			{% for field in form if field.name != "csrf_token" %}		
-				{{ field.label }}
-				{{ field(id="request") }}
-			{% endfor %}
+						
+			{{ form.category_id }}
+			{{ form.title }}
+			{{ form.description }}
+			<!-- {{ form.item_image1 }}
+			{{ form.item_image2 }}
+			{{ form.item_image3 }} -->
+			{{ form.price }}
+			{{ form.in_stock.label }}
+			{{ form.in_stock }}
+			{{ form.submit }}
 		</form>
-	
-		
-
 
 	<div class="button_back">
 		<a href="{{ url_for('admin.admin_page') }}">To Back</a>

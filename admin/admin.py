@@ -168,61 +168,62 @@ def delete_item():
         return redirect('edit_items')
 
 
+def change_image_path(item_image, product, cat):
+    item_image = item_image.split('/')
+    print(item_image)
+    item_image[3] = f"{cat.title}"
+    print(item_image)
+    item_image = "/".join(item_image)
+    print(item_image)
+    return item_image
+
+
 @admin.route('/change_item/<int:product_id>', methods=['POST', 'GET'])
 @admin_required
 def change_item(product_id):
     product = Product.query.filter_by(id=product_id).first()
+
     if request.method == 'POST':
         form = ProductForm(formdata=request.form, obj=product)
+
+        # get choice of categories
+        categories = Category.query.all()
+        form.category_id.choices = [(category.id, category.title) for category in categories]
+
+        v = request.form.get('category_id')
+        print(v)
+        # get category name
+        # category_id = request.form.get('category_id')
+        # print(category_id)
+        # cat = Category.query.filter_by(id=category_id).first()
+        # print(cat.title)
+        #
+        #
+        # # get image path from db
+        # item_img_1 = product.item_image1
+        # print(item_img_1)
+        #
+        # item_img_2 = product.item_image2
+        # item_img_3 = product.item_image3
+        #
+        # item_image_path1 = change_image_path(item_img_1, product, cat)
+        # item_image_path2 = change_image_path(item_img_2, product, cat)
+        # item_image_path3 = change_image_path(item_img_3, product, cat)
+        #
+        # product.item_image1 = item_image_path1
+        # product.item_image2 = item_image_path2
+        # product.item_image3 = item_image_path3
+
+
         form.populate_obj(product)
+
         db.session.commit()
-    #    return redirect(url_for('product_detail', product_id=product_id))
+
+        #flash("Changes saved.")
         return render_template('admin/change_item.html', product=product, form=form)
 
     if request.method == 'GET':
         form = ProductForm(obj=product)
     return render_template('admin/change_item.html', product=product, form=form)
-#     categories = Category.query.all()
-#
-#     # category_id = request.form['category']
-#
-#     if request.method == 'POST':
-#         #product_id = request.form['product_id']
-#         #product = Product.query.filter_by(id=product_id).first()
-#         #print(product_id)
-#         #product.title = request.form['title']
-#         #product.description = request.form['description']
-#         #category = Category.query.get(product.category_id)
-#
-#         # if request.files['item_image1']:
-#         #     item_image1 = request.files['item_image1']
-#         #     item_image_path1 = f'static/images/Categories/{category.title}/' + item_image1.filename
-#         #     item_image1.save(item_image_path1)
-#         #     product.item_image1 = item_image_path1,
-#         #
-#         # if request.files['item_image2']:
-#         #     item_image2 = request.files['item_image2']
-#         #     item_image_path2 = f'static/images/Categories/{category.title}/' + item_image2.filename
-#         #     item_image2.save(item_image_path2)
-#         #     product.item_image2 = item_image_path2,
-#         #
-#         # if request.files['item_image3']:
-#         #     item_image3 = request.files['item_image3']
-#         #     item_image_path3 = f'static/images/Categories/{category.title}/' + item_image3.filename
-#         #     item_image3.save(item_image_path3)
-#         #     product.item_image3 = item_image_path3
-#
-#        # product.price = request.form['price']
-#        # product.in_stock = request.form['is_in_stock']
-#
-#         try:
-#             db.session.commit()
-#             flash("Product's info has been updated.")
-#             return render_template("admin/change_item.html")
-#         except:
-#             print("Error")
-#         else:
-#             return render_template("admin/change_item.html")#, categories=categories, product=product)
-#
-#     return render_template("admin/change_item.html", categories=categories, product=product)
+
 

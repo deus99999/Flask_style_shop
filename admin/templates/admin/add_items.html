@@ -50,7 +50,7 @@
 		<h2>Product List</h2>
 		{% for product in products %}
 			<ul>
-				<a href="{{ url_for('product_detail', product_id=product.id) }}"><li>{{ product.title }}</li></a>
+				<li><a href="{{ url_for('product_detail', product_id=product.id) }}">{{ product.title|truncate(20) }}</a></li>
 				<div class="btn_forms">
 					<form method="post" action="{{ url_for('admin.delete_item') }}">
             			<input type="hidden" name="item_id" value="{{ product.id }}">
