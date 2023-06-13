@@ -80,10 +80,10 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
     def generate_confirmation_token(self, expiration=3600):
-        s = Serializer((app.config['SECRET_KEY']), expiration)
+        s = Serializer((app.config['SECRET_KEY']))
         print(s)
         print(type(s))
-        res = s.dumps(({'confirm': self.id}))
+        res = s.dumps({'confirm': self.id})
         print(res)
         return res
 
