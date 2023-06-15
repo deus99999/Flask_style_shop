@@ -30,9 +30,9 @@
 					</a>
 					<div class="purchase_info">
 						<a href="{{ url_for('product_detail', product_id=product['product_id']) }}">
-							<p><strong>{{ product.title|truncate(15) }}</strong></p>
+							<p><strong>{{ product.title|truncate(20) }}</strong></p>
 						</a>
-						<p>Price: {{ product.price_for_one }}</p>
+						<p>Price: {{ product.price }}</p>
 					</div>
 					<form action="{{ url_for('add_to_cart', product_id=product['product_id']) }}" method="GET" enctype="multipart/form-data">
 						<button type="submit">Add to card</button>

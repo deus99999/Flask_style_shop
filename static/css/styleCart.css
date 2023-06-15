@@ -159,12 +159,12 @@ header {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	border: 1px solid black;
-	border-radius: 50%;
+	border: 2px solid black;
+	border-radius: 10px;
 	width: 30px;
 	height: 30px;
-	color: white;
-	background: #DADADA;
+	color: black;
+	background: #FCCECE;
 		font-size: 1.2em;
 
 }

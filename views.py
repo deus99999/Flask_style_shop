@@ -153,16 +153,18 @@ def show_products_of_category(category_id):
 @app.route("/<int:product_id>")
 def product_detail(product_id):
     product = Product.query.filter_by(id=product_id).first()
-
-    if not current_user.is_authenticated:
-        favorite_items = session.get('favorite')
-        favorites_id_list = [int(product_id) for product_id in favorite_items]
-        return render_template("/product_detail.html", product=product, favorites_id_list=favorites_id_list)
+    print(product.id)
 
     if current_user.is_authenticated:
         favorite_list = get_favorite_list()
         favorite_list = [fav.id for fav in favorite_list]
         return render_template("/product_detail.html", product=product, favorite_list=favorite_list)
+    else:
+        if session.get('favorite'):
+            favorite_items = session.get('favorite')
+            print(favorite_items)
+            favorites_id_list = [int(product_id) for product_id in favorite_items]
+            return render_template("/product_detail.html", product=product, favorites_id_list=favorites_id_list)
 
     return render_template("/product_detail.html", product=product)
 

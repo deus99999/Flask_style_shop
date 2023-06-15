@@ -45,3 +45,25 @@
     color: orange;
     cursor: pointer;
 }
+
+@media (max-width: 1000px) {
+	.titles {
+		display: flex;
+		padding: 1%;
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+
+	.titles .favorite_item img {
+		width: 110px;
+		height: 110px;
+	}
+
+	.titles .favorite_item {
+		margin: 10px;
+		font-size: 15px;
+		min-height: 253px;
+		padding: 10px;
+		border-radius: 10px;
+	}
+}
