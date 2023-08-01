@@ -1,5 +1,5 @@
 import unittest
-from models import User, Role, Permission, AnonymousUser
+from models import User#, Role, Permission, AnonymousUser
 from config import admin_email, app
 
 
