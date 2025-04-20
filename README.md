@@ -21,6 +21,9 @@
 ## 📸 Скриншоты
 
 > ![image](https://github.com/user-attachments/assets/239bf686-14e4-4717-90d4-24521e25be8e)
+> ![image](https://github.com/user-attachments/assets/1bd48111-d7ac-438c-8277-7eac6e1cbc4a)
+> ![image](https://github.com/user-attachments/assets/42c06a1c-5c7a-46f2-8546-0a3d2e00f544)
+> ![image](https://github.com/user-attachments/assets/ddf1f1b2-19ff-41d1-ae5c-dba0a30953e9)
 
 
 ## 🛠️ Установка и запуск
